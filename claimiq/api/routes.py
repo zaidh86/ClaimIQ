@@ -26,5 +26,6 @@ def health() -> dict:
         "version": __version__,
         "track": TRACK_ID,
         "gemini_configured": settings.gemini_configured,
+        "gemini_model": settings.gemini_model,
         "time": datetime.now(timezone.utc).isoformat(),
     }

@@ -26,11 +26,14 @@ Done so far:
   that's what the extraction layer needs to be tested against
 - ground truth for every claim plus tests that verify the dataset is coherent
   and the planted problems (contradictions, gaps) are really in the text
+- Gemini extraction: each document goes to Gemini separately (structured JSON
+  output) and comes back as typed facts with a verbatim supporting quote per
+  fact; quotes are re-checked against the source text in Python. Anything a
+  document doesn't state is null — and when documents disagree, both versions
+  are kept side by side instead of picking one
 
 Being built next:
 
-- Gemini extraction: turn the messy documents into structured facts, with
-  unknowns marked as unknown
 - a deterministic Python engine for the actual checks — document completeness,
   cross-document contradictions, date windows, insured value, exclusions —
   and the final APPROVE / REJECT / REQUEST_INFORMATION / ESCALATE call
@@ -65,7 +68,7 @@ numbers, everything. The 8 cases are deliberately different:
 app.py                  # entry point — python app.py runs everything
 requirements.txt
 claimiq/
-  config.py             # env handling (.env loader, port, key)
+  config.py             # env handling (.env loader, port, key, model)
   server.py             # FastAPI app factory + error handling
   api/routes.py         # endpoints (just /api/health for now)
   web/static/           # frontend served by the Python app
@@ -75,8 +78,31 @@ claimiq/
     ground_truth.json   # expected facts/decisions, used only by tests
     schemas.py          # pydantic models shared by loader/engine/tests
     loader.py           # validated loading + dataset integrity checks
+  extraction/
+    gemini_client.py    # the only module that talks to Gemini; typed failures
+    schemas.py          # wire schema for Gemini + validated evidence models
+    prompts.py          # per-document extraction prompt (versioned for cache)
+    extractor.py        # extract_claim_evidence(bundle) -> ClaimEvidence
+    cache.py            # local sha256-keyed cache in .cache/ (git-ignored)
+scripts/
+  extract_claim.py      # dev tool: run live extraction and inspect evidence
 tests/
 ```
+
+## How extraction works (Phase 3)
+
+Gemini's only job is reading: each submitted document is sent in its own call
+and must return facts as strict JSON — value plus a verbatim quote — validated
+through pydantic (one repair retry, then a typed failure). Python then
+re-verifies every quote against the actual document text and marks it
+verified/unverified. Extraction never sees the ground truth and never makes
+claim decisions; the approve/reject logic is deterministic Python coming in the
+next phase. Results are cached locally by content hash so re-running reviews
+doesn't burn API calls; delete `.cache/` to invalidate. The model is
+configurable via `GEMINI_MODEL` (default `gemini-3.5-flash-lite`).
+
+If no API key is set, the app still runs — extraction reports itself
+unavailable with a clear message instead of crashing.
 
 ## Running locally
 

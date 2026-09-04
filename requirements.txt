@@ -4,6 +4,9 @@ fastapi==0.115.6
 uvicorn==0.34.0
 pydantic==2.10.4
 
+# Gemini (the only external API used)
+google-genai==1.31.0
+
 # Testing (kept in the single requirements file so `pytest` works
 # immediately after the one judge-run install)
 pytest==8.3.4
