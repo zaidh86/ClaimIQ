@@ -1,0 +1,99 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>ClaimIQ — Claims Evidence Review</title>
+<style>
+  :root {
+    --bg: #0f1419;
+    --panel: #171e26;
+    --border: #26303b;
+    --text: #e6edf3;
+    --muted: #8b98a5;
+    --accent: #4cc38a;
+    --amber: #e5a50a;
+  }
+  * { box-sizing: border-box; margin: 0; }
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font: 15px/1.6 -apple-system, "Segoe UI", system-ui, sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
+  main { max-width: 720px; margin: 0 auto; padding: 64px 24px 32px; flex: 1; width: 100%; }
+  .eyebrow {
+    font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 10px;
+  }
+  h1 { font-size: 34px; letter-spacing: -0.02em; margin-bottom: 6px; }
+  h1 .iq { color: var(--accent); }
+  .tagline { color: var(--muted); margin-bottom: 36px; }
+  .card {
+    background: var(--panel); border: 1px solid var(--border);
+    border-radius: 10px; padding: 20px 22px; margin-bottom: 16px;
+  }
+  .card h2 {
+    font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase;
+    color: var(--muted); margin-bottom: 14px; font-weight: 600;
+  }
+  .row { display: flex; justify-content: space-between; gap: 12px; padding: 6px 0; }
+  .row + .row { border-top: 1px solid var(--border); }
+  .row .k { color: var(--muted); }
+  .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 7px; vertical-align: 1px; }
+  .ok { background: var(--accent); }
+  .warn { background: var(--amber); }
+  .err { background: #e5534b; }
+  .note { color: var(--muted); font-size: 13.5px; }
+  footer {
+    text-align: center; color: var(--muted); font-size: 12.5px;
+    padding: 20px; border-top: 1px solid var(--border);
+  }
+</style>
+</head>
+<body>
+<main>
+  <p class="eyebrow">NexusTiQ 24 · Track PS02</p>
+  <h1>Claim<span class="iq">IQ</span></h1>
+  <p class="tagline">Evidence review assistant for motor insurance claims — what the documents say, where they disagree, and what the policy supports.</p>
+
+  <div class="card">
+    <h2>System status</h2>
+    <div id="status"><div class="row"><span class="k">Backend</span><span>Checking…</span></div></div>
+  </div>
+
+  <div class="card">
+    <h2>What this tool does</h2>
+    <p class="note">
+      ClaimIQ reviews a claim form, repair estimate or FIR, and the customer's incident
+      description against the motor insurance policy. It checks completeness, surfaces
+      contradictions between documents, cites the policy clauses that apply, and recommends
+      approve / reject / request information — escalating to a human investigator whenever
+      the evidence does not support a confident conclusion.
+    </p>
+    <p class="note" style="margin-top:10px">The review workspace is under construction — sample claims and the full review flow arrive in upcoming phases.</p>
+  </div>
+</main>
+<footer>ClaimIQ · NexusTiQ 24 · PS02 — Insurance Claims Evidence Review Assistant</footer>
+
+<script>
+  const el = document.getElementById("status");
+  const row = (k, v) => `<div class="row"><span class="k">${k}</span><span>${v}</span></div>`;
+  fetch("/api/health")
+    .then(r => { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
+    .then(h => {
+      el.innerHTML =
+        row("Backend", `<span class="dot ok"></span>Running · v${h.version}`) +
+        row("Track", h.track) +
+        row("Gemini API key", h.gemini_configured
+          ? `<span class="dot ok"></span>Configured`
+          : `<span class="dot warn"></span>Not configured — set GEMINI_API_KEY`);
+    })
+    .catch(e => {
+      el.innerHTML = row("Backend", `<span class="dot err"></span>Unreachable (${e.message})`);
+    });
+</script>
+</body>
+</html>
