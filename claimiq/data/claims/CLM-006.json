@@ -1,0 +1,34 @@
+{
+  "claim_id": "CLM-006",
+  "title": "Car under-ran truck in rain - estimate exceeds declared value",
+  "scenario": "insured_value_exceeded",
+  "claim_type_filed": "accident",
+  "submitted_at": "2026-06-10",
+  "policy_schedule": {
+    "policy_number": "NMS-PC-252731",
+    "policyholder": "Farhan Ansari",
+    "vehicle_type": "car",
+    "registration_number": "MH04GT0092",
+    "make_model": "Honda City SV (2016)",
+    "declared_vehicle_value": 310000,
+    "policy_start": "2026-01-15",
+    "policy_end": "2027-01-14"
+  },
+  "documents": [
+    {
+      "doc_type": "claim_form",
+      "title": "Motor Claim Form - NMS-PC-252731",
+      "text": "NIMBUS GENERAL INSURANCE - MOTOR CLAIM FORM\n\nPolicy No: NMS-PC-252731\nName of Insured: Farhan Ansari\nContact: 98xxxxx026\n\nVehicle Reg. No: MH 04 GT 0092\nMake/Model: Honda City SV 2016\nType of Claim: [X] Accident Damage   [ ] Theft\n\nDate of Accident: 08/06/2026\nTime: approx 7:40 AM\nPlace of Accident: Western Express Highway, near Jogeshwari, Mumbai\n\nWho was driving at the time: Self\nDriving Licence No: MH04 20120019442\nWas anyone injured: Airbags deployed, minor chest strain to self. No other person injured.\nPolice report filed: No (no third party dispute, truck did not stop)\n\nBrief description: In heavy rain a truck ahead braked suddenly. Could not stop in time and the car went partly under the rear of the truck. Severe damage to front of car.\n\nEstimated repair cost: Rs. 3,85,600/-\n\nDeclaration: I hereby declare that the above statements are true to the best of my knowledge.\nSignature: Farhan Ansari\nDate: 10/06/2026"
+    },
+    {
+      "doc_type": "repair_estimate",
+      "title": "Estimate - Ridhi Sidhi Auto Garage",
+      "text": "RIDHI SIDHI AUTO GARAGE\nAccident Repair Specialists, Andheri East, Mumbai - 400069\n\nESTIMATE NO: RSA/2026/0910\nDate: 09/06/2026\n\nCustomer: Farhan Ansari\nVehicle: Honda City SV 2016, White, Regn MH04GT0092\nOdo: 96,780 km\nVehicle towed in on 08/06/2026 - not driveable.\n\nFront-end collision damage (under-run):\n1. Bonnet - replace ........................ 18,500\n2. Front bumper + grille ................... 21,000\n3. Headlamp assy LH + RH ................... 38,000\n4. Radiator + condenser + fan .............. 46,500\n5. AC compressor ........................... 32,000\n6. Front cross member / structural ......... 27,600\n7. Airbag set (driver + pass) + sensors .... 88,000\n8. Dashboard assy .......................... 45,000\n9. Windshield .............................. 9,800\n10. Labour (denting/fitting) ............... 34,200\n11. Painting ............................... 25,000\n\nESTIMATE TOTAL: Rs. 3,85,600/-\n\nNOTE: Heavy structural damage to front. Repair cost is on higher side w.r.t. vehicle age/value. KINDLY DEPUTE SURVEYOR BEFORE APPROVAL.\n\nFor Ridhi Sidhi Auto Garage"
+    },
+    {
+      "doc_type": "incident_description",
+      "title": "Customer incident description (written statement)",
+      "text": "Statement of Farhan Ansari - claim for MH04GT0092\n\nOn 8th June 2026 morning around 7:40 I was going to office on the Western Express Highway towards Andheri. It was raining very heavily since night and the road was full of water. Near Jogeshwari a container truck in front of me braked all of a sudden - maybe because of a pothole or something crossing. I braked fully but the car slid on the wet road and went under the back side of the truck at around 35-40 speed.\n\nThe bonnet and front portion got crushed under the truck body and both airbags opened. I got a jerk and some pain in the chest from the seat belt but did not need admission, only check up. The truck driver stopped for a minute and then drove off. My car had to be towed from the spot to Ridhi Sidhi garage in Andheri East.\n\nThe garage says the front structure, radiator, AC, airbags, dashboard everything is gone and gave estimate of Rs 3,85,600. The car is a 2016 model. Please arrange survey and do the needful at the earliest.\n\nFarhan Ansari\n10/06/2026"
+    }
+  ]
+}

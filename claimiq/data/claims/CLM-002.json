@@ -1,0 +1,34 @@
+{
+  "claim_id": "CLM-002",
+  "title": "Car divider scrape - contradictory dates, driver and registration",
+  "scenario": "contradictory_documents",
+  "claim_type_filed": "accident",
+  "submitted_at": "2026-02-20",
+  "policy_schedule": {
+    "policy_number": "NMS-PC-208915",
+    "policyholder": "Arjun Mehta",
+    "vehicle_type": "car",
+    "registration_number": "DL8CAF5027",
+    "make_model": "Maruti Suzuki Swift VXI",
+    "declared_vehicle_value": 420000,
+    "policy_start": "2025-09-15",
+    "policy_end": "2026-09-14"
+  },
+  "documents": [
+    {
+      "doc_type": "claim_form",
+      "title": "Motor Claim Form - NMS-PC-208915",
+      "text": "NIMBUS GENERAL INSURANCE - MOTOR CLAIM FORM\n\nPolicy No: NMS-PC-208915\nName of Insured: Arjun Mehta\nContact: 99xxxxx872\n\nVehicle Reg. No: DL8CAF5027\nMake/Model: Maruti Swift VXI\nType of Claim: [X] Accident Damage   [ ] Theft\n\nDate of Accident: 18/02/2026\nTime: around 9:00 PM\nPlace of Accident: Outer Ring Road, near Mangolpuri flyover, Delhi\n\nWho was driving at the time: SELF\nDriving Licence No: DL-0420180099231\nWas anyone injured: No\nPolice report filed: No\n\nBrief description: While returning home a two wheeler came suddenly in front, had to swerve and the left side of the car scraped against the road divider.\n\nEstimated repair cost: Rs. 62,000/-\n\nDeclaration: I hereby declare that the above statements are true to the best of my knowledge.\nSignature: Arjun Mehta\nDate: 20/02/2026"
+    },
+    {
+      "doc_type": "repair_estimate",
+      "title": "Estimate - Capital Motors Garage",
+      "text": "CAPITAL MOTORS GARAGE\nMulti-brand Car Repair, Peeragarhi, New Delhi - 110087\n\nJOB CARD / ESTIMATE No. CMG/26/0342\nDate of estimate: 19/02/2026\nVehicle received on: 15/02/2026 (towed-in, front-left & side damage)\n\nCustomer name: Mr Arjun Mehta\nVehicle: Maruti Swift VXI (white)\nRegn: DL 8C AF 5072\nOdometer: 58,410 km\n\nDamage observed: Front bumper cracked, LH fender bent, LH headlamp broken, bonnet edge dent, LH doors deep scratches, radiator support pushed.\n\nEstimate:\n- Front bumper assy + fitting ........ 8,200\n- Fender LH replace .................. 6,500\n- Headlamp LH assy ................... 11,400\n- Bonnet dent + paint ................ 9,800\n- Radiator support repair ............ 7,300\n- Doors LH x2 - dent & paint ......... 10,500\n- Labour / alignment ................. 8,300\n\n            ESTIMATE TOTAL: Rs. 62,000/-\n\nNote: customer requested early delivery. Awaiting insurance approval to start work.\n\nAuthorised signatory\nCapital Motors Garage"
+    },
+    {
+      "doc_type": "incident_description",
+      "title": "Customer incident description (written statement)",
+      "text": "Statement regarding my car claim - Arjun Mehta, policy NMS-PC-208915\n\nOn the evening of 14th February 2026 we were coming back from my cousin's engagement function in Rohini. I was tired after the long day so my brother Karan Mehta was driving and I was in the passenger seat. Near the Mangolpuri flyover on the Outer Ring Road a bike suddenly cut across from the left. Karan turned the wheel sharply to avoid hitting him and the left side of the car scraped hard against the divider and we hit the kerb.\n\nThe car was drivable but the left side is badly scratched and the front left portion is damaged. Next day we sent the car to Capital Motors garage at Peeragarhi as it started making a noise from the front.\n\nNo person was injured in this and there was no police case. The bike rider drove away. I request you to please process the claim at the earliest as I need the car for office.\n\nArjun Mehta\n20/02/2026"
+    }
+  ]
+}

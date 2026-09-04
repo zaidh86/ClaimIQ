@@ -1,0 +1,168 @@
+{
+  "insurer": "Nimbus General Insurance Co. Ltd. (fictional)",
+  "product": "NimbusMotor Secure - Private Vehicle Package Policy",
+  "version": "NMS/2025/1",
+  "description": "Fictional motor insurance policy written for NexusTiQ 24 (PS02). Covers private two-wheelers and private cars against accidental damage and theft. All wording is original and synthetic; it is not the policy of any real insurer.",
+  "clauses": [
+    {
+      "id": "POL-01",
+      "title": "Eligible Vehicles and Scope",
+      "rule_type": "DEFINITION",
+      "text": "This policy insures the private vehicle described in the Policy Schedule, being either a private two-wheeler or a private car, registered in the name of the policyholder and used for personal purposes only. 'Insured vehicle' means the vehicle identified in the Policy Schedule by its registration number. The policy responds only to the claim events expressly covered in this policy.",
+      "parameters": {
+        "vehicle_types": ["two_wheeler", "car"]
+      }
+    },
+    {
+      "id": "POL-02",
+      "title": "Cover A - Accidental Damage to the Insured Vehicle",
+      "rule_type": "COVERAGE",
+      "text": "The insurer will pay for direct physical damage to the insured vehicle caused by a road accident, collision, overturning, fire, or other sudden external accidental means occurring during the policy period.",
+      "parameters": {
+        "claim_type": "accident"
+      }
+    },
+    {
+      "id": "POL-03",
+      "title": "Cover B - Theft of the Insured Vehicle",
+      "rule_type": "COVERAGE",
+      "text": "The insurer will pay for the total loss of the insured vehicle arising from theft of the vehicle, provided the theft is reported to the police and to the insurer as required by this policy. Cover under this section applies to theft of the entire insured vehicle only.",
+      "parameters": {
+        "claim_type": "theft"
+      }
+    },
+    {
+      "id": "POL-04",
+      "title": "Declared Vehicle Value (DVV) - Limit of Liability",
+      "rule_type": "LIMIT",
+      "text": "The maximum amount payable under any claim is the Declared Vehicle Value (DVV) stated in the Policy Schedule. Where the assessed cost of repair exceeds the Declared Vehicle Value, the claim shall be treated as a potential total loss and referred for assessment before any settlement. In no case does the insurer pay more than the Declared Vehicle Value.",
+      "parameters": {
+        "limit_basis": "declared_vehicle_value"
+      }
+    },
+    {
+      "id": "POL-05",
+      "title": "Accident Claim Notification Window",
+      "rule_type": "CLAIM_WINDOW",
+      "text": "Any accident giving rise to a claim must be notified to the insurer within 7 days of the date of the accident. Claims first notified to the insurer after this period are not admissible.",
+      "parameters": {
+        "claim_type": "accident",
+        "max_report_days": 7,
+        "counted_from": "incident_date"
+      }
+    },
+    {
+      "id": "POL-06",
+      "title": "Theft Claim Notification Window",
+      "rule_type": "CLAIM_WINDOW",
+      "text": "Theft of the insured vehicle must be notified to the insurer within 3 days of the policyholder discovering the theft. Claims first notified to the insurer after this period are not admissible.",
+      "parameters": {
+        "claim_type": "theft",
+        "max_report_days": 3,
+        "counted_from": "discovered_date"
+      }
+    },
+    {
+      "id": "POL-07",
+      "title": "Documents Required for Accident Claims",
+      "rule_type": "REQUIRED_DOCUMENTS",
+      "text": "An accident claim must be accompanied by: (a) the completed and signed claim form; (b) a repair estimate from a garage or workshop for the damage claimed; and (c) the policyholder's written description of the incident. A claim cannot be assessed until all listed documents have been received.",
+      "parameters": {
+        "claim_type": "accident",
+        "required_documents": ["claim_form", "repair_estimate", "incident_description"]
+      }
+    },
+    {
+      "id": "POL-08",
+      "title": "Documents Required for Theft Claims",
+      "rule_type": "REQUIRED_DOCUMENTS",
+      "text": "A theft claim must be accompanied by: (a) the completed and signed claim form; (b) a copy of the First Information Report (FIR) registered with the police in respect of the theft; and (c) the policyholder's written description of the circumstances of the theft. A claim cannot be assessed until all listed documents have been received.",
+      "parameters": {
+        "claim_type": "theft",
+        "required_documents": ["claim_form", "fir", "incident_description"]
+      }
+    },
+    {
+      "id": "POL-09",
+      "title": "Theft Claim Conditions - FIR and Keys",
+      "rule_type": "CONDITION",
+      "text": "For a theft claim to be admissible: (a) a First Information Report must be filed with the police within 24 hours of the policyholder discovering the theft; and (b) the policyholder must confirm in writing the number and whereabouts of all original keys to the vehicle and surrender them to the insurer on request. A theft claim in which these conditions are not met, or in which the custody of the keys cannot be established from the submitted documents, requires further information or investigation before assessment.",
+      "parameters": {
+        "claim_type": "theft",
+        "fir_max_hours_after_discovery": 24,
+        "keys_confirmation_required": true
+      }
+    },
+    {
+      "id": "POL-10",
+      "title": "Valid Driving Licence and Driver Consistency",
+      "rule_type": "CONDITION",
+      "text": "An accident claim is admissible only if, at the time of the accident, the insured vehicle was being driven by a person holding a valid driving licence for that class of vehicle. The identity of the driver stated in the claim documents must be consistent across all submitted documents; inconsistent driver identification requires investigation before assessment.",
+      "parameters": {
+        "claim_type": "accident",
+        "licence_required": true
+      }
+    },
+    {
+      "id": "POL-11",
+      "title": "Policy Period",
+      "rule_type": "CONDITION",
+      "text": "The policy responds only to incidents occurring on or after the policy start date and on or before the policy end date stated in the Policy Schedule, and only while the policy is in force.",
+      "parameters": {}
+    },
+    {
+      "id": "POL-12",
+      "title": "Exclusion - Driving Under the Influence",
+      "rule_type": "EXCLUSION",
+      "text": "No claim is payable where, at the time of the incident, the insured vehicle was being driven by any person under the influence of alcohol or intoxicating drugs.",
+      "parameters": {
+        "applies_to": ["accident"]
+      }
+    },
+    {
+      "id": "POL-13",
+      "title": "Exclusion - Commercial Use",
+      "rule_type": "EXCLUSION",
+      "text": "No claim is payable where, at the time of the incident, the insured vehicle was being used for hire or reward, for the carriage of goods for trade or business, or for any other commercial purpose.",
+      "parameters": {
+        "applies_to": ["accident", "theft"]
+      }
+    },
+    {
+      "id": "POL-14",
+      "title": "Exclusion - Racing and Speed Trials",
+      "rule_type": "EXCLUSION",
+      "text": "No claim is payable for loss or damage occurring while the insured vehicle was being used for or participating in racing, pace-making, speed testing, rallies, or trials of any kind.",
+      "parameters": {
+        "applies_to": ["accident"]
+      }
+    },
+    {
+      "id": "POL-15",
+      "title": "Exclusion - Wear, Tear and Breakdown",
+      "rule_type": "EXCLUSION",
+      "text": "This policy does not cover mechanical or electrical breakdown, failure, or breakage; wear and tear; depreciation; corrosion or rusting; or damage to tyres and tubes unless the insured vehicle is damaged in the same accident.",
+      "parameters": {
+        "applies_to": ["accident"]
+      }
+    },
+    {
+      "id": "POL-16",
+      "title": "Exclusion - Theft of an Unsecured Vehicle",
+      "rule_type": "EXCLUSION",
+      "text": "No theft claim is payable where, at the time of the theft, the insured vehicle had been left unlocked or with any key in or on the vehicle.",
+      "parameters": {
+        "applies_to": ["theft"]
+      }
+    },
+    {
+      "id": "POL-17",
+      "title": "Exclusion - Deliberate Acts",
+      "rule_type": "EXCLUSION",
+      "text": "No claim is payable for loss or damage caused deliberately by, or with the connivance of, the policyholder or any person driving the insured vehicle with the policyholder's consent.",
+      "parameters": {
+        "applies_to": ["accident", "theft"]
+      }
+    }
+  ]
+}

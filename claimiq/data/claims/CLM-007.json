@@ -1,0 +1,34 @@
+{
+  "claim_id": "CLM-007",
+  "title": "Scooter stolen from apartment parking - keys confirmation absent",
+  "scenario": "theft_incomplete_evidence",
+  "claim_type_filed": "theft",
+  "submitted_at": "2026-05-11",
+  "policy_schedule": {
+    "policy_number": "NMS-2W-129406",
+    "policyholder": "Nikhil Rao",
+    "vehicle_type": "two_wheeler",
+    "registration_number": "TS09EQ5566",
+    "make_model": "Honda Activa 6G",
+    "declared_vehicle_value": 72000,
+    "policy_start": "2025-10-20",
+    "policy_end": "2026-10-19"
+  },
+  "documents": [
+    {
+      "doc_type": "claim_form",
+      "title": "Motor Claim Form (Theft) - NMS-2W-129406",
+      "text": "NIMBUS GENERAL INSURANCE - MOTOR CLAIM FORM\n\nPolicy No: NMS-2W-129406\nName of Insured: Nikhil Rao\nContact: 91xxxxx488 / nikhil.rao.hyd@mailbox.example\n\nVehicle Reg. No: TS 09 EQ 5566\nMake/Model: Honda Activa 6G (grey)\nType of Claim: [ ] Accident Damage   [X] Theft\n\nDate/Time vehicle last seen: 08/05/2026, around 10:00 PM\nDate/Time theft discovered: 09/05/2026, around 7:30 AM\nPlace of Theft: Stilt parking, Sai Srinivasa Residency, Madhapur, Hyderabad\n\nFIR No: 0187/2026\nPolice Station: Madhapur PS, Cyberabad\nDate of FIR: 09/05/2026\n\nNo. of keys submitted with this form: \nRC submitted: Yes (copy)\n\nBrief description: Scooter was parked at night in the apartment stilt parking. Next morning it was not there. Theft reported to police same morning.\n\nClaimed amount: As per IDV / declared value\n\nDeclaration: I hereby declare that the above statements are true to the best of my knowledge.\nSignature: Nikhil Rao\nDate: 11/05/2026"
+    },
+    {
+      "doc_type": "fir",
+      "title": "FIR copy - 0187/2026, PS Madhapur",
+      "text": "FIRST INFORMATION REPORT\n(Under Section 173 BNSS)\n\nP.S.: MADHAPUR, Cyberabad Commissionerate          Dist.: Hyderabad\nFIR No: 0187/2026        Date: 09/05/2026        Time: 11:20 AM\n\nActs & Sections: Section 303(2) BNS (Theft)\n\n1. Complainant: Nikhil Rao, S/o Prakash Rao, R/o Flat 304, Sai Srinivasa Residency, Madhapur, Hyderabad. Occupation: Software employee.\n\n2. Brief facts of the complaint:\nThe complainant stated that he parked his grey Honda Activa 6G scooter bearing Regn No. TS09EQ5566 (Chassis No. ME4JFxxxxxx91277, Engine No. JF77Exxxxx214) in the stilt parking of his apartment Sai Srinivasa Residency on the night of 08/05/2026 at about 2200 hrs. On 09/05/2026 at about 0730 hrs when he came down, the vehicle was found missing. He searched the nearby streets and enquired with the watchman and neighbours but could not trace the vehicle. Watchman stated he did not notice any person taking the vehicle. Society CCTV covering the gate is being collected for verification.\n\nOn the complaint, a case is registered u/s 303(2) BNS and investigation taken up. Efforts are on to trace the vehicle.\n\nSHO, PS Madhapur\n(round seal)"
+    },
+    {
+      "doc_type": "incident_description",
+      "title": "Customer incident description (email)",
+      "text": "From: nikhil.rao.hyd@mailbox.example\nTo: claims@nimbusgeneral.example\nSubject: Theft claim - Activa TS09EQ5566 - policy NMS-2W-129406\n\nHi,\n\nI am submitting a theft claim for my Activa (TS09EQ5566). I parked it as usual in the stilt parking of my apartment (Sai Srinivasa Residency, Madhapur) on 8th May around 10 pm after coming back from work. On 9th morning around 7:30 when I went down to leave for office, the scooter was not in its place.\n\nI first thought maybe the watchman moved it for cleaning but he had not. I checked around the lanes nearby and asked the neighbouring buildings also. Then I went to Madhapur police station the same morning and filed the FIR (no. 0187/2026). The police have taken the society CCTV footage for checking, the gate camera angle apparently does not fully cover the stilt area.\n\nI informed your call centre about the theft on 11th May and was told to submit this form and documents. FIR copy and RC copy are attached. Please let me know the further process for the claim settlement.\n\nThanks & regards,\nNikhil Rao\n91xxxxx488"
+    }
+  ]
+}

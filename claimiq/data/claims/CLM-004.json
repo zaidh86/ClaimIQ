@@ -1,0 +1,34 @@
+{
+  "claim_id": "CLM-004",
+  "title": "Motorcycle barrier crash - rider admits drinking (exclusion)",
+  "scenario": "exclusion_dui",
+  "claim_type_filed": "accident",
+  "submitted_at": "2026-02-24",
+  "policy_schedule": {
+    "policy_number": "NMS-2W-117064",
+    "policyholder": "Devraj Kulkarni",
+    "vehicle_type": "two_wheeler",
+    "registration_number": "KA03HF2210",
+    "make_model": "Royal Enfield Classic 350",
+    "declared_vehicle_value": 145000,
+    "policy_start": "2025-08-10",
+    "policy_end": "2026-08-09"
+  },
+  "documents": [
+    {
+      "doc_type": "claim_form",
+      "title": "Motor Claim Form - NMS-2W-117064",
+      "text": "NIMBUS GENERAL INSURANCE - MOTOR CLAIM FORM\n\nPolicy No: NMS-2W-117064\nName of Insured: Devraj Kulkarni\nContact: 96xxxxx551\n\nVehicle Reg. No: KA03HF2210\nMake/Model: Royal Enfield Classic 350\nType of Claim: [X] Accident Damage   [ ] Theft\n\nDate of Accident: 21/02/2026\nTime: approx 11:45 PM\nPlace of Accident: ORR service road, Marathahalli, Bengaluru\n\nWho was driving at the time: Self\nDriving Licence No: KA03 20150087661\nWas anyone injured: Minor scrapes to self, no other person involved\nPolice report filed: No\n\nBrief description: Lost control of the motorcycle at a turn on the service road and hit the metal road barrier. Front and right side of the bike damaged.\n\nEstimated repair cost: Rs. 38,700/-\n\nDeclaration: I hereby declare that the above statements are true to the best of my knowledge.\nSignature: D. Kulkarni\nDate: 24/02/2026"
+    },
+    {
+      "doc_type": "repair_estimate",
+      "title": "Estimate - Highway Motors",
+      "text": "HIGHWAY MOTORS - Royal Enfield Specialist\nMarathahalli, Bengaluru - 560037\n\nESTIMATE NO: HM/0226/77\nDATE: 23/02/2026\n\nCUSTOMER: DEVRAJ KULKARNI\nVEHICLE: RE CLASSIC 350, REG KA 03 HF 2210\nKM: 18,905\n\nACCIDENT DAMAGE - FRONT & RH SIDE\n\n1. FUEL TANK (DENTED RH) - REPLACE ........ 14,500\n2. FRONT FORK ASSY - REPLACE .............. 6,800\n3. HEADLAMP + CASQUETTE ................... 5,400\n4. HANDLEBAR + CLUTCH LEVER ............... 2,300\n5. SILENCER DENT - REPAIR ................. 3,200\n6. LABOUR ................................. 4,000\n7. PAINT (TANK + FENDER) .................. 2,500\n\nTOTAL ESTIMATE: RS. 38,700/-\n\nNOTE: FINAL AMOUNT AFTER OPENING. INSURANCE WORK - APPROVAL AWAITED.\n\nFOR HIGHWAY MOTORS"
+    },
+    {
+      "doc_type": "incident_description",
+      "title": "Customer incident description (written statement)",
+      "text": "Statement - claim for KA03HF2210 (Devraj Kulkarni)\n\nOn Saturday 21st Feb night I was returning home from a friend's wedding reception at a resort near Whitefield. I left the venue around 11.15-11.30 pm. I had two-three drinks at the reception over the evening but I was feeling fine to ride.\n\nOn the ORR service road near Marathahalli there is a sharpish left where the road narrows. It was quite dark and there was loose mud near the edge. The bike slipped when I leaned into the turn and went into the metal barrier on the side. I got some scrapes on my hand and knee but thankfully nothing serious, I was wearing my helmet and jacket.\n\nThe bike's tank got dented on the right side, the front fork is bent and the headlamp broke. It is at Highway Motors, Marathahalli. Their estimate is Rs 38,700 which is attached.\n\nI accept it was late at night and visibility was poor. Requesting you to kindly process the claim.\n\nDevraj Kulkarni\n24/02/2026"
+    }
+  ]
+}

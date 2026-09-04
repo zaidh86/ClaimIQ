@@ -1,0 +1,34 @@
+{
+  "claim_id": "CLM-005",
+  "title": "Car rear-ended at signal - reported 24 days late",
+  "scenario": "late_notification",
+  "claim_type_filed": "accident",
+  "submitted_at": "2026-04-27",
+  "policy_schedule": {
+    "policy_number": "NMS-PC-245188",
+    "policyholder": "Meera Pillai",
+    "vehicle_type": "car",
+    "registration_number": "TN10BX3391",
+    "make_model": "Tata Nexon XZ",
+    "declared_vehicle_value": 780000,
+    "policy_start": "2025-12-01",
+    "policy_end": "2026-11-30"
+  },
+  "documents": [
+    {
+      "doc_type": "claim_form",
+      "title": "Motor Claim Form - NMS-PC-245188",
+      "text": "NIMBUS GENERAL INSURANCE - MOTOR CLAIM FORM\n\nPolicy No: NMS-PC-245188\nName of Insured: Meera Pillai\nContact: 95xxxxx740 / meera.p.chn@mailbox.example\n\nVehicle Reg. No: TN 10 BX 3391\nMake/Model: Tata Nexon XZ\nType of Claim: [X] Accident Damage   [ ] Theft\n\nDate of Accident: 03/04/2026\nTime: about 6:45 PM\nPlace of Accident: ECR signal near Thiruvanmiyur, Chennai\n\nWho was driving at the time: Self\nDriving Licence No: TN10 20170233916\nWas anyone injured: No\nPolice report filed: No\n\nBrief description: A delivery van reversed into the rear of my car while waiting near the signal. Rear bumper, tailgate and right tail lamp damaged.\n\nEstimated repair cost: Rs. 54,300/-\n\nRemarks: Delay in intimation - I was abroad for work (Singapore) from 5th April to 24th April and could not complete the claim formalities earlier. Kindly condone the delay.\n\nDeclaration: I hereby declare that the above statements are true to the best of my knowledge.\nSignature: Meera Pillai\nDate: 27/04/2026"
+    },
+    {
+      "doc_type": "repair_estimate",
+      "title": "Estimate - Marina Car Care",
+      "text": "MARINA CAR CARE\nAdyar, Chennai - 600020\nPh: 044-xxxx-2210\n\nEstimate No: MCC-26-0561\nDate: 26/04/2026\n\nCustomer: Ms. Meera Pillai\nVehicle: Tata Nexon XZ (grey), Reg. TN10BX3391\nKm: 22,340\n\nRear impact damage:\n- Rear bumper assembly - replace ......... 12,400\n- Tailgate - dent repair + paint ......... 15,600\n- Tail lamp RH - replace ................. 6,900\n- Rear parking sensor set ................ 4,200\n- Labour ................................. 8,700\n- Paint & consumables .................... 6,500\n\nTOTAL: Rs. 54,300/-\n\n(Vehicle inspected on 25/04/2026. Estimate valid 30 days.)\n\nFor Marina Car Care"
+    },
+    {
+      "doc_type": "incident_description",
+      "title": "Customer incident description (email)",
+      "text": "From: meera.p.chn@mailbox.example\nTo: claims@nimbusgeneral.example\nSubject: Claim for TN10BX3391 - accident on 3rd April - delay explanation\n\nDear claims team,\n\nI wish to claim for damage to my Nexon (TN10BX3391). On 3rd April 2026 evening, I was waiting in traffic at the ECR signal near Thiruvanmiyur when a small delivery van in front reversed suddenly and hit the front... sorry, the REAR of my car (I was behind him and he reversed back onto me). The rear bumper cracked, the boot door got dented and the right side tail light broke. The van driver argued and left, I did not take it to the police as there was no injury.\n\nI had to fly to Singapore on 5th April for an office assignment and was there till 24th April, which is why I could not submit the claim or give the car to the garage earlier. I understand there has been a delay of about three weeks and I request you to please consider the circumstances.\n\nThe car was inspected by Marina Car Care on 25th and their estimate of Rs 54,300 is attached with the claim form.\n\nRegards,\nMeera Pillai"
+    }
+  ]
+}

@@ -1,0 +1,34 @@
+{
+  "claim_id": "CLM-001",
+  "title": "Two-wheeler hit road divider - clean accident claim",
+  "scenario": "clean_accident",
+  "claim_type_filed": "accident",
+  "submitted_at": "2026-01-13",
+  "policy_schedule": {
+    "policy_number": "NMS-2W-104822",
+    "policyholder": "Rohan Malhotra",
+    "vehicle_type": "two_wheeler",
+    "registration_number": "MH12QT4431",
+    "make_model": "Hero Splendor Plus",
+    "declared_vehicle_value": 58000,
+    "policy_start": "2025-06-01",
+    "policy_end": "2026-05-31"
+  },
+  "documents": [
+    {
+      "doc_type": "claim_form",
+      "title": "Motor Claim Form - NMS-2W-104822",
+      "text": "NIMBUS GENERAL INSURANCE - MOTOR CLAIM FORM\n\nPolicy No: NMS-2W-104822\nName of Insured: ROHAN MALHOTRA\nContact: 98xxxxx214 / rohan.m.pune@mailbox.example\n\nVehicle Reg. No: MH 12 QT 4431\nMake/Model: Hero Splendor Plus\nType of Claim: [X] Accident Damage   [ ] Theft\n\nDate of Accident: 10/01/2026\nTime: approx 8:15 PM\nPlace of Accident: Karve Road, near Nal Stop, Pune\n\nWho was driving at the time: SELF\nDriving Licence No: MH12 20190041123 (valid till 2039)\nWas anyone injured: No\nPolice report filed: No (minor accident, no third party)\n\nBrief description: Bike skidded while braking and hit the road divider. Damage to front portion of the bike.\n\nEstimated repair cost: Rs. 8,450/-\n\nDeclaration: I hereby declare that the above statements are true to the best of my knowledge.\nSignature: Rohan Malhotra\nDate: 13/01/2026"
+    },
+    {
+      "doc_type": "repair_estimate",
+      "title": "Repair estimate - Shree Sai Auto Works",
+      "text": "SHREE SAI AUTO WORKS\n2-Wheeler Repairs & Service, Kothrud, Pune - 411038\nGSTIN: 27XXXXX1234X1Z9\n\nESTIMATE / JOB CARD NO. E-1187\nDate: 12/01/2026\n\nCustomer: Rohan Malhotra\nVehicle: Hero Splendor+ , Reg no MH12QT4431\nKms: 31,240\n\nWork required (accident damage - front):\n1. Front mudguard - replace ............ 950\n2. Headlamp assembly - replace ......... 1,850\n3. Handlebar - replace ................. 1,100\n4. Leg guard - straighten & weld ....... 400\n5. Front fork - alignment .............. 1,500\n6. Labour charges ...................... 1,200\n7. Painting (front panels) ............. 1,450\n\n                     TOTAL: Rs. 8,450/-\n(Estimate only. Final bill may vary +/- 5%. Parts subject to availability.)\n\nFor Shree Sai Auto Works\n(sd/- workshop manager)"
+    },
+    {
+      "doc_type": "incident_description",
+      "title": "Customer incident description (email)",
+      "text": "From: rohan.m.pune@mailbox.example\nTo: claims@nimbusgeneral.example\nSubject: Claim intimation - accident on 10th Jan - policy NMS-2W-104822\n\nHello,\n\nI want to report an accident with my bike (Splendor, MH12QT4431). On the evening of 10th Jan 2026, around 8-8:15 pm, I was riding home on Karve Road near Nal Stop. An auto rickshaw in front of me stopped suddenly, I braked hard and the front wheel slipped on some gravel and the bike went into the road divider.\n\nI was wearing a helmet and I am fine, just a small bruise. Nobody else was involved or hurt. The front of the bike is damaged - mudguard, headlight and the handle got bent, and the fork also seems out of alignment.\n\nI took the bike to Shree Sai Auto Works in Kothrud on Sunday (12th) and they have given an estimate of Rs 8,450 which I am attaching along with the claim form.\n\nPlease let me know if anything else is needed.\n\nThanks,\nRohan Malhotra\n98xxxxx214"
+    }
+  ]
+}

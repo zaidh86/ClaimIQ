@@ -1,0 +1,29 @@
+{
+  "claim_id": "CLM-003",
+  "title": "Car parking scrape - repair estimate missing",
+  "scenario": "missing_documents",
+  "claim_type_filed": "accident",
+  "submitted_at": "2026-03-05",
+  "policy_schedule": {
+    "policy_number": "NMS-PC-231570",
+    "policyholder": "Sana Qureshi",
+    "vehicle_type": "car",
+    "registration_number": "KA05MN7788",
+    "make_model": "Hyundai i20 Sportz",
+    "declared_vehicle_value": 510000,
+    "policy_start": "2025-11-01",
+    "policy_end": "2026-10-31"
+  },
+  "documents": [
+    {
+      "doc_type": "claim_form",
+      "title": "Motor Claim Form - NMS-PC-231570",
+      "text": "NIMBUS GENERAL INSURANCE - MOTOR CLAIM FORM\n\nPolicy No: NMS-PC-231570\nName of Insured: Sana Qureshi\nContact: 97xxxxx309 / sana.q.blr@mailbox.example\n\nVehicle Reg. No: KA 05 MN 7788\nMake/Model: Hyundai i20 Sportz\nType of Claim: [X] Accident Damage   [ ] Theft\n\nDate of Accident: 02/03/2026\nTime: about 7:30 pm\nPlace of Accident: parking lane, 100 Feet Road, Indiranagar, Bengaluru\n\nWho was driving at the time: Self\nDriving Licence No: KA05 20200155803\nWas anyone injured: No\nPolice report filed: No\n\nBrief description: While reversing out of parking the rear of the car scraped against a concrete pillar. Rear bumper and tail lamp damaged.\n\nEstimated repair cost: (to follow - awaiting garage estimate)\n\nDeclaration: I hereby declare that the above statements are true to the best of my knowledge.\nSignature: Sana Qureshi\nDate: 05/03/2026"
+    },
+    {
+      "doc_type": "incident_description",
+      "title": "Customer incident description (email)",
+      "text": "From: sana.q.blr@mailbox.example\nTo: claims@nimbusgeneral.example\nSubject: Accident claim - KA05MN7788 - policy NMS-PC-231570\n\nHi team,\n\nI am raising a claim for my i20 (KA05MN7788). On 2nd March evening, around 7:30, I was reversing out of a tight parking spot on 100 ft road Indiranagar (near the Sony signal side) and the back of the car scraped against a concrete pillar of the building. The rear bumper has a deep scrape and is cracked on the right side, and the right tail lamp glass is broken. Nothing happened to the pillar and no other vehicle was involved.\n\nI have given the car to the Hyundai service centre and asked them for the estimate - they said it may take up to a week because of some system issue at their end. I will forward the estimate as soon as I receive it. Sending the claim form now itself so that the claim is registered in time.\n\nRegards,\nSana Qureshi"
+    }
+  ]
+}

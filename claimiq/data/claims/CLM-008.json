@@ -1,0 +1,34 @@
+{
+  "claim_id": "CLM-008",
+  "title": "Laptop stolen from parked car - loss outside policy scope",
+  "scenario": "out_of_scope",
+  "claim_type_filed": "theft",
+  "submitted_at": "2026-07-21",
+  "policy_schedule": {
+    "policy_number": "NMS-PC-260987",
+    "policyholder": "Tanvi Joshi",
+    "vehicle_type": "car",
+    "registration_number": "GJ01RV8123",
+    "make_model": "Kia Sonet HTK+",
+    "declared_vehicle_value": 840000,
+    "policy_start": "2026-02-01",
+    "policy_end": "2027-01-31"
+  },
+  "documents": [
+    {
+      "doc_type": "claim_form",
+      "title": "Motor Claim Form - NMS-PC-260987",
+      "text": "NIMBUS GENERAL INSURANCE - MOTOR CLAIM FORM\n\nPolicy No: NMS-PC-260987\nName of Insured: Tanvi Joshi\nContact: 90xxxxx615 / tanvi.j.amd@mailbox.example\n\nVehicle Reg. No: GJ 01 RV 8123\nMake/Model: Kia Sonet HTK+\nType of Claim: [ ] Accident Damage   [X] Theft\n\nDate of Incident: 19/07/2026\nTime: between 6:15 PM and 9:00 PM\nPlace: open parking near Alpha One Mall, Vastrapur, Ahmedabad\n\nPolice complaint: e-complaint No. 445/2026 (Vastrapur PS)\n\nBrief description: My office laptop (Dell Latitude, approx value Rs. 1,10,000) and bag containing documents and accessories (approx Rs. 14,000) were stolen from inside the car while it was parked. The car itself was not taken and has no damage.\n\nClaimed amount: Rs. 1,24,000/-\n\nDeclaration: I hereby declare that the above statements are true to the best of my knowledge.\nSignature: Tanvi Joshi\nDate: 21/07/2026"
+    },
+    {
+      "doc_type": "fir",
+      "title": "e-Complaint copy - 445/2026, Vastrapur PS",
+      "text": "GUJARAT POLICE - CITIZEN e-COMPLAINT (COPY)\n\nComplaint No: 445/2026\nPolice Station: Vastrapur, Ahmedabad City\nDate of Registration: 20/07/2026, 10:05 AM\nType: Theft of articles from vehicle\n\nComplainant: Tanvi Joshi, R/o Judges Bungalow Road, Bodakdev, Ahmedabad\n\nDetails of complaint:\nComplainant states that on 19/07/2026 she parked her Kia Sonet car (Regn GJ01RV8123, white) in the open parking area near Alpha One Mall, Vastrapur at about 1815 hrs and went inside the mall. On returning at about 2100 hrs she found that her laptop bag kept on the rear seat was missing. The bag contained one Dell Latitude laptop belonging to her employer, charger, documents and personal items. The car was found parked in the same place. No visible damage to the car, windows intact. Complainant is unsure whether the car was locked properly.\n\nStolen property: 1) Dell Latitude 7440 laptop (approx Rs. 1,10,000) 2) laptop bag with charger, documents, misc (approx Rs. 14,000)\n\nThis is a system generated copy of the e-complaint for the complainant's record. Investigation as per procedure.\n"
+    },
+    {
+      "doc_type": "incident_description",
+      "title": "Customer incident description (email)",
+      "text": "From: tanvi.j.amd@mailbox.example\nTo: claims@nimbusgeneral.example\nSubject: Claim - theft from my car GJ01RV8123\n\nHello,\n\nI want to raise a claim under my car policy NMS-PC-260987. On 19th July evening I parked my Sonet in the open parking near Alpha One mall around 6:15 pm and went for shopping and dinner. When I came back around 9 pm, my laptop bag which I had kept on the back seat was gone.\n\nThe strange part is the car was locked when I came back and there is no damage at all - no broken glass, nothing, not a scratch. Honestly I am not 100% sure if I locked it when I left, I usually press the lock button while walking away but that day I was on a call. Maybe someone opened it and locked it back, or maybe it was unlocked, I don't know.\n\nThe laptop is my office laptop (Dell Latitude) worth around 1.1 lakh and my office is asking me to recover it through insurance. I filed an online police complaint the next morning (no. 445/2026, Vastrapur PS). The car itself is absolutely fine and with me.\n\nPlease tell me what else you need to process this claim for the laptop and bag (total approx Rs 1,24,000).\n\nThanks,\nTanvi Joshi"
+    }
+  ]
+}
