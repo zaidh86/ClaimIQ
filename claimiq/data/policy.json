@@ -116,7 +116,8 @@
       "rule_type": "EXCLUSION",
       "text": "No claim is payable where, at the time of the incident, the insured vehicle was being driven by any person under the influence of alcohol or intoxicating drugs.",
       "parameters": {
-        "applies_to": ["accident"]
+        "applies_to": ["accident"],
+        "risk_type": "alcohol_or_drugs"
       }
     },
     {
@@ -125,7 +126,8 @@
       "rule_type": "EXCLUSION",
       "text": "No claim is payable where, at the time of the incident, the insured vehicle was being used for hire or reward, for the carriage of goods for trade or business, or for any other commercial purpose.",
       "parameters": {
-        "applies_to": ["accident", "theft"]
+        "applies_to": ["accident", "theft"],
+        "risk_type": "commercial_use"
       }
     },
     {
@@ -134,7 +136,8 @@
       "rule_type": "EXCLUSION",
       "text": "No claim is payable for loss or damage occurring while the insured vehicle was being used for or participating in racing, pace-making, speed testing, rallies, or trials of any kind.",
       "parameters": {
-        "applies_to": ["accident"]
+        "applies_to": ["accident"],
+        "risk_type": "racing_or_speed_trial"
       }
     },
     {
@@ -152,7 +155,8 @@
       "rule_type": "EXCLUSION",
       "text": "No theft claim is payable where, at the time of the theft, the insured vehicle had been left unlocked or with any key in or on the vehicle.",
       "parameters": {
-        "applies_to": ["theft"]
+        "applies_to": ["theft"],
+        "risk_type": "vehicle_left_unlocked_or_keys_inside"
       }
     },
     {

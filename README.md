@@ -31,12 +31,18 @@ Done so far:
   fact; quotes are re-checked against the source text in Python. Anything a
   document doesn't state is null — and when documents disagree, both versions
   are kept side by side instead of picking one
+- the deterministic review engine: pure Python, no LLM anywhere in it. Eleven
+  checks (document completeness, cross-document contradictions, timeline
+  consistency, policy period, notification window, coverage, exclusions,
+  driver/licence, theft requirements, insured value) read their thresholds
+  from the policy's machine-readable parameters and emit structured findings,
+  each tied to the documents, quotes and clause IDs behind it. The final
+  APPROVE / REJECT / REQUEST_INFORMATION / ESCALATE call comes from fixed
+  precedence rules over those findings — approval is never the default, and
+  anything the evidence can't support gets escalated to a human
 
 Being built next:
 
-- a deterministic Python engine for the actual checks — document completeness,
-  cross-document contradictions, date windows, insured value, exclusions —
-  and the final APPROVE / REJECT / REQUEST_INFORMATION / ESCALATE call
 - local retrieval over the policy clauses (`gemini-embedding-001`, precomputed
   embeddings, plain cosine similarity) so findings cite real clauses
 - a simple review UI for walking through the evidence
@@ -84,10 +90,19 @@ claimiq/
     prompts.py          # per-document extraction prompt (versioned for cache)
     extractor.py        # extract_claim_evidence(bundle) -> ClaimEvidence
     cache.py            # local sha256-keyed cache in .cache/ (git-ignored)
+  engine/
+    checks.py           # the eleven deterministic checks + field consensus views
+    engine.py           # review_claim(bundle, evidence) -> decision + findings
+    schemas.py          # Finding, severities, effects, ClaimReview
 scripts/
   extract_claim.py      # dev tool: run live extraction and inspect evidence
+  review_claim.py       # dev tool: extraction + engine, full review printout
 tests/
 ```
+
+The split between the two layers is strict: Gemini reads documents, Python
+decides. The engine never calls the network, never sees ground truth, and
+produces the identical review every time for the same evidence.
 
 ## How extraction works (Phase 3)
 
