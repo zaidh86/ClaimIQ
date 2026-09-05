@@ -311,6 +311,47 @@
   .scope-outside li { color: var(--muted); font-size: 12.5px; margin: 3px 0 3px 16px; }
   .scope-outside p { color: var(--faint); font-size: 12px; margin-top: 8px; }
 
+  /* ---------- Phase 11: adjudication record ---------- */
+  .record-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
+  .record-paper { background: var(--panel-2); border: 1px solid var(--border); border-radius: 8px; padding: 20px 24px; max-width: 780px; }
+  .record-paper .r-doc-title { font-size: 16px; font-weight: 800; letter-spacing: 0.02em; }
+  .record-paper .r-head-meta { color: var(--muted); font-size: 12.5px; margin: 3px 0 6px; }
+  .record-sec { margin-top: 16px; padding-top: 12px; border-top: 1px solid var(--border-soft); }
+  .record-sec .r-sec-title { font-size: 11px; letter-spacing: 0.09em; text-transform: uppercase; color: var(--muted); font-weight: 700; margin-bottom: 7px; }
+  .record-sec p { color: var(--text); font-size: 13.5px; margin: 5px 0; }
+  .r-item { margin: 9px 0; padding-left: 14px; border-left: 2px solid var(--border-soft); }
+  .r-item.conflict { border-left-color: var(--reject); }
+  .r-item .r-h { font-weight: 600; font-size: 13.5px; }
+  .r-item .r-b { color: var(--muted); font-size: 12.5px; margin-top: 2px; }
+  .r-ev { margin-top: 5px; font-size: 12.5px; }
+  .r-ev .r-ev-doc { color: var(--faint); font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.06em; }
+  .r-ev .r-ev-val { font-weight: 600; }
+  .r-basis { color: var(--muted); font-size: 12px; margin-top: 4px; }
+  .r-hints { margin-top: 6px; font-size: 12.5px; color: var(--muted); }
+  .r-hints ul { margin: 3px 0 0 16px; }
+  .r-note { margin-top: 14px; padding-top: 10px; border-top: 1px dashed var(--border-soft); color: var(--faint); font-size: 11.5px; }
+
+  /* ---------- Phase 11: evidence matrix ---------- */
+  .matrix-wrap { overflow-x: auto; }
+  table.matrix { border-collapse: collapse; width: 100%; font-size: 12.5px; }
+  table.matrix th, table.matrix td { border: 1px solid var(--border-soft); padding: 7px 10px; text-align: left; vertical-align: top; }
+  table.matrix th { background: var(--panel-2); color: var(--muted); font-size: 11px; letter-spacing: 0.05em; text-transform: uppercase; font-weight: 600; }
+  table.matrix th.sched, table.matrix td.sched { background: rgba(108,177,240,0.05); }
+  table.matrix td.rowlabel { color: var(--text); font-weight: 600; white-space: nowrap; }
+  table.matrix tr.row-conflict td.rowlabel { box-shadow: inset 3px 0 0 var(--reject); }
+  .m-not-stated { color: var(--faint); }
+  .m-flag { font-size: 10px; font-weight: 700; padding: 1px 6px; border-radius: 4px; margin-left: 6px; cursor: pointer; border: none; }
+  .m-flag.conf { background: rgba(229,83,75,0.16); color: var(--reject); }
+  .m-flag.info { background: rgba(224,166,60,0.16); color: var(--info-amber); }
+  .m-cell-btn { background: none; border: none; padding: 0; color: var(--text); cursor: pointer; font: inherit; text-align: left; text-decoration: underline dotted var(--faint); text-underline-offset: 3px; }
+  .m-cell-btn:hover { color: var(--focus); }
+  .m-v { color: var(--faint); font-size: 10.5px; margin-left: 4px; }
+  .m-v.bad { color: var(--info-amber); }
+
+  .c-hints { padding: 9px 14px; border-top: 1px dashed var(--border-soft); font-size: 12.5px; color: var(--muted); }
+  .c-hints .h-t { color: var(--text); font-weight: 600; font-size: 12px; }
+  .c-hints ul { margin: 4px 0 0 16px; }
+
   details.aux { margin-bottom: 14px; }
   details.aux summary { cursor: pointer; color: var(--muted); font-size: 13px; padding: 6px 2px; }
   details.aux summary:hover { color: var(--text); }
@@ -348,6 +389,7 @@
         <div class="step"><span class="n">3</span><div><div class="t">Follow findings to their sources</div><div class="d">Click a verified quote to see it highlighted in the original document.</div></div></div>
         <div class="step"><span class="n">4</span><div><div class="t">Inspect the policy reasoning</div><div class="d">Each finding names the policy clause and rule value it was checked against.</div></div></div>
         <div class="step"><span class="n">5</span><div><div class="t">Confirm the recommended disposition</div><div class="d">Approve, reject, request specific information — or escalate for human review.</div></div></div>
+        <div class="step"><span class="n">6</span><div><div class="t">Take the record with you</div><div class="d">Every decision generates its deterministic artifact — an information-request letter, a clause-cited rejection rationale, or an investigator handoff memo.</div></div></div>
       </div>
     </div>
   </main>
@@ -396,8 +438,9 @@ const DECISION_META = {
 };
 const docLabel = d => DOC_LABELS[d] || fieldLabel(d);
 // Display-only: swap raw doc-type tokens in backend text for their labels.
-const prettyText = s => Object.entries(DOC_LABELS).reduce(
-  (acc, [token, label]) => acc.replaceAll(token, label), String(s ?? ""));
+// Whole-word only — "fir" inside "confirmed" must never be replaced.
+const DOC_TOKEN_RE = new RegExp("\\b(" + Object.keys(DOC_LABELS).join("|") + ")\\b", "g");
+const prettyText = s => String(s ?? "").replace(DOC_TOKEN_RE, m => DOC_LABELS[m]);
 
 // The 11 deterministic checks: display names + which finding rules belong to each.
 const CHECKS = {
@@ -692,6 +735,184 @@ function linkifyNarrative(text, r) {
   return html;
 }
 
+/* ---------------- Phase 11: adjudication record (rendered from backend data) ---------------- */
+const RECORD_KIND_DESC = {
+  information_request: "A ready-to-send information request built only from the deterministic findings — every requested item cites its policy basis.",
+  decision_rationale: "A clause-cited rejection rationale: each ground quotes the submitted evidence and the policy provision it engages.",
+  investigator_handoff: "A handoff memo for the investigator: what is established, what conflicts (both versions preserved), and which records could resolve it.",
+  approval_record: "A short record of the conditions this review established, for the claim file.",
+};
+
+function renderRecordItem(it, i, numbered, r) {
+  const head = it.heading
+    ? `<div class="r-h">${numbered ? `${i + 1}. ` : ""}${esc(it.heading)}</div>` : "";
+  const body = (it.body || []).map(b => `<div class="r-b">${linkifyNarrative(b, r)}</div>`).join("");
+  const evs = (it.evidence || []).map(ev => {
+    const quoteBlock = ev.quote
+      ? `<div>${quoteHtml(ev.doc_type, ev.quote, ev.source === "document" ? ev.quote_verified : false)}
+         ${ev.source === "document" ? verifiedMark({ quote_verified: ev.quote_verified }) : ""}</div>`
+      : "";
+    return `<div class="r-ev"><span class="r-ev-doc">${esc(ev.label)}</span> —
+      <span class="r-ev-val">${esc(ev.value)}</span>${quoteBlock}</div>`;
+  }).join("");
+  const basis = (it.policy_basis || []).map(b =>
+    `<div class="r-basis">Policy basis: ${linkifyNarrative(b, r)}</div>`).join("");
+  const hints = (it.hints && it.hints.length)
+    ? `<div class="r-hints"><span>What would help resolve this:</span>
+       <ul>${it.hints.map(h => `<li>${esc(h)}</li>`).join("")}</ul></div>` : "";
+  const ref = it.finding_id
+    ? `<div class="r-basis" style="color:var(--faint)">Ref:
+       <button class="linkid" onclick="reveal('${idsafe("finding-" + it.finding_id)}')">${esc(labelFinding(it.finding_id))}</button></div>` : "";
+  return `<div class="r-item ${it.conflict ? "conflict" : ""}">${head}${body}${evs}${basis}${hints}${ref}</div>`;
+}
+
+function renderCorrespondence(r) {
+  const corr = r.correspondence;
+  if (!corr) return "";
+  const secs = corr.sections.map(sec => `
+    <div class="record-sec">
+      <div class="r-sec-title">${esc(sec.title)}</div>
+      ${sec.paragraphs.map(p => `<p>${linkifyNarrative(p, r)}</p>`).join("")}
+      ${sec.items.map((it, i) => renderRecordItem(it, i, sec.numbered, r)).join("")}
+    </div>`).join("");
+  return `<div class="card" id="adjudication-record">
+    <h3>Adjudication record <span class="source-tag">generated deterministically from the review — not written by AI</span></h3>
+    <div class="card-desc">${esc(RECORD_KIND_DESC[corr.kind] || "")} Copy it, print it, or download it to hand off.</div>
+    <div class="record-actions">
+      <button class="rerun-btn" onclick="copyRecord('${esc(r.claim_id)}', this)">Copy text</button>
+      <button class="rerun-btn" onclick="printRecord('${esc(r.claim_id)}')">Print</button>
+      <button class="rerun-btn" onclick="downloadRecord('${esc(r.claim_id)}')">Download .txt</button>
+    </div>
+    <div class="record-paper">
+      <div class="r-doc-title">${esc(corr.doc_title)}</div>
+      <div class="r-head-meta">${esc(corr.claim_label)} · Review outcome: ${esc(corr.decision_label)} <span class="id-secondary">${esc(corr.claim_id)}</span></div>
+      ${secs}
+      <div class="r-note">${esc(corr.generated_note)}</div>
+    </div>
+  </div>`;
+}
+
+function recordFor(claimId) {
+  const r = state.reviews[claimId];
+  return r && r.correspondence;
+}
+
+async function copyRecord(claimId, btn) {
+  const corr = recordFor(claimId);
+  if (!corr) return;
+  let ok = false;
+  try { await navigator.clipboard.writeText(corr.text); ok = true; }
+  catch (e) {
+    try {
+      const ta = document.createElement("textarea");
+      ta.value = corr.text;
+      document.body.appendChild(ta);
+      ta.select();
+      ok = document.execCommand("copy");
+      ta.remove();
+    } catch (e2) { ok = false; }
+  }
+  if (btn) {
+    const old = btn.textContent;
+    btn.textContent = ok ? "Copied ✓" : "Copy failed";
+    setTimeout(() => { btn.textContent = old; }, 1600);
+  }
+}
+
+function downloadRecord(claimId) {
+  const corr = recordFor(claimId);
+  if (!corr) return;
+  const blob = new Blob([corr.text], { type: "text/plain;charset=utf-8" });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement("a");
+  a.href = url;
+  a.download = `ClaimIQ_${claimId}_${corr.kind}.txt`;
+  document.body.appendChild(a);
+  a.click();
+  a.remove();
+  setTimeout(() => URL.revokeObjectURL(url), 2000);
+}
+
+function recordPrintableHtml(corr) {
+  const secs = corr.sections.map(sec => {
+    const paras = sec.paragraphs.map(p => `<p>${esc(p)}</p>`).join("");
+    const items = sec.items.map((it, i) => {
+      const head = it.heading ? `<div class="ph">${sec.numbered ? `${i + 1}. ` : "• "}${esc(it.heading)}</div>` : "";
+      const body = (it.body || []).map(b => `<div class="pb">${esc(b)}</div>`).join("");
+      const evs = (it.evidence || []).map(ev =>
+        `<div class="pe"><strong>${esc(ev.label)}:</strong> ${esc(ev.value)}${ev.quote
+          ? `<br><em>"${esc(ev.quote)}"${ev.source === "document" && !ev.quote_verified ? " [quote not verified against the source]" : ""}</em>` : ""}</div>`).join("");
+      const basis = (it.policy_basis || []).map(b => `<div class="pe">Policy basis: ${esc(b)}</div>`).join("");
+      const hints = (it.hints && it.hints.length)
+        ? `<div class="pe">What would help resolve this:<ul>${it.hints.map(h => `<li>${esc(h)}</li>`).join("")}</ul></div>` : "";
+      return `<div class="pi">${head}${body}${evs}${basis}${hints}</div>`;
+    }).join("");
+    return `<h2>${esc(sec.title)}</h2>${paras}${items}`;
+  }).join("");
+  return `<!doctype html><html><head><meta charset="utf-8"><title>${esc(corr.doc_title)} — ${esc(corr.claim_label)}</title>
+  <style>body{font:13px/1.6 Georgia,"Times New Roman",serif;color:#111;background:#fff;max-width:720px;margin:40px auto;padding:0 24px}
+  h1{font-size:20px;margin-bottom:2px}.meta{color:#555;font-size:12px;margin-bottom:18px}
+  h2{font-size:12px;letter-spacing:.08em;text-transform:uppercase;color:#444;border-top:1px solid #ccc;padding-top:12px;margin:18px 0 6px}
+  .pi{margin:8px 0 8px 4px;padding-left:10px;border-left:2px solid #ddd}.ph{font-weight:700}.pb,.pe{color:#333;font-size:12.5px;margin-top:2px}
+  .note{margin-top:22px;border-top:1px dashed #bbb;padding-top:10px;color:#666;font-size:11px}</style></head><body>
+  <h1>${esc(corr.doc_title)}</h1>
+  <div class="meta">${esc(corr.claim_label)} (${esc(corr.claim_id)}) · Review outcome: ${esc(corr.decision_label)}</div>
+  ${secs}<div class="note">${esc(corr.generated_note)}</div></body></html>`;
+}
+
+function printRecord(claimId) {
+  const corr = recordFor(claimId);
+  if (!corr) return;
+  const w = window.open("", "_blank", "width=820,height=900");
+  if (!w) return;  // popup blocked — Copy/Download remain available
+  w.document.write(recordPrintableHtml(corr));
+  w.document.close();
+  w.focus();
+  setTimeout(() => w.print(), 250);
+}
+
+/* ---------------- Phase 11: evidence matrix (built by Python; rendered here) ---------------- */
+function renderMatrix(r) {
+  const m = r.evidence_matrix;
+  if (!m || !m.rows || !m.rows.length) return "";
+  const schedTh = m.has_schedule_column
+    ? `<th class="sched">Policy Schedule<br><span style="font-weight:400;letter-spacing:0;text-transform:none">trusted record</span></th>` : "";
+  const head = `<tr><th>Fact</th>${m.columns.map(c =>
+    `<th>${esc(c.label)}${c.failed ? `<br><span class="v-bad" style="text-transform:none;letter-spacing:0">extraction failed</span>` : ""}</th>`).join("")}${schedTh}</tr>`;
+  const body = m.rows.map(row => {
+    const flagCls = row.conflict ? "conf" : "info";
+    const flagIcon = row.conflict ? "⚠" : "ⓘ";
+    const flags = (row.conflict || row.needs_information)
+      ? row.finding_ids.map(fid =>
+          `<button class="m-flag ${flagCls}" onclick="reveal('${idsafe("finding-" + fid)}')"
+            aria-label="Show ${esc(labelFinding(fid))}">${flagIcon} ${esc(labelFinding(fid))}</button>`).join("")
+      : "";
+    const cells = m.columns.map(c => {
+      const cell = row.cells[c.doc_type];
+      if (!cell) return `<td><span class="m-not-stated">— not stated</span></td>`;
+      const mark = cell.quote
+        ? (cell.quote_verified ? `<span class="m-v" title="source quote verified">✓</span>`
+                               : `<span class="m-v bad">⚠ unverified</span>`) : "";
+      let val;
+      if (cell.quote && cell.quote_verified) {
+        const qi = registerQuote(c.doc_type, cell.quote);
+        val = `<button class="m-cell-btn" data-qi="${qi}" title="Show the source quote in the document">${esc(cell.value)}</button>`;
+      } else {
+        val = esc(cell.value);
+      }
+      return `<td>${val}${mark}</td>`;
+    }).join("");
+    const sched = m.has_schedule_column
+      ? `<td class="sched">${row.schedule_value != null ? esc(row.schedule_value) : `<span class="m-not-stated">—</span>`}</td>` : "";
+    return `<tr class="${row.conflict ? "row-conflict" : ""}">
+      <td class="rowlabel">${esc(row.label)}${flags}</td>${cells}${sched}</tr>`;
+  }).join("");
+  return `<div class="card"><h3>Evidence matrix</h3>
+    <div class="card-desc">Every extracted fact by document, side by side. Conflicts are flagged by the deterministic checks — formatting differences are not conflicts, and an empty cell means the document does not state the fact (unknown, never "no").</div>
+    <div class="matrix-wrap"><table class="matrix">${head}${body}</table></div>
+  </div>`;
+}
+
 /* ---------------- rendering ---------------- */
 function renderClaimList() {
   const el = document.getElementById("claim-list");
@@ -790,6 +1011,8 @@ function renderProvenance(r) {
   }
   if (checksCount) segs.push(`<span class="seg"><strong>${checksCount}</strong> deterministic checks</span>`);
   segs.push(`<span class="seg"><strong>${findingsCount}</strong> findings · <strong>${decisive}</strong> decision-driving</span>`);
+  const contradictionCount = r.findings.filter(f => f.category === "CONTRADICTION").length;
+  if (contradictionCount) segs.push(`<span class="seg bad"><strong>${contradictionCount}</strong> unresolved contradiction${contradictionCount === 1 ? "" : "s"}</span>`);
   segs.push(`<span class="seg"><strong>${esc(meta.word)}</strong></span>`);
   return `<div class="prov-strip" aria-label="Review provenance summary">${segs.join(`<span class="arrow" aria-hidden="true">→</span>`)}</div>`;
 }
@@ -879,7 +1102,8 @@ function renderResult(r) {
     <div class="d-claim">${esc(labelClaim(r.claim_id))} · ${esc(r.claim_type)} claim <span class="id-secondary" style="opacity:.7">${esc(r.claim_id)}</span></div>
     <div class="dword">${esc(meta.word)}</div>
     <div class="dsub">${esc(meta.sub)}</div>
-    <div class="daction"><strong>Next action:</strong> ${nextAction(r)}</div>
+    <div class="daction"><strong>Next action:</strong> ${nextAction(r)}
+    ${r.correspondence ? `<div style="margin-top:7px"><button class="reason-link" onclick="reveal('adjudication-record')">Open the adjudication record ↓</button></div>` : ""}</div>
   </div>`);
 
   // 3. determinism receipt (only after a re-run)
@@ -948,11 +1172,14 @@ function renderResult(r) {
     }
   }
 
+  // 8.5 adjudication record — the deterministic correspondence / handoff artifact
+  parts.push(renderCorrespondence(r));
+
   // 9. contradictions
   const contradictions = r.findings.filter(f => f.category === "CONTRADICTION");
   if (contradictions.length) {
     parts.push(`<div class="card"><h3>Contradictions in the evidence</h3>
-      ${contradictions.map(renderContradiction).join("")}</div>`);
+      ${contradictions.map(f => renderContradiction(f, (r.resolution_hints || {})[f.finding_id] || [])).join("")}</div>`);
   }
 
   // 10. findings — issues sorted by severity
@@ -963,7 +1190,8 @@ function renderResult(r) {
     ${issues.length ? issues.map(renderFinding).join("") : `<div style="color:var(--faint);font-size:13px;margin-bottom:4px">No issues — every check passed. See "What was checked" below for the full list.</div>`}
   </div>`);
 
-  // 11. evidence panel
+  // 11. evidence matrix + evidence panel
+  parts.push(renderMatrix(r));
   parts.push(renderEvidencePanel(r));
 
   // 12. policy clauses
@@ -998,7 +1226,7 @@ function evidenceChips(f) {
     aria-label="Show evidence from ${esc(docLabel(d))}">${esc(docLabel(d))}</button>`).join(" ");
 }
 
-function renderContradiction(f) {
+function renderContradiction(f, hints) {
   const seen = new Set();
   const docRefs = f.evidence.filter(e => {
     if (e.source !== "document") return false;
@@ -1018,6 +1246,9 @@ function renderContradiction(f) {
     <div class="c-head"><span>${esc(prettyText(f.title))}</span><span class="c-status">⚠ CONFLICTED</span></div>
     <div class="c-compare">${compare}</div>
     <div class="c-expl">${esc(prettyText(f.explanation))}</div>
+    ${(hints && hints.length) ? `<div class="c-hints">
+      <div class="h-t">What would help resolve this — suggestions only; the conflict is not resolved by this review:</div>
+      <ul>${hints.map(h => `<li>${esc(h)}</li>`).join("")}</ul></div>` : ""}
   </div>`;
 }
 
@@ -1189,6 +1420,9 @@ function renderScope(r) {
       <div class="p-title">Outside this review — still the investigator's diligence</div>
       <ul>${OUTSIDE_SCOPE.map(x => `<li>${esc(x)}</li>`).join("")}</ul>
       <p>When the available evidence is insufficient, escalation is the deliberate outcome — the system does not guess.</p>
+      <p>Timing findings are reported strictly against the policy's stated windows. In real-world claim handling,
+      late notification and similar timing issues can be subject to discretionary condonation — that judgement
+      belongs to the claims handler, not to this review.</p>
     </div>
   </div>`;
 }

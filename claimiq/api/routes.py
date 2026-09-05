@@ -21,6 +21,9 @@ from claimiq.engine.engine import EngineInputError, review_claim
 from claimiq.extraction.extractor import ExtractionError, extract_claim_evidence
 from claimiq.extraction.gemini_client import GeminiClient, GeminiUnavailableError
 from claimiq.rag.grounded import ground_review
+from claimiq.record.correspondence import build_correspondence
+from claimiq.record.hints import hints_for_review
+from claimiq.record.matrix import build_evidence_matrix
 
 logger = logging.getLogger(__name__)
 
@@ -145,10 +148,31 @@ def run_review(claim_id: str) -> dict:
     stage = time.monotonic()
     grounded = ground_review(bundle, evidence, review, client=client)
     timings["grounding_s"] = round(time.monotonic() - stage, 2)
-    timings["total_s"] = round(time.monotonic() - total_start, 2)
 
     payload = grounded.model_dump(mode="json")
     review_payload = payload.pop("review")
+
+    # Phase 11 adjudication record: deterministic transformations of the review
+    # above — no Gemini, no network. A failure here degrades to a warning; the
+    # decision and citations are never affected.
+    correspondence = None
+    resolution_hints: dict = {}
+    evidence_matrix = None
+    try:
+        correspondence = build_correspondence(
+            bundle, review, grounded.document_citations, grounded.policy_citations
+        ).model_dump(mode="json")
+        resolution_hints = hints_for_review(review)
+        evidence_matrix = build_evidence_matrix(bundle, evidence, review).model_dump(
+            mode="json"
+        )
+    except Exception:  # pragma: no cover - defensive; record building is pure
+        logger.exception("adjudication record build failed for %s", bundle.claim_id)
+        payload["warnings"].append(
+            "adjudication record could not be generated; the review itself is "
+            "unaffected."
+        )
+    timings["total_s"] = round(time.monotonic() - total_start, 2)
     return {
         "claim_id": bundle.claim_id,
         "claim_type": review_payload["claim_type"],
@@ -165,6 +189,9 @@ def run_review(claim_id: str) -> dict:
         "explanation": payload["explanation"],
         "explanation_source": payload["explanation_source"],
         "warnings": payload["warnings"],
+        "correspondence": correspondence,
+        "resolution_hints": resolution_hints,
+        "evidence_matrix": evidence_matrix,
         "extraction": {
             "model": evidence.model,
             "documents_extracted": sorted(evidence.documents),
