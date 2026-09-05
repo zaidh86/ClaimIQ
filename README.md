@@ -161,8 +161,9 @@ Then open http://localhost:8000. Python 3.11.
 The whole app (API + UI) is served by that one command. The workflow in the
 browser: pick a claim from the left rail → "Review claim" → read the decision
 banner, then work down through the summary, contradictions, findings, evidence
-quotes, and policy clauses. The first review of a claim calls Gemini live and
-can take ~15–30 seconds; after that the extraction cache makes it much faster.
+quotes, and policy clauses. The sample claims ship with a committed extraction seed, so a review takes a
+few seconds (mostly the Gemini grounding step); a claim whose documents are
+not seeded is extracted live first, which can take ~15–30 seconds.
 API endpoints, if you want them directly: `GET /api/claims`,
 `GET /api/claims/{id}`, `POST /api/claims/{id}/review`, `GET /api/health`.
 
@@ -177,3 +178,5 @@ Tests:
 ```text
 pytest
 ```
+
+Development history, phase by phase: [docs/PROJECT_PROGRESS.md](docs/PROJECT_PROGRESS.md).
