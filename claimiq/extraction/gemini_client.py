@@ -127,6 +127,56 @@ class GeminiClient:
             raise GeminiResponseError("Gemini returned an empty response")
         return text
 
+    def embed(
+        self, texts: list[str], task_type: str = "RETRIEVAL_DOCUMENT"
+    ) -> list[list[float]]:
+        """Embed texts with the configured Gemini embedding model.
+
+        Returns one vector per input text; validates that all vectors share one
+        non-zero dimension. One retry on transient failure, then typed errors.
+        """
+        if not texts:
+            return []
+        client = self._ensure_client()
+        from google.genai import types as genai_types
+
+        last_exc: Exception | None = None
+        for attempt in (1, 2):
+            started = time.monotonic()
+            try:
+                response = client.models.embed_content(
+                    model=self._config.gemini_embedding_model,
+                    contents=list(texts),
+                    config=genai_types.EmbedContentConfig(task_type=task_type),
+                )
+                vectors = [list(e.values) for e in (response.embeddings or [])]
+                if len(vectors) != len(texts):
+                    raise GeminiResponseError(
+                        f"expected {len(texts)} embeddings, got {len(vectors)}"
+                    )
+                dims = {len(v) for v in vectors}
+                if len(dims) != 1 or 0 in dims:
+                    raise GeminiResponseError(
+                        f"inconsistent embedding dimensions: {sorted(dims)}"
+                    )
+                logger.info(
+                    "embedded %d text(s) (%dd) in %.1fs",
+                    len(vectors), dims.pop(), time.monotonic() - started,
+                )
+                return vectors
+            except GeminiError:
+                raise
+            except Exception as exc:
+                last_exc = exc
+                logger.warning(
+                    "embedding request failed (attempt %d): %s: %s",
+                    attempt, type(exc).__name__, exc,
+                )
+        raise GeminiRequestError(
+            f"Embedding request failed after retry: "
+            f"{type(last_exc).__name__}: {last_exc}"
+        )
+
     def generate_validated(
         self,
         prompt: str,

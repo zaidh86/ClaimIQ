@@ -7,6 +7,9 @@ pydantic==2.10.4
 # Gemini (the only external API used)
 google-genai==1.31.0
 
+# Local vector math for policy-clause retrieval
+numpy==2.2.1
+
 # Testing (kept in the single requirements file so `pytest` works
 # immediately after the one judge-run install)
 pytest==8.3.4

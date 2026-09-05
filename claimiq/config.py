@@ -68,6 +68,7 @@ def _int_env(name: str, default: int) -> int:
 
 
 DEFAULT_GEMINI_MODEL = "gemini-3.5-flash-lite"
+DEFAULT_EMBEDDING_MODEL = "gemini-embedding-001"
 
 
 @dataclass(frozen=True)
@@ -76,6 +77,7 @@ class Settings:
     port: int
     gemini_api_key: str
     gemini_model: str
+    gemini_embedding_model: str
     gemini_timeout_seconds: int
     log_level: str
 
@@ -92,6 +94,8 @@ class Settings:
             gemini_api_key=os.environ.get("GEMINI_API_KEY", "").strip(),
             gemini_model=os.environ.get("GEMINI_MODEL", "").strip()
             or DEFAULT_GEMINI_MODEL,
+            gemini_embedding_model=os.environ.get("GEMINI_EMBEDDING_MODEL", "").strip()
+            or DEFAULT_EMBEDDING_MODEL,
             gemini_timeout_seconds=_int_env("GEMINI_TIMEOUT_SECONDS", 45),
             log_level=os.environ.get("LOG_LEVEL", "info").strip().lower() or "info",
         )

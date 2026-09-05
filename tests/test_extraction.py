@@ -43,6 +43,7 @@ def make_settings(key: str = "test-key") -> Settings:
         port=8000,
         gemini_api_key=key,
         gemini_model="test-model",
+        gemini_embedding_model="test-embed-model",
         gemini_timeout_seconds=5,
         log_level="info",
     )

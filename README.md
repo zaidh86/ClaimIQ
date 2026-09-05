@@ -41,10 +41,23 @@ Done so far:
   precedence rules over those findings — approval is never the default, and
   anything the evidence can't support gets escalated to a human
 
+- the grounding layer: formal citations and a grounded explanation around the
+  deterministic result. Document citations are built from the engine's own
+  evidence references and validated against the stored extraction (a quote
+  that was never verified stays visibly unverified); policy citations carry
+  the exact clause text from `policy.json`. Policy clauses are embedded once
+  with `gemini-embedding-001` (precomputed index committed to the repo — the
+  app never generates embeddings at startup), and a small NumPy cosine
+  retriever surfaces related clauses as context. Gemini
+  (`gemini-3.5-flash-lite`) writes an investigator-facing explanation from
+  *only* that grounded material — and a Python guard discards it if it
+  mentions any clause or finding ID outside the supplied set. If Gemini or
+  the index is unavailable, the review still completes with the
+  deterministic rationale and a clear warning. Grounding can explain the
+  decision; it structurally cannot change it
+
 Being built next:
 
-- local retrieval over the policy clauses (`gemini-embedding-001`, precomputed
-  embeddings, plain cosine similarity) so findings cite real clauses
 - a simple review UI for walking through the evidence
 
 The split I'm sticking to throughout: Gemini only interprets text. All
@@ -94,9 +107,17 @@ claimiq/
     checks.py           # the eleven deterministic checks + field consensus views
     engine.py           # review_claim(bundle, evidence) -> decision + findings
     schemas.py          # Finding, severities, effects, ClaimReview
+  rag/
+    index.py            # precomputed clause-embedding index + staleness hash
+    retriever.py        # query embedding + NumPy cosine top-k
+    citations.py        # document/policy citations, built and validated in Python
+    grounded.py         # GroundedReview: citations + context + guarded explanation
+  data/policy_index.json  # committed embeddings (gemini-embedding-001)
 scripts/
   extract_claim.py      # dev tool: run live extraction and inspect evidence
   review_claim.py       # dev tool: extraction + engine, full review printout
+  grounded_review.py    # dev tool: the full grounded pipeline for a claim
+  build_policy_index.py # regenerates the policy index (only after policy edits)
 tests/
 ```
 
