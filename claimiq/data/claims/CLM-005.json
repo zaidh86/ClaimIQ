@@ -1,6 +1,6 @@
 {
   "claim_id": "CLM-005",
-  "title": "Car rear-ended at signal - reported 24 days late",
+  "title": "Car rear-ended at signal",
   "scenario": "late_notification",
   "claim_type_filed": "accident",
   "submitted_at": "2026-04-27",

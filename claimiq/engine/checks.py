@@ -188,6 +188,11 @@ def _fmt_obs(observations: list[Observation]) -> str:
     return "; ".join(f"{o.doc_type.value}: {o.value}" for o in observations)
 
 
+def _a(word: str) -> str:
+    """Indefinite article for a claim type — 'an accident', 'a theft'."""
+    return "an" if word[:1].lower() in "aeiou" else "a"
+
+
 # --------------------------------------------------------------------------
 # Checks — each takes the context and appends findings
 # --------------------------------------------------------------------------
@@ -216,7 +221,8 @@ def check_document_completeness(ctx: CheckContext) -> None:
             FindingEffect.NEEDS_INFORMATION,
             f"Missing required document: {doc.value}",
             f"{clause.title} ({clause.id}) requires a {doc.value.replace('_', ' ')} "
-            f"for a {ctx.claim_type} claim, but none was submitted. The claim "
+            f"for {_a(ctx.claim_type)} {ctx.claim_type} claim, but none was "
+            f"submitted. The claim "
             f"cannot be assessed until it is provided.",
             rule="document_completeness_check",
             clauses=[clause],
@@ -241,7 +247,8 @@ def check_document_completeness(ctx: CheckContext) -> None:
         ctx.add(
             FindingCategory.DOCUMENT_COMPLETENESS, Severity.INFO, FindingEffect.NONE,
             "All required documents submitted",
-            f"All documents required by {clause.id} for a {ctx.claim_type} claim "
+            f"All documents required by {clause.id} for {_a(ctx.claim_type)} "
+            f"{ctx.claim_type} claim "
             f"are present: {', '.join(sorted(d.value for d in required))}.",
             rule="document_completeness_check",
             clauses=[clause],

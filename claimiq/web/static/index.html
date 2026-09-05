@@ -488,6 +488,10 @@ const DECISION_META = {
   ESCALATE: { word: "Escalate for Review", chip: "Escalate", sub: "The evidence contains contradictions, uncertainty, or a case the policy does not clearly resolve." },
 };
 const docLabel = d => DOC_LABELS[d] || fieldLabel(d);
+// Display-only: a risk mention's value is an extraction category token
+// ("alcohol_or_drugs"), so it reads as prose rather than as an enum.
+const valueLabel = (field, value) =>
+  field === "risk_mention" ? fieldLabel(value) : esc(value);
 // Display-only: swap raw doc-type tokens in backend text for their labels.
 // Whole-word only — "fir" inside "confirmed" must never be replaced.
 const DOC_TOKEN_RE = new RegExp("\\b(" + Object.keys(DOC_LABELS).join("|") + ")\\b", "g");
@@ -1189,7 +1193,7 @@ function renderOverview(summary, detail) {
     </details>`).join("") : "";
   return `<div class="card">
     <h3>Claim overview</h3>
-    <div class="card-desc">A quick summary of the incident, coverage position, and the material available for this review.</div>
+    <div class="card-desc">The claim as filed, its policy schedule, and the documents on file.</div>
     <div class="claim-head"><h1>${esc(summary.title)}</h1>
       <span style="color:var(--muted);font-size:13px">${esc(labelClaim(summary.claim_id))}</span>
       <span class="type-tag">${esc(summary.claim_type)} claim</span>
@@ -1323,10 +1327,7 @@ function renderResult(r) {
   const parts = [];
   const meta = DECISION_META[r.decision] || { word: r.decision, sub: "" };
 
-  // 1. provenance
-  parts.push(renderProvenance(r));
-
-  // 2. decision banner
+  // 1. decision banner — the answer comes first, then how it was reached
   parts.push(`<div class="decision-banner d-${esc(r.decision)}">
     <div class="d-claim">${esc(labelClaim(r.claim_id))} · ${esc(r.claim_type)} claim <span class="id-secondary" style="opacity:.7">${esc(r.claim_id)}</span></div>
     <div class="dword">${esc(meta.word)}</div>
@@ -1334,6 +1335,9 @@ function renderResult(r) {
     <div class="daction"><strong>Next action:</strong> ${nextAction(r)}
     ${r.correspondence ? `<div style="margin-top:7px"><button class="reason-link" onclick="reveal('adjudication-record')">Open the adjudication record ↓</button></div>` : ""}</div>
   </div>`);
+
+  // 2. provenance — the pipeline that produced the decision above
+  parts.push(renderProvenance(r));
 
   // 3. determinism receipt (only after a re-run)
   const receipt = state.receipts[r.claim_id];
@@ -1531,7 +1535,7 @@ function renderEvidencePanel(r) {
         const usedBy = [...new Set(c.findings)].map(labelFinding).join(", ");
         return `<div class="ev-card ${cls}">
           <div class="e-field">${fieldLabel(c.field)}</div>
-          <div class="e-val">${esc(c.value)}</div>
+          <div class="e-val">${valueLabel(c.field, c.value)}</div>
           ${c.quote ? quoteHtml(c.doc_type, c.quote, c.valid ? c.quote_verified : false) : ""}
           <div class="e-meta">${status}
             <span class="e-findings">used by ${esc(usedBy)}</span></div>
@@ -1557,7 +1561,7 @@ function renderClauseParams(citation, usedByRules) {
     ? `<div class="p-row" style="margin-top:4px;color:var(--faint)">Used by: ${[...usedByRules].map(x => esc(ruleLabel(x))).join(", ")}</div>`
     : "";
   return `<div class="cl-params">
-    <div class="p-title">Rule used by the review — from policy.json, not generated</div>
+    <div class="p-title">Rule used by the review — read from the policy, not generated</div>
     ${rows.join("")}${usedBy}
   </div>`;
 }

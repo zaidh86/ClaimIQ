@@ -1,6 +1,6 @@
 {
   "claim_id": "CLM-006",
-  "title": "Car under-ran truck in rain - estimate exceeds declared value",
+  "title": "Car under-ran truck in rain",
   "scenario": "insured_value_exceeded",
   "claim_type_filed": "accident",
   "submitted_at": "2026-06-10",

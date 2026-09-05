@@ -1,6 +1,6 @@
 {
   "claim_id": "CLM-003",
-  "title": "Car parking scrape - repair estimate missing",
+  "title": "Car damaged in parking scrape",
   "scenario": "missing_documents",
   "claim_type_filed": "accident",
   "submitted_at": "2026-03-05",
