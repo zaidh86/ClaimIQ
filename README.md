@@ -15,8 +15,6 @@ a confident conclusion, it says so and escalates to a human instead of guessing.
 
 ## What it does
 
-Done so far:
-
 - FastAPI app that starts with one command and serves everything on port 8000
 - a fictional 17-clause motor policy (coverage, exclusions, claim windows,
   required documents, insured value) with stable clause IDs like `POL-05`, each
@@ -93,7 +91,7 @@ requirements.txt
 claimiq/
   config.py             # env handling (.env loader, port, key, model)
   server.py             # FastAPI app factory + error handling
-  api/routes.py         # endpoints (just /api/health for now)
+  api/routes.py         # /api/health, /api/claims, /api/claims/{id}, .../review
   web/static/           # frontend served by the Python app
   data/
     policy.json         # the fictional policy (17 clauses)
@@ -129,15 +127,15 @@ The split between the two layers is strict: Gemini reads documents, Python
 decides. The engine never calls the network, never sees ground truth, and
 produces the identical review every time for the same evidence.
 
-## How extraction works (Phase 3)
+## How extraction works
 
 Gemini's only job is reading: each submitted document is sent in its own call
 and must return facts as strict JSON — value plus a verbatim quote — validated
 through pydantic (one repair retry, then a typed failure). Python then
 re-verifies every quote against the actual document text and marks it
 verified/unverified. Extraction never sees the ground truth and never makes
-claim decisions; the approve/reject logic is deterministic Python coming in the
-next phase. Results are cached locally by content hash so re-running reviews
+claim decisions; the approve/reject logic lives entirely in the deterministic
+engine. Results are cached locally by content hash so re-running reviews
 doesn't burn API calls; delete `.cache/` to invalidate. The model is
 configurable via `GEMINI_MODEL` (default `gemini-3.5-flash-lite`).
 
@@ -161,9 +159,11 @@ can take ~15–30 seconds; after that the extraction cache makes it much faster.
 API endpoints, if you want them directly: `GET /api/claims`,
 `GET /api/claims/{id}`, `POST /api/claims/{id}/review`, `GET /api/health`.
 
-For the Gemini-powered parts (coming in later phases) set `GEMINI_API_KEY` —
-copy `.env.example` to `.env` and fill it in. The app runs fine without a key;
-AI features just report themselves as unavailable. Don't commit `.env`.
+Live reviews need a Gemini API key: set `GEMINI_API_KEY` in the environment,
+or copy `.env.example` to `.env` and fill it in. The app starts and serves
+fine without one — reviews then report Gemini as unavailable with a clear
+message instead of crashing. The policy embedding index ships precomputed in
+the repo, so nothing needs to be generated before first run. Don't commit `.env`.
 
 Tests:
 
