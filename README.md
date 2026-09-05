@@ -56,9 +56,13 @@ Done so far:
   deterministic rationale and a clear warning. Grounding can explain the
   decision; it structurally cannot change it
 
-Being built next:
-
-- a simple review UI for walking through the evidence
+- the review UI: an investigator workbench served straight from the Python
+  app. Pick one of the 8 sample claims, hit "Review claim", and walk through
+  the decision, the findings with their verbatim quotes and verification
+  marks, contradictions side by side, the cited policy clauses (clearly
+  separated from merely-related retrieved context), and the grounded summary.
+  If Gemini is down or unconfigured the UI says so and shows the
+  deterministic rationale instead of breaking.
 
 The split I'm sticking to throughout: Gemini only interprets text. All
 verification, date/amount arithmetic, and decisions are plain Python. Nothing
@@ -148,6 +152,14 @@ python app.py
 ```
 
 Then open http://localhost:8000. Python 3.11.
+
+The whole app (API + UI) is served by that one command. The workflow in the
+browser: pick a claim from the left rail → "Review claim" → read the decision
+banner, then work down through the summary, contradictions, findings, evidence
+quotes, and policy clauses. The first review of a claim calls Gemini live and
+can take ~15–30 seconds; after that the extraction cache makes it much faster.
+API endpoints, if you want them directly: `GET /api/claims`,
+`GET /api/claims/{id}`, `POST /api/claims/{id}/review`, `GET /api/health`.
 
 For the Gemini-powered parts (coming in later phases) set `GEMINI_API_KEY` —
 copy `.env.example` to `.env` and fill it in. The app runs fine without a key;

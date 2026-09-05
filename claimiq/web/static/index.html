@@ -6,94 +6,525 @@
 <title>ClaimIQ — Claims Evidence Review</title>
 <style>
   :root {
-    --bg: #0f1419;
-    --panel: #171e26;
-    --border: #26303b;
-    --text: #e6edf3;
-    --muted: #8b98a5;
+    --bg: #0e1319;
+    --rail: #10161e;
+    --panel: #161d26;
+    --panel-2: #1b232e;
+    --border: #26303c;
+    --border-soft: #202a35;
+    --text: #e7edf3;
+    --muted: #8b98a6;
+    --faint: #5d6b7a;
     --accent: #4cc38a;
-    --amber: #e5a50a;
+    --approve: #4cc38a;
+    --reject: #e5534b;
+    --info-amber: #e0a63c;
+    --escalate: #b18bf4;
+    --mono: ui-monospace, "Cascadia Mono", "Segoe UI Mono", Consolas, monospace;
   }
   * { box-sizing: border-box; margin: 0; }
+  html { scroll-behavior: smooth; }
   body {
-    background: var(--bg);
-    color: var(--text);
-    font: 15px/1.6 -apple-system, "Segoe UI", system-ui, sans-serif;
+    background: var(--bg); color: var(--text);
+    font: 14.5px/1.55 -apple-system, "Segoe UI", system-ui, sans-serif;
     min-height: 100vh;
-    display: flex;
-    flex-direction: column;
   }
-  main { max-width: 720px; margin: 0 auto; padding: 64px 24px 32px; flex: 1; width: 100%; }
-  .eyebrow {
-    font-size: 12px; letter-spacing: 0.14em; text-transform: uppercase;
-    color: var(--muted); margin-bottom: 10px;
+  header {
+    display: flex; align-items: center; gap: 14px;
+    padding: 14px 22px; border-bottom: 1px solid var(--border);
+    background: var(--rail); position: sticky; top: 0; z-index: 20;
   }
-  h1 { font-size: 34px; letter-spacing: -0.02em; margin-bottom: 6px; }
-  h1 .iq { color: var(--accent); }
-  .tagline { color: var(--muted); margin-bottom: 36px; }
-  .card {
-    background: var(--panel); border: 1px solid var(--border);
-    border-radius: 10px; padding: 20px 22px; margin-bottom: 16px;
+  .brand { font-size: 19px; font-weight: 700; letter-spacing: -0.01em; }
+  .brand .iq { color: var(--accent); }
+  .brand-sub { color: var(--muted); font-size: 12.5px; border-left: 1px solid var(--border); padding-left: 14px; }
+  #health { margin-left: auto; font-size: 12px; color: var(--muted); display: flex; gap: 8px; align-items: center; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+  .dot.ok { background: var(--accent); } .dot.warn { background: var(--info-amber); } .dot.err { background: var(--reject); }
+
+  .layout { display: grid; grid-template-columns: 320px 1fr; min-height: calc(100vh - 60px); }
+  @media (max-width: 960px) { .layout { grid-template-columns: 1fr; } aside { border-right: none !important; border-bottom: 1px solid var(--border); } }
+
+  aside {
+    background: var(--rail); border-right: 1px solid var(--border); padding: 16px 12px;
   }
-  .card h2 {
-    font-size: 13px; letter-spacing: 0.1em; text-transform: uppercase;
-    color: var(--muted); margin-bottom: 14px; font-weight: 600;
+  .rail-label { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--faint); padding: 0 8px 10px; }
+  .claim-item {
+    width: 100%; text-align: left; background: transparent; color: var(--text);
+    border: 1px solid transparent; border-radius: 8px; padding: 10px 12px; cursor: pointer;
+    display: block; margin-bottom: 4px; font: inherit;
   }
-  .row { display: flex; justify-content: space-between; gap: 12px; padding: 6px 0; }
-  .row + .row { border-top: 1px solid var(--border); }
-  .row .k { color: var(--muted); }
-  .dot { display: inline-block; width: 8px; height: 8px; border-radius: 50%; margin-right: 7px; vertical-align: 1px; }
-  .ok { background: var(--accent); }
-  .warn { background: var(--amber); }
-  .err { background: #e5534b; }
-  .note { color: var(--muted); font-size: 13.5px; }
-  footer {
-    text-align: center; color: var(--muted); font-size: 12.5px;
-    padding: 20px; border-top: 1px solid var(--border);
+  .claim-item:hover { background: var(--panel); }
+  .claim-item.active { background: var(--panel-2); border-color: var(--border); }
+  .claim-item .cid { font-family: var(--mono); font-size: 12px; color: var(--muted); display: flex; justify-content: space-between; align-items: center; }
+  .claim-item .ctitle { font-size: 13px; margin-top: 2px; color: var(--text); }
+  .type-tag { font-size: 10.5px; padding: 1px 7px; border-radius: 99px; border: 1px solid var(--border); color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+  .decision-chip { font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 4px; letter-spacing: 0.04em; }
+
+  main { padding: 24px 28px 60px; max-width: 1040px; }
+  .empty-state { color: var(--muted); padding: 80px 0; text-align: center; }
+  .empty-state h2 { font-weight: 600; color: var(--text); margin-bottom: 8px; }
+
+  .card { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 18px 20px; margin-bottom: 16px; }
+  .card h3 { font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); font-weight: 600; margin-bottom: 12px; }
+
+  .claim-head { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; margin-bottom: 4px; }
+  .claim-head h1 { font-size: 21px; letter-spacing: -0.01em; }
+  .claim-head .cid { font-family: var(--mono); color: var(--muted); font-size: 13px; }
+  .schedule-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px 18px; margin-top: 10px; }
+  .schedule-grid .k { color: var(--faint); font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.06em; }
+  .schedule-grid .v { font-size: 14px; margin-top: 1px; }
+  .doc-chips { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+  .doc-chip { font-size: 12px; padding: 3px 10px; border-radius: 99px; background: var(--panel-2); border: 1px solid var(--border); color: var(--muted); }
+
+  details.doc-viewer { border: 1px solid var(--border-soft); border-radius: 8px; margin-top: 8px; background: var(--panel-2); }
+  details.doc-viewer summary { cursor: pointer; padding: 9px 14px; font-size: 13px; color: var(--muted); }
+  details.doc-viewer[open] summary { border-bottom: 1px solid var(--border-soft); color: var(--text); }
+  details.doc-viewer pre { padding: 12px 16px; white-space: pre-wrap; font-family: var(--mono); font-size: 12px; color: var(--muted); overflow-x: auto; max-height: 340px; overflow-y: auto; }
+
+  .review-btn {
+    background: var(--accent); color: #08110c; font-weight: 700; font-size: 14.5px;
+    border: none; border-radius: 8px; padding: 11px 22px; cursor: pointer; font-family: inherit;
   }
+  .review-btn:hover { filter: brightness(1.08); }
+  .review-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+  .rerun-btn { background: transparent; color: var(--muted); border: 1px solid var(--border); border-radius: 7px; padding: 6px 14px; cursor: pointer; font: inherit; font-size: 12.5px; }
+  .rerun-btn:hover { color: var(--text); }
+
+  .loading-box { display: flex; gap: 16px; align-items: center; padding: 22px; }
+  .spinner { width: 22px; height: 22px; border: 3px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.9s linear infinite; flex: none; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .loading-line { color: var(--text); font-size: 14.5px; }
+  .loading-sub { color: var(--faint); font-size: 12.5px; margin-top: 3px; }
+
+  .decision-banner { border-radius: 10px; padding: 20px 22px; margin-bottom: 16px; border: 1px solid; }
+  .decision-banner .dword { font-size: 24px; font-weight: 800; letter-spacing: 0.02em; }
+  .decision-banner .dsub { margin-top: 4px; font-size: 14px; opacity: 0.92; }
+  .decision-banner .daction { margin-top: 12px; font-size: 13.5px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.14); }
+  .d-APPROVE { background: rgba(76,195,138,0.10); border-color: rgba(76,195,138,0.45); color: #b6e8d0; }
+  .d-APPROVE .dword { color: var(--approve); }
+  .d-REJECT { background: rgba(229,83,75,0.10); border-color: rgba(229,83,75,0.45); color: #f2c1be; }
+  .d-REJECT .dword { color: var(--reject); }
+  .d-REQUEST_INFORMATION { background: rgba(224,166,60,0.10); border-color: rgba(224,166,60,0.45); color: #f0d9ae; }
+  .d-REQUEST_INFORMATION .dword { color: var(--info-amber); }
+  .d-ESCALATE { background: rgba(177,139,244,0.10); border-color: rgba(177,139,244,0.45); color: #dccdf7; }
+  .d-ESCALATE .dword { color: var(--escalate); }
+
+  .chip-APPROVE { background: rgba(76,195,138,0.16); color: var(--approve); }
+  .chip-REJECT { background: rgba(229,83,75,0.16); color: var(--reject); }
+  .chip-REQUEST_INFORMATION { background: rgba(224,166,60,0.16); color: var(--info-amber); }
+  .chip-ESCALATE { background: rgba(177,139,244,0.16); color: var(--escalate); }
+
+  .warn-strip { background: rgba(224,166,60,0.08); border: 1px solid rgba(224,166,60,0.3); color: #e8cf9d; border-radius: 8px; padding: 10px 14px; font-size: 13px; margin-bottom: 16px; }
+  .warn-strip ul { margin: 6px 0 0 18px; }
+  .err-banner { background: rgba(229,83,75,0.1); border: 1px solid rgba(229,83,75,0.4); color: #f2c1be; border-radius: 10px; padding: 16px 18px; margin-bottom: 16px; }
+
+  .explain-label { display: flex; align-items: center; gap: 8px; }
+  .source-tag { font-size: 10.5px; padding: 2px 8px; border-radius: 99px; border: 1px solid var(--border); color: var(--faint); text-transform: none; letter-spacing: 0; }
+  .explain-summary { font-size: 15px; line-height: 1.6; }
+  .explain-points { margin: 10px 0 0 18px; color: var(--text); }
+  .explain-points li { margin-bottom: 6px; }
+  .inv-note { margin-top: 12px; padding: 10px 14px; background: var(--panel-2); border-left: 3px solid var(--escalate); border-radius: 0 6px 6px 0; font-size: 13.5px; }
+
+  .missing-box { border-left: 3px solid var(--info-amber); }
+  .missing-box li { margin: 6px 0 6px 4px; list-style: none; }
+  .missing-box li::before { content: "→ "; color: var(--info-amber); }
+
+  .contradiction { border: 1px solid rgba(229,83,75,0.35); border-radius: 8px; margin-bottom: 12px; overflow: hidden; }
+  .contradiction .c-head { background: rgba(229,83,75,0.08); padding: 9px 14px; font-size: 13px; font-weight: 600; color: #f2c1be; display: flex; justify-content: space-between; align-items: center; }
+  .c-status { font-size: 11px; color: var(--reject); font-weight: 700; letter-spacing: 0.05em; }
+  .c-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
+  .c-cell { padding: 12px 14px; border-top: 1px solid var(--border-soft); }
+  .c-cell + .c-cell { border-left: 1px solid var(--border-soft); }
+  .c-doc { font-size: 11px; text-transform: uppercase; letter-spacing: 0.07em; color: var(--faint); }
+  .c-val { font-size: 16px; font-weight: 700; margin: 3px 0 6px; }
+  .c-quote { font-family: var(--mono); font-size: 11.5px; color: var(--muted); }
+
+  .finding { border: 1px solid var(--border-soft); border-left-width: 3px; border-radius: 8px; padding: 12px 16px; margin-bottom: 10px; background: var(--panel-2); }
+  .f-CRITICAL { border-left-color: var(--reject); }
+  .f-MATERIAL { border-left-color: var(--info-amber); }
+  .f-MINOR { border-left-color: var(--faint); }
+  .f-INFO { border-left-color: var(--accent); }
+  .finding .f-head { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-bottom: 4px; }
+  .sev { font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 4px; letter-spacing: 0.05em; }
+  .sev-CRITICAL { background: rgba(229,83,75,0.16); color: var(--reject); }
+  .sev-MATERIAL { background: rgba(224,166,60,0.16); color: var(--info-amber); }
+  .sev-MINOR { background: rgba(139,152,166,0.16); color: var(--muted); }
+  .sev-INFO { background: rgba(76,195,138,0.14); color: var(--approve); }
+  .f-cat { font-size: 11.5px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+  .f-id { font-family: var(--mono); font-size: 11px; color: var(--faint); margin-left: auto; }
+  .finding .f-title { font-weight: 600; font-size: 14.5px; }
+  .finding .f-expl { color: var(--muted); font-size: 13.5px; margin-top: 3px; }
+  .clause-chip { font-family: var(--mono); font-size: 11px; background: var(--panel); border: 1px solid var(--border); border-radius: 5px; padding: 1px 7px; color: var(--escalate); cursor: pointer; text-decoration: none; }
+  .f-evidence { margin-top: 9px; border-top: 1px dashed var(--border-soft); padding-top: 8px; }
+  .ev-row { font-size: 12.5px; margin-bottom: 5px; }
+  .ev-doc { color: var(--faint); text-transform: uppercase; font-size: 10.5px; letter-spacing: 0.06em; }
+  .ev-quote { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+  .v-ok { color: var(--approve); font-size: 11.5px; }
+  .v-bad { color: var(--info-amber); font-size: 11.5px; }
+
+  .clause { border: 1px solid var(--border-soft); border-radius: 8px; padding: 12px 16px; margin-bottom: 10px; background: var(--panel-2); }
+  .clause .cl-head { display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; }
+  .clause .cl-id { font-family: var(--mono); font-size: 12.5px; color: var(--escalate); font-weight: 600; }
+  .clause .cl-title { font-weight: 600; }
+  .clause .cl-meta { margin-left: auto; font-size: 11px; color: var(--faint); }
+  .clause .cl-text { color: var(--muted); font-size: 13px; margin-top: 6px; }
+  .context-note { font-size: 12.5px; color: var(--faint); margin: 14px 0 10px; padding-top: 12px; border-top: 1px dashed var(--border-soft); }
+
+  details.aux { margin-bottom: 16px; }
+  details.aux summary { cursor: pointer; color: var(--muted); font-size: 13px; padding: 6px 2px; }
+  .meta-foot { color: var(--faint); font-size: 12px; margin-top: 24px; font-family: var(--mono); }
+  .section-gap { height: 8px; }
 </style>
 </head>
 <body>
-<main>
-  <p class="eyebrow">NexusTiQ 24 · Track PS02</p>
-  <h1>Claim<span class="iq">IQ</span></h1>
-  <p class="tagline">Evidence review assistant for motor insurance claims — what the documents say, where they disagree, and what the policy supports.</p>
+<header>
+  <div class="brand">Claim<span class="iq">IQ</span></div>
+  <div class="brand-sub">Motor claims evidence review — NexusTiQ 24 · PS02</div>
+  <div id="health"><span class="dot warn"></span>connecting…</div>
+</header>
 
-  <div class="card">
-    <h2>System status</h2>
-    <div id="status"><div class="row"><span class="k">Backend</span><span>Checking…</span></div></div>
-  </div>
-
-  <div class="card">
-    <h2>What this tool does</h2>
-    <p class="note">
-      ClaimIQ reviews a claim form, repair estimate or FIR, and the customer's incident
-      description against the motor insurance policy. It checks completeness, surfaces
-      contradictions between documents, cites the policy clauses that apply, and recommends
-      approve / reject / request information — escalating to a human investigator whenever
-      the evidence does not support a confident conclusion.
-    </p>
-    <p class="note" style="margin-top:10px">The review workspace is under construction — sample claims and the full review flow arrive in upcoming phases.</p>
-  </div>
-</main>
-<footer>ClaimIQ · NexusTiQ 24 · PS02 — Insurance Claims Evidence Review Assistant</footer>
+<div class="layout">
+  <aside>
+    <div class="rail-label">Claims</div>
+    <div id="claim-list"><div class="empty-state" style="padding:30px 0">Loading claims…</div></div>
+  </aside>
+  <main id="main">
+    <div class="empty-state">
+      <h2>Select a claim to begin</h2>
+      <p>ClaimIQ reads the submitted documents, checks them against the policy,<br>
+      and shows what the evidence supports — with citations for every finding.</p>
+    </div>
+  </main>
+</div>
 
 <script>
-  const el = document.getElementById("status");
-  const row = (k, v) => `<div class="row"><span class="k">${k}</span><span>${v}</span></div>`;
-  fetch("/api/health")
-    .then(r => { if (!r.ok) throw new Error("HTTP " + r.status); return r.json(); })
-    .then(h => {
-      el.innerHTML =
-        row("Backend", `<span class="dot ok"></span>Running · v${h.version}`) +
-        row("Track", h.track) +
-        row("Gemini API key", h.gemini_configured
-          ? `<span class="dot ok"></span>Configured`
-          : `<span class="dot warn"></span>Not configured — set GEMINI_API_KEY`);
-    })
-    .catch(e => {
-      el.innerHTML = row("Backend", `<span class="dot err"></span>Unreachable (${e.message})`);
-    });
+"use strict";
+
+const state = { claims: [], selected: null, detail: null, reviews: {}, reviewing: false, error: null };
+
+const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const money = n => "₹" + Number(n).toLocaleString("en-IN");
+const fieldLabel = f => esc(String(f).replaceAll("_", " ").replace(/^./, c => c.toUpperCase()));
+
+const DOC_LABELS = {
+  claim_form: "Claim Form", repair_estimate: "Repair Estimate",
+  fir: "FIR / Police Complaint", incident_description: "Incident Description",
+};
+const CAT_LABELS = {
+  DOCUMENT_COMPLETENESS: "Document completeness", MISSING_INFORMATION: "Missing information",
+  CONTRADICTION: "Contradiction", POLICY_COVERAGE: "Coverage", POLICY_EXCLUSION: "Exclusion",
+  CLAIM_WINDOW: "Notification window", INSURED_VALUE: "Insured value", POLICY_PERIOD: "Policy period",
+  DRIVER_ELIGIBILITY: "Driver & licence", THEFT_REQUIREMENT: "Theft requirements",
+  OUT_OF_SCOPE: "Out of scope", UNCERTAINTY: "Uncertainty",
+};
+const DECISION_META = {
+  APPROVE: { word: "APPROVE", sub: "The reviewed evidence supports this claim.",
+    action: "Proceed on the basis of the reviewed evidence. All deterministic checks passed." },
+  REJECT: { word: "REJECT", sub: "An established policy violation was identified in the submitted evidence.",
+    action: "Record the violation with the cited evidence and policy clause below." },
+  REQUEST_INFORMATION: { word: "REQUEST INFORMATION", sub: "The claim cannot be assessed until specific missing evidence is provided.",
+    action: "Request the missing items listed below from the claimant." },
+  ESCALATE: { word: "ESCALATE", sub: "The evidence contains contradictions, uncertainty, or a case the policy does not clearly resolve.",
+    action: "Human investigation required — review the flagged items below." },
+};
+const docLabel = d => DOC_LABELS[d] || fieldLabel(d);
+
+// ---------------- API ----------------
+async function api(path, opts) {
+  const res = await fetch(path, opts);
+  let body = null;
+  try { body = await res.json(); } catch (e) { /* non-JSON */ }
+  if (!res.ok) {
+    const msg = body && (body.detail || body.error) ? (body.detail || body.error) : `Server error (HTTP ${res.status})`;
+    throw new Error(msg);
+  }
+  if (body === null) throw new Error("The server returned an empty or malformed response.");
+  return body;
+}
+
+async function loadHealth() {
+  const el = document.getElementById("health");
+  try {
+    const h = await api("/api/health");
+    el.innerHTML = h.gemini_configured
+      ? `<span class="dot ok"></span>${esc(h.gemini_model)} · ready`
+      : `<span class="dot warn"></span>GEMINI_API_KEY not set — reviews unavailable`;
+  } catch (e) {
+    el.innerHTML = `<span class="dot err"></span>backend unreachable`;
+  }
+}
+
+async function loadClaims() {
+  try {
+    const data = await api("/api/claims");
+    state.claims = data.claims;
+    renderClaimList();
+  } catch (e) {
+    document.getElementById("claim-list").innerHTML =
+      `<div class="err-banner">Could not load claims: ${esc(e.message)}</div>`;
+  }
+}
+
+async function selectClaim(id) {
+  if (state.reviewing) return;
+  state.selected = id; state.detail = null; state.error = null;
+  renderClaimList(); renderMain();
+  try {
+    state.detail = await api(`/api/claims/${encodeURIComponent(id)}`);
+  } catch (e) {
+    state.error = e.message;
+  }
+  renderMain();
+}
+
+async function runReview(id) {
+  if (state.reviewing) return;
+  state.reviewing = true; state.error = null;
+  renderMain(); startLoadingTicker();
+  try {
+    const result = await api(`/api/claims/${encodeURIComponent(id)}/review`, { method: "POST" });
+    state.reviews[id] = result;
+  } catch (e) {
+    state.error = e.message;
+  } finally {
+    state.reviewing = false; stopLoadingTicker();
+    renderClaimList(); renderMain();
+  }
+}
+
+// ---------------- loading ticker (truthful process descriptions) ----------------
+const LOADING_LINES = [
+  "Analyzing claim documents with Gemini…",
+  "Extracting evidence with source quotes…",
+  "Running deterministic policy checks…",
+  "Validating citations against the policy…",
+  "Preparing the grounded explanation…",
+];
+let tickerTimer = null, elapsedTimer = null, tickerStart = 0, tickerIdx = 0;
+function updateElapsed() {
+  const elapsed = document.getElementById("loading-elapsed");
+  if (elapsed) elapsed.textContent = `${Math.round((Date.now() - tickerStart) / 1000)}s elapsed — a first review can take up to ~30 seconds; repeat reviews are faster.`;
+}
+function startLoadingTicker() {
+  stopLoadingTicker();
+  tickerStart = Date.now(); tickerIdx = 0;
+  tickerTimer = setInterval(() => {
+    tickerIdx = Math.min(tickerIdx + 1, LOADING_LINES.length - 1);
+    const line = document.getElementById("loading-line");
+    if (line) line.textContent = LOADING_LINES[tickerIdx];
+  }, 3500);
+  elapsedTimer = setInterval(updateElapsed, 1000);
+}
+function stopLoadingTicker() {
+  if (tickerTimer) { clearInterval(tickerTimer); tickerTimer = null; }
+  if (elapsedTimer) { clearInterval(elapsedTimer); elapsedTimer = null; }
+}
+
+// ---------------- rendering ----------------
+function renderClaimList() {
+  const el = document.getElementById("claim-list");
+  el.innerHTML = state.claims.map(c => {
+    const review = state.reviews[c.claim_id];
+    const chip = review ? `<span class="decision-chip chip-${esc(review.decision)}">${esc(review.decision.replace("_", " "))}</span>` : "";
+    return `<button class="claim-item ${state.selected === c.claim_id ? "active" : ""}" onclick="selectClaim('${esc(c.claim_id)}')">
+      <div class="cid"><span>${esc(c.claim_id)} · <span class="type-tag">${esc(c.claim_type)}</span></span>${chip}</div>
+      <div class="ctitle">${esc(c.title)}</div>
+    </button>`;
+  }).join("");
+}
+
+function renderMain() {
+  const el = document.getElementById("main");
+  if (!state.selected) return; // keep welcome state
+  const summary = state.claims.find(c => c.claim_id === state.selected);
+  const parts = [];
+
+  parts.push(renderOverview(summary, state.detail));
+
+  if (state.error) {
+    parts.push(`<div class="err-banner"><strong>Review failed.</strong><br>${esc(state.error)}
+      <div style="margin-top:10px"><button class="rerun-btn" onclick="runReview('${esc(state.selected)}')">Try again</button></div></div>`);
+  }
+
+  if (state.reviewing) {
+    parts.push(`<div class="card loading-box">
+      <div class="spinner"></div>
+      <div>
+        <div class="loading-line" id="loading-line">${LOADING_LINES[0]}</div>
+        <div class="loading-sub" id="loading-elapsed">0s elapsed — a first review can take up to ~30 seconds; repeat reviews are faster.</div>
+      </div></div>`);
+  } else {
+    const review = state.reviews[state.selected];
+    if (review) parts.push(renderResult(review));
+    else if (!state.error) parts.push(`<div style="margin:20px 0 30px">
+      <button class="review-btn" onclick="runReview('${esc(state.selected)}')">Review claim</button>
+      <div style="color:var(--faint);font-size:12.5px;margin-top:8px">Extracts evidence, runs the deterministic policy checks, and builds a cited review.</div>
+    </div>`);
+  }
+  el.innerHTML = parts.join("");
+}
+
+function renderOverview(summary, detail) {
+  if (!summary) return "";
+  const s = detail && detail.policy_schedule;
+  const scheduleHtml = s ? `<div class="schedule-grid">
+      <div><div class="k">Policyholder</div><div class="v">${esc(s.policyholder)}</div></div>
+      <div><div class="k">Vehicle</div><div class="v">${esc(s.make_model)}</div></div>
+      <div><div class="k">Registration</div><div class="v" style="font-family:var(--mono)">${esc(s.registration_number)}</div></div>
+      <div><div class="k">Declared value</div><div class="v">${money(s.declared_vehicle_value)}</div></div>
+      <div><div class="k">Policy period</div><div class="v">${esc(s.policy_start)} → ${esc(s.policy_end)}</div></div>
+      <div><div class="k">Claim submitted</div><div class="v">${esc(summary.submitted_at)}</div></div>
+    </div>` : `<div style="color:var(--faint)">Loading claim details…</div>`;
+  const docsHtml = detail ? detail.documents_full.map(d => `
+    <details class="doc-viewer"><summary>${esc(docLabel(d.doc_type))} — ${esc(d.title)}</summary><pre>${esc(d.text)}</pre></details>
+  `).join("") : "";
+  return `<div class="card">
+    <div class="claim-head"><h1>${esc(summary.title)}</h1><span class="cid">${esc(summary.claim_id)}</span>
+      <span class="type-tag">${esc(summary.claim_type)} claim</span></div>
+    ${scheduleHtml}
+    <div class="doc-chips">${summary.documents.map(d => `<span class="doc-chip">${esc(docLabel(d))}</span>`).join("")}</div>
+    ${docsHtml}
+  </div>`;
+}
+
+function renderResult(r) {
+  const parts = [];
+  const meta = DECISION_META[r.decision] || { word: r.decision, sub: "", action: "" };
+
+  // 1. decision
+  parts.push(`<div class="decision-banner d-${esc(r.decision)}">
+    <div class="dword">${esc(meta.word)}</div>
+    <div class="dsub">${esc(meta.sub)}</div>
+    <div class="daction"><strong>Investigator action:</strong> ${esc(meta.action)}</div>
+  </div>`);
+
+  // 2. degraded-grounding notice
+  if (r.explanation_source !== "gemini") {
+    parts.push(`<div class="warn-strip">AI explanation unavailable — showing the deterministic review rationale. The decision itself is unaffected.</div>`);
+  }
+
+  // 3. grounded explanation / fallback
+  if (r.explanation) {
+    parts.push(`<div class="card">
+      <h3 class="explain-label">Grounded investigator summary <span class="source-tag">written by Gemini from validated evidence only — the decision is deterministic</span></h3>
+      <div class="explain-summary">${esc(r.explanation.summary)}</div>
+      <ul class="explain-points">${r.explanation.key_points.map(p => `<li>${esc(p)}</li>`).join("")}</ul>
+      ${r.explanation.investigator_note ? `<div class="inv-note"><strong>Investigator note:</strong> ${esc(r.explanation.investigator_note)}</div>` : ""}
+    </div>`);
+  } else {
+    parts.push(`<div class="card"><h3>Review rationale (deterministic)</h3>
+      <div class="explain-summary">${esc(r.decision_rationale)}</div></div>`);
+  }
+
+  // 4. missing information
+  const missing = r.findings.filter(f => f.effect === "NEEDS_INFORMATION");
+  if (missing.length) {
+    parts.push(`<div class="card missing-box"><h3>Information to request</h3><ul>
+      ${missing.map(f => `<li><strong>${esc(f.title)}</strong><br><span style="color:var(--muted);font-size:13px">${esc(f.explanation)}</span></li>`).join("")}
+    </ul></div>`);
+  }
+
+  // 5. contradictions
+  const contradictions = r.findings.filter(f => f.category === "CONTRADICTION");
+  if (contradictions.length) {
+    parts.push(`<div class="card"><h3>Contradictions in the evidence</h3>
+      ${contradictions.map(renderContradiction).join("")}</div>`);
+  }
+
+  // 6. findings — issues first, passed checks collapsed
+  const issues = r.findings.filter(f => f.severity !== "INFO");
+  const passed = r.findings.filter(f => f.severity === "INFO");
+  parts.push(`<div class="card"><h3>Findings</h3>
+    ${issues.length ? issues.map(renderFinding).join("") : `<div style="color:var(--faint);font-size:13px;margin-bottom:8px">No issues found — all checks passed.</div>`}
+    ${passed.length ? `<details class="aux"><summary>${passed.length} passed check${passed.length > 1 ? "s" : ""}</summary>
+      <div class="section-gap"></div>${passed.map(renderFinding).join("")}</details>` : ""}
+  </div>`);
+
+  // 7. policy clauses
+  parts.push(renderPolicy(r));
+
+  // 8. grounding warnings
+  if (r.warnings && r.warnings.length) {
+    parts.push(`<details class="aux"><summary>${r.warnings.length} grounding warning${r.warnings.length > 1 ? "s" : ""}</summary>
+      <div class="warn-strip" style="margin-top:8px"><ul>${r.warnings.map(w => `<li>${esc(w)}</li>`).join("")}</ul></div></details>`);
+  }
+
+  // 9. rerun + meta
+  parts.push(`<button class="rerun-btn" onclick="runReview('${esc(r.claim_id)}')">Re-run review</button>
+    <div class="meta-foot">engine v${esc(r.engine_version)} · extraction ${esc(r.extraction.model)} ·
+    ${r.timings ? `extraction ${esc(r.timings.extraction_s)}s · checks ${esc(r.timings.engine_s)}s · grounding ${esc(r.timings.grounding_s)}s · total ${esc(r.timings.total_s)}s` : ""}</div>`);
+  return parts.join("");
+}
+
+function renderContradiction(f) {
+  const docRefs = f.evidence.filter(e => e.source === "document");
+  return `<div class="contradiction">
+    <div class="c-head"><span>${esc(f.title)}</span><span class="c-status">⚠ CONFLICTED</span></div>
+    <div class="c-grid">${docRefs.map(e => `
+      <div class="c-cell">
+        <div class="c-doc">${esc(docLabel(e.doc_type))} · ${fieldLabel(e.field)}</div>
+        <div class="c-val">${esc(e.value)}</div>
+        ${e.quote ? `<div class="c-quote">"${esc(e.quote)}" ${verifiedMark(e)}</div>` : ""}
+      </div>`).join("")}
+    </div>
+    <div style="padding:9px 14px;border-top:1px solid var(--border-soft);font-size:12.5px;color:var(--muted)">${esc(f.explanation)}</div>
+  </div>`;
+}
+
+function verifiedMark(e) {
+  if (e.quote_verified === true) return `<span class="v-ok">✓ quote verified</span>`;
+  if (e.quote_verified === false) return `<span class="v-bad">⚠ quote not verified against source</span>`;
+  return "";
+}
+
+function renderFinding(f) {
+  const evidenceHtml = f.evidence.length ? `<div class="f-evidence">${f.evidence.map(e => `
+    <div class="ev-row">
+      <span class="ev-doc">${esc(e.source === "document" ? docLabel(e.doc_type) : e.source.replaceAll("_", " "))}</span>
+      · ${fieldLabel(e.field)}: <strong>${esc(e.value)}</strong>
+      ${e.quote ? `<br><span class="ev-quote">"${esc(e.quote)}"</span> ${verifiedMark(e)}` : ""}
+    </div>`).join("")}</div>` : "";
+  return `<div class="finding f-${esc(f.severity)}">
+    <div class="f-head">
+      <span class="sev sev-${esc(f.severity)}">${esc(f.severity)}</span>
+      <span class="f-cat">${esc(CAT_LABELS[f.category] || f.category)}</span>
+      ${f.clause_ids.map(c => `<a class="clause-chip" href="#clause-${esc(c)}">${esc(c)}</a>`).join(" ")}
+      <span class="f-id">${esc(f.finding_id)}</span>
+    </div>
+    <div class="f-title">${esc(f.title)}</div>
+    <div class="f-expl">${esc(f.explanation)}</div>
+    ${evidenceHtml}
+  </div>`;
+}
+
+function renderPolicy(r) {
+  const cited = new Map();
+  for (const c of r.policy_citations) {
+    if (!c.valid) continue;
+    if (!cited.has(c.clause_id)) cited.set(c.clause_id, { ...c, findings: [] });
+    cited.get(c.clause_id).findings.push(c.finding_id);
+  }
+  const related = (r.retrieved_context || []).filter(c => !c.already_cited);
+  if (!cited.size && !related.length) return "";
+  const citedHtml = [...cited.values()].map(c => `
+    <div class="clause" id="clause-${esc(c.clause_id)}">
+      <div class="cl-head"><span class="cl-id">${esc(c.clause_id)}</span><span class="cl-title">${esc(c.title)}</span>
+        <span class="cl-meta">cited by ${c.findings.map(esc).join(", ")}</span></div>
+      <div class="cl-text">${esc(c.text)}</div>
+    </div>`).join("");
+  const relatedHtml = related.length ? `
+    <div class="context-note">Related policy context — retrieved by semantic similarity for background reading.
+    These clauses are <strong>not</strong> part of the decision basis.</div>
+    ${related.map(c => `<div class="clause">
+      <div class="cl-head"><span class="cl-id">${esc(c.clause_id)}</span><span class="cl-title">${esc(c.title)}</span>
+        <span class="cl-meta">similarity ${esc(c.score)} · ${esc(c.reason)}</span></div>
+    </div>`).join("")}` : "";
+  return `<div class="card"><h3>Policy clauses</h3>${citedHtml}${relatedHtml}</div>`;
+}
+
+// ---------------- init ----------------
+loadHealth();
+loadClaims();
 </script>
 </body>
 </html>
