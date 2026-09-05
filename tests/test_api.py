@@ -190,6 +190,76 @@ def test_adjudication_record_leaks_no_test_metadata(offline_pipeline):
 
 
 # --------------------------------------------------------------------------
+# Phase 12: caseload board data, timeline, extraction provenance
+# --------------------------------------------------------------------------
+
+
+def test_claims_list_carries_everything_the_caseload_board_shows():
+    claims = client.get("/api/claims").json()["claims"]
+    assert len(claims) == 8
+    for c in claims:
+        assert c["claim_id"] and c["title"] and c["claim_type"] in {"accident", "theft"}
+        assert c["vehicle"]["make_model"] and c["vehicle"]["registration_number"]
+        assert c["documents"]  # the board shows how many documents are on file
+        # the board must have no way to show an outcome before a review runs
+        assert "decision" not in c
+        assert "expected_decision" not in c
+        assert "scenario" not in c
+
+
+@pytest.mark.parametrize("claim_id", sorted(EXPECTED_DECISIONS))
+def test_review_payload_reports_extraction_provenance(offline_pipeline, claim_id):
+    body = client.post(f"/api/claims/{claim_id}/review").json()
+    x = body["extraction"]
+    # the offline fixture builds evidence directly, so no sources are recorded
+    assert x["mode"] in {"cached", "live", "mixed", "unknown"}
+    assert x["cached_documents"] + x["live_documents"] == len(x["sources"])
+    assert set(x["sources"]) <= set(x["documents_extracted"])
+
+
+def test_extraction_provenance_modes_are_truthful():
+    from claimiq.api.routes import _extraction_provenance
+    from claimiq.extraction.schemas import ClaimEvidence
+
+    def ev(sources):
+        e = ClaimEvidence(claim_id="CLM-001", model="m")
+        e.document_sources = dict(sources)
+        return e
+
+    assert _extraction_provenance(ev({}))["mode"] == "unknown"
+    all_seed = _extraction_provenance(ev({"a": "seed_cache", "b": "runtime_cache"}))
+    assert all_seed["mode"] == "cached" and all_seed["cached_documents"] == 2
+    live = _extraction_provenance(ev({"a": "live", "b": "live"}))
+    assert live["mode"] == "live" and live["live_documents"] == 2
+    mixed = _extraction_provenance(ev({"a": "seed_cache", "b": "live"}))
+    assert mixed["mode"] == "mixed"
+    assert mixed["cached_documents"] == 1 and mixed["live_documents"] == 1
+
+
+@pytest.mark.parametrize("claim_id", sorted(EXPECTED_DECISIONS))
+def test_review_payload_contains_timeline(offline_pipeline, claim_id):
+    body = client.post(f"/api/claims/{claim_id}/review").json()
+    tl = body["timeline"]
+    assert tl is not None and tl["events"]
+    finding_ids = {f["finding_id"] for f in body["findings"]}
+    doc_types = set(body["extraction"]["documents_extracted"])
+    for ev in tl["events"]:
+        assert ev["date"] and ev["label"] and ev["source"]
+        assert set(ev["finding_ids"]) <= finding_ids
+        if ev["doc_type"]:
+            assert ev["doc_type"] in doc_types
+    assert [e["date"] for e in tl["events"]] == sorted(e["date"] for e in tl["events"])
+
+
+def test_timeline_keeps_contradictory_dates_apart(offline_pipeline):
+    tl = client.post("/api/claims/CLM-002/review").json()["timeline"]
+    incident = [e for e in tl["events"] if e["field"] == "incident_date"]
+    assert {e["date"] for e in incident} == {"2026-02-18", "2026-02-14"}
+    assert all(e["contested"] and e["finding_ids"] for e in incident)
+    assert "incident_date" in tl["contested_fields"]
+
+
+# --------------------------------------------------------------------------
 # Failure behaviour
 # --------------------------------------------------------------------------
 

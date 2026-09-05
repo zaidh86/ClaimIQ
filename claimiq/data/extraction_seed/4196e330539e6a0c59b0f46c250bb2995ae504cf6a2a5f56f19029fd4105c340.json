@@ -1,0 +1,110 @@
+{
+  "model": "gemini-3.5-flash-lite",
+  "prompt_version": "1",
+  "claim_id": "CLM-008",
+  "doc_type": "fir",
+  "facts": {
+    "claim_type": {
+      "value": "theft",
+      "quote": "Type: Theft of articles from vehicle",
+      "quote_verified": true
+    },
+    "policyholder_name": {
+      "value": "Tanvi Joshi",
+      "quote": "Complainant: Tanvi Joshi, R/o Judges Bungalow Road, Bodakdev, Ahmedabad",
+      "quote_verified": true
+    },
+    "vehicle_registration": {
+      "value": "GJ01RV8123",
+      "quote": "Kia Sonet car (Regn GJ01RV8123, white)",
+      "quote_verified": true
+    },
+    "vehicle_make_model": {
+      "value": "Kia Sonet",
+      "quote": "Kia Sonet car (Regn GJ01RV8123, white)",
+      "quote_verified": true
+    },
+    "incident_date": {
+      "value": "2026-07-19",
+      "quote": "Complainant states that on 19/07/2026 she parked her Kia Sonet car",
+      "quote_verified": true
+    },
+    "incident_time": {
+      "value": "1815 hrs",
+      "quote": "at about 1815 hrs and went inside the mall.",
+      "quote_verified": true
+    },
+    "incident_location": {
+      "value": "open parking area near Alpha One Mall, Vastrapur",
+      "quote": "open parking area near Alpha One Mall, Vastrapur",
+      "quote_verified": true
+    },
+    "document_date": {
+      "value": "2026-07-20",
+      "quote": "Date of Registration: 20/07/2026, 10:05 AM",
+      "quote_verified": true
+    },
+    "vehicle_received_at_garage_date": null,
+    "discovered_date": {
+      "value": "2026-07-19",
+      "quote": "On returning at about 2100 hrs she found that her laptop bag kept on the rear seat was missing.",
+      "quote_verified": true
+    },
+    "driver_name": {
+      "value": "Tanvi Joshi",
+      "quote": "Complainant states that on 19/07/2026 she parked her Kia Sonet car (Regn GJ01RV8123, white) in the open parking area",
+      "quote_verified": true
+    },
+    "driver_is_policyholder": {
+      "value": true,
+      "quote": "Complainant: Tanvi Joshi... Complainant states that on 19/07/2026 she parked her Kia Sonet car",
+      "quote_verified": false
+    },
+    "driver_licence_number": null,
+    "claimed_amount": null,
+    "claimed_amount_note": {
+      "value": "Dell Latitude 7440 laptop (approx Rs. 1,10,000) 2) laptop bag with charger, documents, misc (approx Rs. 14,000)",
+      "quote": "Stolen property: 1) Dell Latitude 7440 laptop (approx Rs. 1,10,000) 2) laptop bag with charger, documents, misc (approx Rs. 14,000)",
+      "quote_verified": true
+    },
+    "fir_number": {
+      "value": "445/2026",
+      "quote": "Complaint No: 445/2026",
+      "quote_verified": true
+    },
+    "fir_date": {
+      "value": "2026-07-20",
+      "quote": "Date of Registration: 20/07/2026, 10:05 AM",
+      "quote_verified": true
+    },
+    "police_station": {
+      "value": "Vastrapur, Ahmedabad City",
+      "quote": "Police Station: Vastrapur, Ahmedabad City",
+      "quote_verified": true
+    },
+    "stolen_items": {
+      "value": "Dell Latitude 7440 laptop, laptop bag with charger, documents, misc",
+      "quote": "Stolen property: 1) Dell Latitude 7440 laptop (approx Rs. 1,10,000) 2) laptop bag with charger, documents, misc (approx Rs. 14,000)",
+      "quote_verified": true
+    },
+    "vehicle_itself_stolen": {
+      "value": false,
+      "quote": "The car was found parked in the same place. No visible damage to the car, windows intact.",
+      "quote_verified": true
+    },
+    "keys_information": null,
+    "damage_description": {
+      "value": "No visible damage to the car, windows intact.",
+      "quote": "No visible damage to the car, windows intact.",
+      "quote_verified": true
+    },
+    "incident_summary": "Tanvi Joshi reported that her laptop bag containing a Dell Latitude laptop and other items was stolen from the rear seat of her parked Kia Sonet at Alpha One Mall on 19/07/2026. The car itself was not stolen and had no visible damage, though the complainant is unsure if it was locked.",
+    "risk_mentions": [
+      {
+        "risk_type": "vehicle_left_unlocked_or_keys_inside",
+        "quote": "Complainant is unsure whether the car was locked properly.",
+        "quote_verified": true
+      }
+    ]
+  }
+}

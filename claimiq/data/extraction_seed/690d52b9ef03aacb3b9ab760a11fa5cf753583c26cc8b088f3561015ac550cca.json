@@ -1,0 +1,60 @@
+{
+  "model": "gemini-3.5-flash-lite",
+  "prompt_version": "1",
+  "claim_id": "CLM-002",
+  "doc_type": "repair_estimate",
+  "facts": {
+    "claim_type": null,
+    "policyholder_name": {
+      "value": "Mr Arjun Mehta",
+      "quote": "Customer name: Mr Arjun Mehta",
+      "quote_verified": true
+    },
+    "vehicle_registration": {
+      "value": "DL8CAF5072",
+      "quote": "Regn: DL 8C AF 5072",
+      "quote_verified": true
+    },
+    "vehicle_make_model": {
+      "value": "Maruti Swift VXI",
+      "quote": "Vehicle: Maruti Swift VXI (white)",
+      "quote_verified": true
+    },
+    "incident_date": null,
+    "incident_time": null,
+    "incident_location": null,
+    "document_date": {
+      "value": "2026-02-19",
+      "quote": "Date of estimate: 19/02/2026",
+      "quote_verified": true
+    },
+    "vehicle_received_at_garage_date": {
+      "value": "2026-02-15",
+      "quote": "Vehicle received on: 15/02/2026 (towed-in, front-left & side damage)",
+      "quote_verified": true
+    },
+    "discovered_date": null,
+    "driver_name": null,
+    "driver_is_policyholder": null,
+    "driver_licence_number": null,
+    "claimed_amount": {
+      "value": 62000,
+      "quote": "ESTIMATE TOTAL: Rs. 62,000/-",
+      "quote_verified": true
+    },
+    "claimed_amount_note": null,
+    "fir_number": null,
+    "fir_date": null,
+    "police_station": null,
+    "stolen_items": null,
+    "vehicle_itself_stolen": null,
+    "keys_information": null,
+    "damage_description": {
+      "value": "Front bumper cracked, LH fender bent, LH headlamp broken, bonnet edge dent, LH doors deep scratches, radiator support pushed.",
+      "quote": "Damage observed: Front bumper cracked, LH fender bent, LH headlamp broken, bonnet edge dent, LH doors deep scratches, radiator support pushed.",
+      "quote_verified": true
+    },
+    "incident_summary": "Capital Motors Garage issued a repair estimate of Rs. 62,000 on 19/02/2026 for a Maruti Swift VXI that was received towed-in with front-left and side damage on 15/02/2026.",
+    "risk_mentions": []
+  }
+}

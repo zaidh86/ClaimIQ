@@ -302,6 +302,9 @@ class ClaimEvidence(BaseModel):
     )
     documents: dict[str, DocumentFacts] = Field(default_factory=dict)
     failed_documents: dict[str, str] = Field(default_factory=dict)
+    # doc_type -> "live" | "runtime_cache" | "seed_cache": where these facts
+    # came from, so extraction provenance can be reported truthfully.
+    document_sources: dict[str, str] = Field(default_factory=dict)
 
     def facts_for(self, doc_type: DocType) -> Optional[DocumentFacts]:
         return self.documents.get(doc_type.value)

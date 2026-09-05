@@ -1,0 +1,56 @@
+{
+  "model": "gemini-3.5-flash-lite",
+  "prompt_version": "1",
+  "claim_id": "CLM-005",
+  "doc_type": "repair_estimate",
+  "facts": {
+    "claim_type": null,
+    "policyholder_name": {
+      "value": "Ms. Meera Pillai",
+      "quote": "Customer: Ms. Meera Pillai",
+      "quote_verified": true
+    },
+    "vehicle_registration": {
+      "value": "TN10BX3391",
+      "quote": "Vehicle: Tata Nexon XZ (grey), Reg. TN10BX3391",
+      "quote_verified": true
+    },
+    "vehicle_make_model": {
+      "value": "Tata Nexon XZ",
+      "quote": "Vehicle: Tata Nexon XZ (grey), Reg. TN10BX3391",
+      "quote_verified": true
+    },
+    "incident_date": null,
+    "incident_time": null,
+    "incident_location": null,
+    "document_date": {
+      "value": "2026-04-26",
+      "quote": "Date: 26/04/2026",
+      "quote_verified": true
+    },
+    "vehicle_received_at_garage_date": null,
+    "discovered_date": null,
+    "driver_name": null,
+    "driver_is_policyholder": null,
+    "driver_licence_number": null,
+    "claimed_amount": {
+      "value": 54300,
+      "quote": "TOTAL: Rs. 54,300/-",
+      "quote_verified": true
+    },
+    "claimed_amount_note": null,
+    "fir_number": null,
+    "fir_date": null,
+    "police_station": null,
+    "stolen_items": null,
+    "vehicle_itself_stolen": null,
+    "keys_information": null,
+    "damage_description": {
+      "value": "Rear bumper assembly - replace, Tailgate - dent repair + paint, Tail lamp RH - replace, Rear parking sensor set",
+      "quote": "Rear impact damage:\n- Rear bumper assembly - replace ......... 12,400\n- Tailgate - dent repair + paint ......... 15,600\n- Tail lamp RH - replace ................. 6,900\n- Rear parking sensor set ................ 4,200",
+      "quote_verified": true
+    },
+    "incident_summary": "Marina Car Care issued a repair estimate totaling Rs. 54,300 for rear impact damage sustained by Ms. Meera Pillai's Tata Nexon XZ, with the vehicle having been inspected on 25/04/2026.",
+    "risk_mentions": []
+  }
+}

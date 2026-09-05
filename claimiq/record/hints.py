@@ -1,10 +1,14 @@
 """Deterministic resolution hints for contradiction findings.
 
-For each contradicted field, a fixed mapping names the additional records that
-could help an investigator establish the correct value. These are suggestions
-only: the system never says which conflicting value is correct, and nothing
-here feeds back into the decision — hints are derived FROM findings, after the
-decision is already made.
+The rule this module exists to keep: ClaimIQ identifies what evidence could
+resolve a contradiction. It does not decide which conflicting value is
+correct.
+
+For each contradicted field, a fixed mapping names the additional records an
+investigator could obtain. These are suggestions only — nothing here feeds
+back into the decision, since hints are derived FROM findings after the
+decision is already made, and a field with no mapping simply yields nothing
+rather than an invented suggestion.
 """
 
 from __future__ import annotations
@@ -27,21 +31,25 @@ RESOLUTION_HINTS: dict[str, list[str]] = {
         "The driving licence of the person stated to have been driving at the time",
         "The FIR or police record identifying the driver",
         "The garage intake record identifying who brought the vehicle in",
+        "The driver details recorded on the claim form and policy schedule",
     ],
     "driver_is_policyholder": [
         "The driving licence of the person stated to have been driving at the time",
         "The FIR or police record identifying the driver",
         "The garage intake record identifying who brought the vehicle in",
+        "The driver details recorded on the claim form and policy schedule",
     ],
     "vehicle_registration": [
         "The original Registration Certificate (RC) of the insured vehicle",
         "The garage job-card showing the registration of the vehicle actually received",
+        "The registration number recorded on the policy schedule",
         "A corrected document from whichever party recorded a different registration",
     ],
     # The trusted-schedule reference in a registration finding uses this field name.
     "registration_number": [
         "The original Registration Certificate (RC) of the insured vehicle",
         "The garage job-card showing the registration of the vehicle actually received",
+        "The registration number recorded on the policy schedule",
         "A corrected document from whichever party recorded a different registration",
     ],
     "claimed_amount": [

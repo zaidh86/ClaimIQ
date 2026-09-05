@@ -1,0 +1,56 @@
+{
+  "model": "gemini-3.5-flash-lite",
+  "prompt_version": "1",
+  "claim_id": "CLM-001",
+  "doc_type": "repair_estimate",
+  "facts": {
+    "claim_type": null,
+    "policyholder_name": {
+      "value": "Rohan Malhotra",
+      "quote": "Customer: Rohan Malhotra",
+      "quote_verified": true
+    },
+    "vehicle_registration": {
+      "value": "MH12QT4431",
+      "quote": "Vehicle: Hero Splendor+ , Reg no MH12QT4431",
+      "quote_verified": true
+    },
+    "vehicle_make_model": {
+      "value": "Hero Splendor+",
+      "quote": "Vehicle: Hero Splendor+ , Reg no MH12QT4431",
+      "quote_verified": true
+    },
+    "incident_date": null,
+    "incident_time": null,
+    "incident_location": null,
+    "document_date": {
+      "value": "2026-01-12",
+      "quote": "Date: 12/01/2026",
+      "quote_verified": true
+    },
+    "vehicle_received_at_garage_date": null,
+    "discovered_date": null,
+    "driver_name": null,
+    "driver_is_policyholder": null,
+    "driver_licence_number": null,
+    "claimed_amount": {
+      "value": 8450,
+      "quote": "TOTAL: Rs. 8,450/-",
+      "quote_verified": true
+    },
+    "claimed_amount_note": null,
+    "fir_number": null,
+    "fir_date": null,
+    "police_station": null,
+    "stolen_items": null,
+    "vehicle_itself_stolen": null,
+    "keys_information": null,
+    "damage_description": {
+      "value": "Front mudguard - replace, Headlamp assembly - replace, Handlebar - replace, Leg guard - straighten & weld, Front fork - alignment, Painting (front panels)",
+      "quote": "Work required (accident damage - front):\n1. Front mudguard - replace ............ 950\n2. Headlamp assembly - replace ......... 1,850\n3. Handlebar - replace ................. 1,100\n4. Leg guard - straighten & weld ....... 400\n5. Front fork - alignment .............. 1,500\n6. Labour charges ...................... 1,200\n7. Painting (front panels) ............. 1,450",
+      "quote_verified": true
+    },
+    "incident_summary": "Shree Sai Auto Works issued a repair estimate of Rs. 8,450 for front accident damage on Rohan Malhotra's Hero Splendor+ with registration MH12QT4431.",
+    "risk_mentions": []
+  }
+}

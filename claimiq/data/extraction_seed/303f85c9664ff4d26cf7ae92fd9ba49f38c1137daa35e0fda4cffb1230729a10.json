@@ -1,0 +1,84 @@
+{
+  "model": "gemini-3.5-flash-lite",
+  "prompt_version": "1",
+  "claim_id": "CLM-007",
+  "doc_type": "fir",
+  "facts": {
+    "claim_type": {
+      "value": "theft",
+      "quote": "Section 303(2) BNS (Theft)",
+      "quote_verified": true
+    },
+    "policyholder_name": {
+      "value": "Nikhil Rao",
+      "quote": "1. Complainant: Nikhil Rao, S/o Prakash Rao, R/o Flat 304, Sai Srinivasa Residency, Madhapur, Hyderabad.",
+      "quote_verified": true
+    },
+    "vehicle_registration": {
+      "value": "TS09EQ5566",
+      "quote": "TS09EQ5566",
+      "quote_verified": true
+    },
+    "vehicle_make_model": {
+      "value": "Honda Activa 6G",
+      "quote": "grey Honda Activa 6G scooter bearing Regn No. TS09EQ5566",
+      "quote_verified": true
+    },
+    "incident_date": {
+      "value": "2026-05-08",
+      "quote": "stilt parking of his apartment Sai Srinivasa Residency on the night of 08/05/2026 at about 2200 hrs.",
+      "quote_verified": true
+    },
+    "incident_time": {
+      "value": "2200 hrs",
+      "quote": "08/05/2026 at about 2200 hrs.",
+      "quote_verified": true
+    },
+    "incident_location": {
+      "value": "stilt parking of his apartment Sai Srinivasa Residency, Madhapur, Hyderabad",
+      "quote": "parked his grey Honda Activa 6G scooter bearing Regn No. TS09EQ5566 (Chassis No. ME4JFxxxxxx91277, Engine No. JF77Exxxxx214) in the stilt parking of his apartment Sai Srinivasa Residency",
+      "quote_verified": true
+    },
+    "document_date": {
+      "value": "2026-05-09",
+      "quote": "FIR No: 0187/2026        Date: 09/05/2026        Time: 11:20 AM",
+      "quote_verified": true
+    },
+    "vehicle_received_at_garage_date": null,
+    "discovered_date": {
+      "value": "2026-05-09",
+      "quote": "On 09/05/2026 at about 0730 hrs when he came down, the vehicle was found missing.",
+      "quote_verified": true
+    },
+    "driver_name": null,
+    "driver_is_policyholder": null,
+    "driver_licence_number": null,
+    "claimed_amount": null,
+    "claimed_amount_note": null,
+    "fir_number": {
+      "value": "0187/2026",
+      "quote": "FIR No: 0187/2026",
+      "quote_verified": true
+    },
+    "fir_date": {
+      "value": "2026-05-09",
+      "quote": "Date: 09/05/2026",
+      "quote_verified": true
+    },
+    "police_station": {
+      "value": "MADHAPUR",
+      "quote": "P.S.: MADHAPUR, Cyberabad Commissionerate",
+      "quote_verified": true
+    },
+    "stolen_items": null,
+    "vehicle_itself_stolen": {
+      "value": true,
+      "quote": "On 09/05/2026 at about 0730 hrs when he came down, the vehicle was found missing.",
+      "quote_verified": true
+    },
+    "keys_information": null,
+    "damage_description": null,
+    "incident_summary": "The complainant parked his Honda Activa scooter in his apartment's stilt parking on the night of 08/05/2026 and discovered it missing the next morning. An FIR for theft was registered at PS Madhapur.",
+    "risk_mentions": []
+  }
+}

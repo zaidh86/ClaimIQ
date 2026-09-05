@@ -1,0 +1,88 @@
+{
+  "model": "gemini-3.5-flash-lite",
+  "prompt_version": "1",
+  "claim_id": "CLM-007",
+  "doc_type": "claim_form",
+  "facts": {
+    "claim_type": {
+      "value": "theft",
+      "quote": "[X] Theft",
+      "quote_verified": true
+    },
+    "policyholder_name": {
+      "value": "Nikhil Rao",
+      "quote": "Name of Insured: Nikhil Rao",
+      "quote_verified": true
+    },
+    "vehicle_registration": {
+      "value": "TS09EQ5566",
+      "quote": "Vehicle Reg. No: TS 09 EQ 5566",
+      "quote_verified": true
+    },
+    "vehicle_make_model": {
+      "value": "Honda Activa 6G (grey)",
+      "quote": "Make/Model: Honda Activa 6G (grey)",
+      "quote_verified": true
+    },
+    "incident_date": {
+      "value": "2026-05-08",
+      "quote": "Date/Time vehicle last seen: 08/05/2026, around 10:00 PM",
+      "quote_verified": true
+    },
+    "incident_time": {
+      "value": "10:00 PM",
+      "quote": "Date/Time vehicle last seen: 08/05/2026, around 10:00 PM",
+      "quote_verified": true
+    },
+    "incident_location": {
+      "value": "Stilt parking, Sai Srinivasa Residency, Madhapur, Hyderabad",
+      "quote": "Place of Theft: Stilt parking, Sai Srinivasa Residency, Madhapur, Hyderabad",
+      "quote_verified": true
+    },
+    "document_date": {
+      "value": "2026-05-11",
+      "quote": "Date: 11/05/2026",
+      "quote_verified": true
+    },
+    "vehicle_received_at_garage_date": null,
+    "discovered_date": {
+      "value": "2026-05-09",
+      "quote": "Date/Time theft discovered: 09/05/2026, around 7:30 AM",
+      "quote_verified": true
+    },
+    "driver_name": null,
+    "driver_is_policyholder": null,
+    "driver_licence_number": null,
+    "claimed_amount": null,
+    "claimed_amount_note": {
+      "value": "As per IDV / declared value",
+      "quote": "Claimed amount: As per IDV / declared value",
+      "quote_verified": true
+    },
+    "fir_number": {
+      "value": "0187/2026",
+      "quote": "FIR No: 0187/2026",
+      "quote_verified": true
+    },
+    "fir_date": {
+      "value": "2026-05-09",
+      "quote": "Date of FIR: 09/05/2026",
+      "quote_verified": true
+    },
+    "police_station": {
+      "value": "Madhapur PS, Cyberabad",
+      "quote": "Police Station: Madhapur PS, Cyberabad",
+      "quote_verified": true
+    },
+    "stolen_items": null,
+    "vehicle_itself_stolen": {
+      "value": true,
+      "quote": "Scooter was parked at night in the apartment stilt parking. Next morning it was not there.",
+      "quote_verified": true
+    },
+    "keys_information": null,
+    "damage_description": null,
+    "incident_summary": "The policyholder reported that their scooter was parked overnight in the apartment stilt parking and was discovered missing the next morning. The theft was reported to the police the same morning.",
+    "risk_mentions": []
+  }
+}

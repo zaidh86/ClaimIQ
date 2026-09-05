@@ -1,0 +1,80 @@
+{
+  "model": "gemini-3.5-flash-lite",
+  "prompt_version": "1",
+  "claim_id": "CLM-001",
+  "doc_type": "incident_description",
+  "facts": {
+    "claim_type": {
+      "value": "accident",
+      "quote": "accident with my bike",
+      "quote_verified": true
+    },
+    "policyholder_name": {
+      "value": "Rohan Malhotra",
+      "quote": "Rohan Malhotra",
+      "quote_verified": true
+    },
+    "vehicle_registration": {
+      "value": "MH12QT4431",
+      "quote": "MH12QT4431",
+      "quote_verified": true
+    },
+    "vehicle_make_model": {
+      "value": "Splendor",
+      "quote": "Splendor, MH12QT4431",
+      "quote_verified": true
+    },
+    "incident_date": {
+      "value": "2026-01-10",
+      "quote": "10th Jan 2026",
+      "quote_verified": true
+    },
+    "incident_time": {
+      "value": "20:00 - 20:15",
+      "quote": "8-8:15 pm",
+      "quote_verified": true
+    },
+    "incident_location": {
+      "value": "Karve Road near Nal Stop",
+      "quote": "Karve Road near Nal Stop",
+      "quote_verified": true
+    },
+    "document_date": null,
+    "vehicle_received_at_garage_date": {
+      "value": "2026-01-12",
+      "quote": "Sunday (12th)",
+      "quote_verified": true
+    },
+    "discovered_date": null,
+    "driver_name": {
+      "value": "Rohan Malhotra",
+      "quote": "Rohan Malhotra",
+      "quote_verified": true
+    },
+    "driver_is_policyholder": {
+      "value": true,
+      "quote": "I want to report an accident with my bike... I was riding home",
+      "quote_verified": false
+    },
+    "driver_licence_number": null,
+    "claimed_amount": {
+      "value": 8450,
+      "quote": "Rs 8,450",
+      "quote_verified": true
+    },
+    "claimed_amount_note": null,
+    "fir_number": null,
+    "fir_date": null,
+    "police_station": null,
+    "stolen_items": null,
+    "vehicle_itself_stolen": null,
+    "keys_information": null,
+    "damage_description": {
+      "value": "front of the bike is damaged - mudguard, headlight and the handle got bent, and the fork also seems out of alignment",
+      "quote": "The front of the bike is damaged - mudguard, headlight and the handle got bent, and the fork also seems out of alignment.",
+      "quote_verified": true
+    },
+    "incident_summary": "Rohan Malhotra was riding his Splendor motorcycle on Karve Road when he braked hard after an auto rickshaw stopped suddenly. The front wheel slipped on gravel, causing the bike to hit the road divider and damage the front end.",
+    "risk_mentions": []
+  }
+}

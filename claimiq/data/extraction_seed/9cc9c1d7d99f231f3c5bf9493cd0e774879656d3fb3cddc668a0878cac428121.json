@@ -1,0 +1,98 @@
+{
+  "model": "gemini-3.5-flash-lite",
+  "prompt_version": "1",
+  "claim_id": "CLM-008",
+  "doc_type": "incident_description",
+  "facts": {
+    "claim_type": {
+      "value": "theft",
+      "quote": "Claim - theft from my car GJ01RV8123",
+      "quote_verified": true
+    },
+    "policyholder_name": {
+      "value": "Tanvi Joshi",
+      "quote": "Tanvi Joshi",
+      "quote_verified": true
+    },
+    "vehicle_registration": {
+      "value": "GJ01RV8123",
+      "quote": "GJ01RV8123",
+      "quote_verified": true
+    },
+    "vehicle_make_model": {
+      "value": "Sonet",
+      "quote": "I parked my Sonet in the open parking",
+      "quote_verified": true
+    },
+    "incident_date": {
+      "value": "2026-07-19",
+      "quote": "On 19th July evening I parked my Sonet",
+      "quote_verified": true
+    },
+    "incident_time": {
+      "value": "18:15",
+      "quote": "around 6:15 pm and went for shopping and dinner.",
+      "quote_verified": true
+    },
+    "incident_location": {
+      "value": "open parking near Alpha One mall",
+      "quote": "open parking near Alpha One mall",
+      "quote_verified": true
+    },
+    "document_date": null,
+    "vehicle_received_at_garage_date": null,
+    "discovered_date": {
+      "value": "2026-07-19",
+      "quote": "When I came back around 9 pm, my laptop bag which I had kept on the back seat was gone.",
+      "quote_verified": true
+    },
+    "driver_name": null,
+    "driver_is_policyholder": null,
+    "driver_licence_number": null,
+    "claimed_amount": {
+      "value": 124000,
+      "quote": "total approx Rs 1,24,000",
+      "quote_verified": true
+    },
+    "claimed_amount_note": null,
+    "fir_number": {
+      "value": "445/2026",
+      "quote": "no. 445/2026, Vastrapur PS",
+      "quote_verified": true
+    },
+    "fir_date": {
+      "value": "2026-07-20",
+      "quote": "I filed an online police complaint the next morning (no. 445/2026, Vastrapur PS).",
+      "quote_verified": true
+    },
+    "police_station": {
+      "value": "Vastrapur PS",
+      "quote": "Vastrapur PS",
+      "quote_verified": true
+    },
+    "stolen_items": {
+      "value": "laptop bag (Dell Latitude)",
+      "quote": "my laptop bag which I had kept on the back seat was gone.",
+      "quote_verified": true
+    },
+    "vehicle_itself_stolen": {
+      "value": false,
+      "quote": "The car itself is absolutely fine and with me.",
+      "quote_verified": true
+    },
+    "keys_information": null,
+    "damage_description": {
+      "value": "no damage at all - no broken glass, nothing, not a scratch",
+      "quote": "there is no damage at all - no broken glass, nothing, not a scratch.",
+      "quote_verified": true
+    },
+    "incident_summary": "The policyholder parked her car at a mall parking lot on the evening of 19th July 2026. Upon returning, she discovered that her laptop bag left on the back seat was stolen without any signs of forced entry or vehicle damage.",
+    "risk_mentions": [
+      {
+        "risk_type": "vehicle_left_unlocked_or_keys_inside",
+        "quote": "Honestly I am not 100% sure if I locked it when I left, I usually press the lock button while walking away but that day I was on a call. Maybe someone opened it and locked it back, or maybe it was unlocked, I don't know.",
+        "quote_verified": true
+      }
+    ]
+  }
+}

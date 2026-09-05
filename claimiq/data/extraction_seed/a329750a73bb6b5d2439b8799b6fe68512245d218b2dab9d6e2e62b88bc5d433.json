@@ -1,0 +1,78 @@
+{
+  "model": "gemini-3.5-flash-lite",
+  "prompt_version": "1",
+  "claim_id": "CLM-004",
+  "doc_type": "incident_description",
+  "facts": {
+    "claim_type": null,
+    "policyholder_name": {
+      "value": "Devraj Kulkarni",
+      "quote": "Statement - claim for KA03HF2210 (Devraj Kulkarni)",
+      "quote_verified": true
+    },
+    "vehicle_registration": {
+      "value": "KA03HF2210",
+      "quote": "Statement - claim for KA03HF2210 (Devraj Kulkarni)",
+      "quote_verified": true
+    },
+    "vehicle_make_model": null,
+    "incident_date": {
+      "value": "2026-02-21",
+      "quote": "On Saturday 21st Feb night I was returning home",
+      "quote_verified": true
+    },
+    "incident_time": {
+      "value": "23:15",
+      "quote": "I left the venue around 11.15-11.30 pm.",
+      "quote_verified": true
+    },
+    "incident_location": {
+      "value": "ORR service road near Marathahalli",
+      "quote": "On the ORR service road near Marathahalli there is a sharpish left",
+      "quote_verified": true
+    },
+    "document_date": {
+      "value": "2026-02-24",
+      "quote": "24/02/2026",
+      "quote_verified": true
+    },
+    "vehicle_received_at_garage_date": null,
+    "discovered_date": null,
+    "driver_name": {
+      "value": "Devraj Kulkarni",
+      "quote": "Devraj Kulkarni",
+      "quote_verified": true
+    },
+    "driver_is_policyholder": {
+      "value": true,
+      "quote": "Statement - claim for KA03HF2210 (Devraj Kulkarni)",
+      "quote_verified": true
+    },
+    "driver_licence_number": null,
+    "claimed_amount": {
+      "value": 38700,
+      "quote": "Their estimate is Rs 38,700 which is attached.",
+      "quote_verified": true
+    },
+    "claimed_amount_note": null,
+    "fir_number": null,
+    "fir_date": null,
+    "police_station": null,
+    "stolen_items": null,
+    "vehicle_itself_stolen": null,
+    "keys_information": null,
+    "damage_description": {
+      "value": "The bike's tank got dented on the right side, the front fork is bent and the headlamp broke.",
+      "quote": "The bike's tank got dented on the right side, the front fork is bent and the headlamp broke.",
+      "quote_verified": true
+    },
+    "incident_summary": "The policyholder was riding home from a wedding reception late at night and the bike slipped on loose mud near a sharp turn, crashing into a metal barrier. The vehicle sustained damage to the tank, front fork, and headlamp.",
+    "risk_mentions": [
+      {
+        "risk_type": "alcohol_or_drugs",
+        "quote": "I had two-three drinks at the reception over the evening but I was feeling fine to ride.",
+        "quote_verified": true
+      }
+    ]
+  }
+}

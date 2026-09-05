@@ -102,27 +102,39 @@ def _display_value(value: object) -> str:
     return str(value)
 
 
-def _flagged_fields(review: ClaimReview) -> tuple[dict[str, list[str]], dict[str, list[str]]]:
-    """field -> finding ids, for conflict findings and needs-info subjects."""
+def _add_field(target: dict[str, list[str]], field: str, finding: Finding) -> None:
+    field = _FIELD_ALIASES.get(field, field)
+    target.setdefault(field, [])
+    if finding.finding_id not in target[field]:
+        target[field].append(finding.finding_id)
+
+
+def conflicted_fields(review: ClaimReview) -> dict[str, list[str]]:
+    """field -> ids of the contradiction findings that reference it.
+
+    The single source of truth for "this fact is contested", shared by the
+    evidence matrix and the timeline so neither can disagree with the engine.
+    """
     conflicts: dict[str, list[str]] = {}
-    needs_info: dict[str, list[str]] = {}
-
-    def _add(target: dict[str, list[str]], field: str, finding: Finding) -> None:
-        field = _FIELD_ALIASES.get(field, field)
-        target.setdefault(field, [])
-        if finding.finding_id not in target[field]:
-            target[field].append(finding.finding_id)
-
     for f in review.findings:
-        if f.category == FindingCategory.CONTRADICTION:
-            for ref in f.evidence:
-                if ref.field != "risk_mention":
-                    _add(conflicts, ref.field, f)
-        if f.effect == FindingEffect.NEEDS_INFORMATION:
-            subject = _RULE_SUBJECT_FIELDS.get(f.rule)
-            if subject:
-                _add(needs_info, subject, f)
-    return conflicts, needs_info
+        if f.category != FindingCategory.CONTRADICTION:
+            continue
+        for ref in f.evidence:
+            if ref.field != "risk_mention":
+                _add_field(conflicts, ref.field, f)
+    return conflicts
+
+
+def needs_information_fields(review: ClaimReview) -> dict[str, list[str]]:
+    """field -> ids of needs-information findings whose subject it is."""
+    needs_info: dict[str, list[str]] = {}
+    for f in review.findings:
+        if f.effect != FindingEffect.NEEDS_INFORMATION:
+            continue
+        subject = _RULE_SUBJECT_FIELDS.get(f.rule)
+        if subject:
+            _add_field(needs_info, subject, f)
+    return needs_info
 
 
 def build_evidence_matrix(
@@ -136,7 +148,8 @@ def build_evidence_matrix(
         )
         for d in bundle.documents
     ]
-    conflicts, needs_info = _flagged_fields(review)
+    conflicts = conflicted_fields(review)
+    needs_info = needs_information_fields(review)
 
     # Row order follows the extraction schema's field order (a stable,
     # sensible reading order); summaries and risk mentions are not facts rows.

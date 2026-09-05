@@ -1,0 +1,84 @@
+{
+  "model": "gemini-3.5-flash-lite",
+  "prompt_version": "1",
+  "claim_id": "CLM-004",
+  "doc_type": "claim_form",
+  "facts": {
+    "claim_type": {
+      "value": "accident",
+      "quote": "Type of Claim: [X] Accident Damage   [ ] Theft",
+      "quote_verified": true
+    },
+    "policyholder_name": {
+      "value": "Devraj Kulkarni",
+      "quote": "Name of Insured: Devraj Kulkarni",
+      "quote_verified": true
+    },
+    "vehicle_registration": {
+      "value": "KA03HF2210",
+      "quote": "Vehicle Reg. No: KA03HF2210",
+      "quote_verified": true
+    },
+    "vehicle_make_model": {
+      "value": "Royal Enfield Classic 350",
+      "quote": "Make/Model: Royal Enfield Classic 350",
+      "quote_verified": true
+    },
+    "incident_date": {
+      "value": "2026-02-21",
+      "quote": "Date of Accident: 21/02/2026",
+      "quote_verified": true
+    },
+    "incident_time": {
+      "value": "approx 11:45 PM",
+      "quote": "Time: approx 11:45 PM",
+      "quote_verified": true
+    },
+    "incident_location": {
+      "value": "ORR service road, Marathahalli, Bengaluru",
+      "quote": "Place of Accident: ORR service road, Marathahalli, Bengaluru",
+      "quote_verified": true
+    },
+    "document_date": {
+      "value": "2026-02-24",
+      "quote": "Date: 24/02/2026",
+      "quote_verified": true
+    },
+    "vehicle_received_at_garage_date": null,
+    "discovered_date": null,
+    "driver_name": {
+      "value": "Devraj Kulkarni",
+      "quote": "Name of Insured: Devraj Kulkarni",
+      "quote_verified": true
+    },
+    "driver_is_policyholder": {
+      "value": true,
+      "quote": "Who was driving at the time: Self",
+      "quote_verified": true
+    },
+    "driver_licence_number": {
+      "value": "KA03 20150087661",
+      "quote": "Driving Licence No: KA03 20150087661",
+      "quote_verified": true
+    },
+    "claimed_amount": {
+      "value": 38700,
+      "quote": "Estimated repair cost: Rs. 38,700/-",
+      "quote_verified": true
+    },
+    "claimed_amount_note": null,
+    "fir_number": null,
+    "fir_date": null,
+    "police_station": null,
+    "stolen_items": null,
+    "vehicle_itself_stolen": null,
+    "keys_information": null,
+    "damage_description": {
+      "value": "Front and right side of the bike damaged.",
+      "quote": "Front and right side of the bike damaged.",
+      "quote_verified": true
+    },
+    "incident_summary": "The policyholder lost control of their Royal Enfield motorcycle at a turn on the service road and hit the metal road barrier, causing damage to the front and right side of the bike.",
+    "risk_mentions": []
+  }
+}

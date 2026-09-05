@@ -24,6 +24,7 @@ from claimiq.rag.grounded import ground_review
 from claimiq.record.correspondence import build_correspondence
 from claimiq.record.hints import hints_for_review
 from claimiq.record.matrix import build_evidence_matrix
+from claimiq.record.timeline import build_timeline
 
 logger = logging.getLogger(__name__)
 
@@ -70,6 +71,37 @@ def _claim_summary(bundle: ClaimBundle) -> dict:
 def list_claims() -> dict:
     claims = sorted(load_claims().values(), key=lambda b: b.claim_id)
     return {"claims": [_claim_summary(b) for b in claims]}
+
+
+CACHED_SOURCES = ("seed_cache", "runtime_cache")
+
+
+def _extraction_provenance(evidence) -> dict:
+    """Where this claim's document facts came from — cache or a live call.
+
+    Describes document extraction only. Grounding (retrieval and the narrative
+    explanation) is a separate Gemini step, reported by explanation_source.
+    """
+    sources = dict(evidence.document_sources)
+    cached = sum(1 for s in sources.values() if s in CACHED_SOURCES)
+    live = sum(1 for s in sources.values() if s == "live")
+    if sources and cached == len(sources):
+        mode = "cached"
+    elif sources and live == len(sources):
+        mode = "live"
+    elif sources:
+        mode = "mixed"
+    else:
+        mode = "unknown"
+    return {
+        "model": evidence.model,
+        "documents_extracted": sorted(evidence.documents),
+        "failed_documents": evidence.failed_documents,
+        "sources": sources,
+        "cached_documents": cached,
+        "live_documents": live,
+        "mode": mode,
+    }
 
 
 def _get_bundle_or_404(claim_id: str) -> ClaimBundle:
@@ -158,6 +190,7 @@ def run_review(claim_id: str) -> dict:
     correspondence = None
     resolution_hints: dict = {}
     evidence_matrix = None
+    timeline = None
     try:
         correspondence = build_correspondence(
             bundle, review, grounded.document_citations, grounded.policy_citations
@@ -166,6 +199,7 @@ def run_review(claim_id: str) -> dict:
         evidence_matrix = build_evidence_matrix(bundle, evidence, review).model_dump(
             mode="json"
         )
+        timeline = build_timeline(bundle, evidence, review).model_dump(mode="json")
     except Exception:  # pragma: no cover - defensive; record building is pure
         logger.exception("adjudication record build failed for %s", bundle.claim_id)
         payload["warnings"].append(
@@ -192,10 +226,7 @@ def run_review(claim_id: str) -> dict:
         "correspondence": correspondence,
         "resolution_hints": resolution_hints,
         "evidence_matrix": evidence_matrix,
-        "extraction": {
-            "model": evidence.model,
-            "documents_extracted": sorted(evidence.documents),
-            "failed_documents": evidence.failed_documents,
-        },
+        "timeline": timeline,
+        "extraction": _extraction_provenance(evidence),
         "timings": timings,
     }

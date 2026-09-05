@@ -1,0 +1,84 @@
+{
+  "model": "gemini-3.5-flash-lite",
+  "prompt_version": "1",
+  "claim_id": "CLM-003",
+  "doc_type": "claim_form",
+  "facts": {
+    "claim_type": {
+      "value": "accident",
+      "quote": "Type of Claim: [X] Accident Damage   [ ] Theft",
+      "quote_verified": true
+    },
+    "policyholder_name": {
+      "value": "Sana Qureshi",
+      "quote": "Name of Insured: Sana Qureshi",
+      "quote_verified": true
+    },
+    "vehicle_registration": {
+      "value": "KA05MN7788",
+      "quote": "Vehicle Reg. No: KA 05 MN 7788",
+      "quote_verified": true
+    },
+    "vehicle_make_model": {
+      "value": "Hyundai i20 Sportz",
+      "quote": "Make/Model: Hyundai i20 Sportz",
+      "quote_verified": true
+    },
+    "incident_date": {
+      "value": "2026-03-02",
+      "quote": "Date of Accident: 02/03/2026",
+      "quote_verified": true
+    },
+    "incident_time": {
+      "value": "7:30 pm",
+      "quote": "Time: about 7:30 pm",
+      "quote_verified": true
+    },
+    "incident_location": {
+      "value": "parking lane, 100 Feet Road, Indiranagar, Bengaluru",
+      "quote": "Place of Accident: parking lane, 100 Feet Road, Indiranagar, Bengaluru",
+      "quote_verified": true
+    },
+    "document_date": {
+      "value": "2026-03-05",
+      "quote": "Date: 05/03/2026",
+      "quote_verified": true
+    },
+    "vehicle_received_at_garage_date": null,
+    "discovered_date": null,
+    "driver_name": {
+      "value": "Self",
+      "quote": "Who was driving at the time: Self",
+      "quote_verified": true
+    },
+    "driver_is_policyholder": {
+      "value": true,
+      "quote": "Name of Insured: Sana Qureshi\n... Who was driving at the time: Self",
+      "quote_verified": false
+    },
+    "driver_licence_number": {
+      "value": "KA0520200155803",
+      "quote": "Driving Licence No: KA05 20200155803",
+      "quote_verified": true
+    },
+    "claimed_amount": null,
+    "claimed_amount_note": {
+      "value": "to follow - awaiting garage estimate",
+      "quote": "Estimated repair cost: (to follow - awaiting garage estimate)",
+      "quote_verified": true
+    },
+    "fir_number": null,
+    "fir_date": null,
+    "police_station": null,
+    "stolen_items": null,
+    "vehicle_itself_stolen": null,
+    "keys_information": null,
+    "damage_description": {
+      "value": "Rear bumper and tail lamp damaged.",
+      "quote": "Rear bumper and tail lamp damaged.",
+      "quote_verified": true
+    },
+    "incident_summary": "While reversing out of a parking lane on 100 Feet Road, Indiranagar, Bengaluru, the rear of the car scraped against a concrete pillar, causing damage to the rear bumper and tail lamp.",
+    "risk_mentions": []
+  }
+}

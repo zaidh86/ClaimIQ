@@ -1,0 +1,60 @@
+{
+  "model": "gemini-3.5-flash-lite",
+  "prompt_version": "1",
+  "claim_id": "CLM-006",
+  "doc_type": "repair_estimate",
+  "facts": {
+    "claim_type": null,
+    "policyholder_name": {
+      "value": "Farhan Ansari",
+      "quote": "Customer: Farhan Ansari",
+      "quote_verified": true
+    },
+    "vehicle_registration": {
+      "value": "MH04GT0092",
+      "quote": "Vehicle: Honda City SV 2016, White, Regn MH04GT0092",
+      "quote_verified": true
+    },
+    "vehicle_make_model": {
+      "value": "Honda City SV 2016",
+      "quote": "Vehicle: Honda City SV 2016, White, Regn MH04GT0092",
+      "quote_verified": true
+    },
+    "incident_date": null,
+    "incident_time": null,
+    "incident_location": null,
+    "document_date": {
+      "value": "2026-06-09",
+      "quote": "Date: 09/06/2026",
+      "quote_verified": true
+    },
+    "vehicle_received_at_garage_date": {
+      "value": "2026-06-08",
+      "quote": "Vehicle towed in on 08/06/2026 - not driveable.",
+      "quote_verified": true
+    },
+    "discovered_date": null,
+    "driver_name": null,
+    "driver_is_policyholder": null,
+    "driver_licence_number": null,
+    "claimed_amount": {
+      "value": 385600,
+      "quote": "ESTIMATE TOTAL: Rs. 3,85,600/-",
+      "quote_verified": true
+    },
+    "claimed_amount_note": null,
+    "fir_number": null,
+    "fir_date": null,
+    "police_station": null,
+    "stolen_items": null,
+    "vehicle_itself_stolen": null,
+    "keys_information": null,
+    "damage_description": {
+      "value": "Front-end collision damage (under-run) including replacement of bonnet, front bumper + grille, headlamp assy LH + RH, radiator + condenser + fan, AC compressor, front cross member / structural, airbag set (driver + pass) + sensors, dashboard assy, windshield, along with denting/fitting labour and painting.",
+      "quote": "Front-end collision damage (under-run):\n1. Bonnet - replace ........................ 18,500\n2. Front bumper + grille ................... 21,000\n3. Headlamp assy LH + RH ................... 38,000\n4. Radiator + condenser + fan .............. 46,500\n5. AC compressor ........................... 32,000\n6. Front cross member / structural ......... 27,600\n7. Airbag set (driver + pass) + sensors .... 88,000\n8. Dashboard assy .......................... 45,000\n9. Windshield .............................. 9,800\n10. Labour (denting/fitting) ............... 34,200\n11. Painting ............................... 25,000",
+      "quote_verified": true
+    },
+    "incident_summary": "Ridhi Sidhi Auto Garage issued an estimate totalling Rs. 3,85,600 for heavy front-end collision damage to a Honda City vehicle owned by Farhan Ansari after it was towed in not driveable on 08/06/2026.",
+    "risk_mentions": []
+  }
+}

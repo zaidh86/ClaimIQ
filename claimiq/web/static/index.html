@@ -311,6 +311,61 @@
   .scope-outside li { color: var(--muted); font-size: 12.5px; margin: 3px 0 3px 16px; }
   .scope-outside p { color: var(--faint); font-size: 12px; margin-top: 8px; }
 
+  /* ---------- Phase 12: caseload board ---------- */
+  .board-head { display: flex; align-items: baseline; gap: 14px; flex-wrap: wrap; margin-bottom: 4px; }
+  .board-head h2 { font-size: 21px; letter-spacing: -0.01em; }
+  .board-sub { color: var(--accent); font-weight: 600; font-size: 13px; }
+  .board-meta { color: var(--faint); font-size: 12.5px; margin: 2px 0 14px; }
+  .board-actions { display: flex; gap: 8px; align-items: center; flex-wrap: wrap; margin-bottom: 14px; }
+  .batch-status { color: var(--muted); font-size: 12.5px; }
+  table.caseload { border-collapse: collapse; width: 100%; font-size: 13px; }
+  table.caseload th {
+    text-align: left; font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase;
+    color: var(--faint); font-weight: 600; padding: 0 12px 7px; border-bottom: 1px solid var(--border);
+  }
+  table.caseload td { padding: 10px 12px; border-bottom: 1px solid var(--border-soft); vertical-align: top; }
+  table.caseload tr.cl-row:hover td { background: var(--panel-2); }
+  table.caseload tr.cl-row.active td { background: var(--panel-2); }
+  table.caseload tr.cl-row.active td:first-child { box-shadow: inset 2px 0 0 var(--accent); }
+  .cl-name { font-weight: 600; }
+  .cl-name .cl-open { background: none; border: none; padding: 0; color: var(--text); font: inherit; font-weight: 600; cursor: pointer; text-align: left; }
+  .cl-name .cl-open:hover { color: var(--focus); }
+  .cl-title { color: var(--muted); font-size: 12.5px; margin-top: 2px; max-width: 330px; }
+  .cl-vehicle { color: var(--muted); }
+  .cl-vehicle .cl-reg { font-family: var(--mono); font-size: 11.5px; color: var(--faint); }
+  .cl-docs { color: var(--muted); font-size: 12.5px; }
+  .cl-state { font-size: 12.5px; color: var(--faint); white-space: nowrap; }
+  .cl-state .st-word { font-weight: 700; }
+  .st-APPROVE { color: var(--approve); } .st-REJECT { color: var(--reject); }
+  .st-REQUEST_INFORMATION { color: var(--info-amber); } .st-ESCALATE { color: var(--escalate); }
+  .cl-act { text-align: right; white-space: nowrap; }
+  .cl-btn {
+    background: transparent; color: var(--text); border: 1px solid var(--border);
+    border-radius: 7px; padding: 5px 13px; cursor: pointer; font-size: 12.5px;
+  }
+  .cl-btn:hover { border-color: var(--accent); color: var(--accent); }
+  .cl-btn.primary { background: var(--accent); color: #08110c; border-color: var(--accent); font-weight: 600; }
+  .cl-btn.primary:hover { filter: brightness(1.08); color: #08110c; }
+  .cl-btn:disabled { opacity: 0.4; cursor: not-allowed; }
+  .cl-working { color: var(--accent); font-size: 12.5px; }
+  .cl-err { color: var(--reject); font-size: 12px; margin-top: 3px; }
+  .back-btn {
+    background: transparent; border: 1px solid var(--border); color: var(--muted);
+    border-radius: 7px; padding: 5px 12px; cursor: pointer; font-size: 12.5px; margin-bottom: 14px;
+  }
+  .back-btn:hover { color: var(--text); border-color: var(--faint); }
+
+  /* ---------- Phase 12: timeline ---------- */
+  .tl-row { display: flex; gap: 14px; padding: 9px 0; border-top: 1px solid var(--border-soft); }
+  .tl-row:first-of-type { border-top: none; }
+  .tl-date { flex: none; width: 104px; font-weight: 700; font-size: 13px; font-variant-numeric: tabular-nums; }
+  .tl-body { flex: 1 1 auto; min-width: 0; }
+  .tl-label { font-size: 13.5px; }
+  .tl-src { color: var(--faint); font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; margin-top: 1px; }
+  .tl-row.contested .tl-date { color: var(--reject); }
+  .tl-badge { font-size: 10px; font-weight: 700; padding: 1px 6px; border-radius: 4px; background: rgba(229,83,75,0.16); color: var(--reject); border: none; cursor: pointer; margin-left: 6px; }
+  .tl-note { margin-top: 12px; padding-top: 10px; border-top: 1px dashed var(--border-soft); color: var(--muted); font-size: 12.5px; }
+
   /* ---------- Phase 11: adjudication record ---------- */
   .record-actions { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 12px; }
   .record-paper { background: var(--panel-2); border: 1px solid var(--border); border-radius: 8px; padding: 20px 24px; max-width: 780px; }
@@ -380,17 +435,7 @@
     <div class="welcome">
       <h2>ClaimIQ — Investigator Workbench</h2>
       <p style="color:var(--accent);font-weight:600;margin:2px 0 10px">Gemini reads. Python decides.</p>
-      <p class="lead">Review claim evidence against the policy, trace every finding to its source,
-      and escalate the cases the system cannot safely resolve.</p>
-      <div class="subhead" style="margin-top:0">How to use this workspace</div>
-      <div class="steps" style="margin-top:10px">
-        <div class="step"><span class="n">1</span><div><div class="t">Select a claim</div><div class="d">Eight sample claims cover clean, contradictory, incomplete, excluded and out-of-scope cases.</div></div></div>
-        <div class="step"><span class="n">2</span><div><div class="t">Review the evidence</div><div class="d">Every extracted fact carries a verbatim quote from the submitted documents.</div></div></div>
-        <div class="step"><span class="n">3</span><div><div class="t">Follow findings to their sources</div><div class="d">Click a verified quote to see it highlighted in the original document.</div></div></div>
-        <div class="step"><span class="n">4</span><div><div class="t">Inspect the policy reasoning</div><div class="d">Each finding names the policy clause and rule value it was checked against.</div></div></div>
-        <div class="step"><span class="n">5</span><div><div class="t">Confirm the recommended disposition</div><div class="d">Approve, reject, request specific information — or escalate for human review.</div></div></div>
-        <div class="step"><span class="n">6</span><div><div class="t">Take the record with you</div><div class="d">Every decision generates its deterministic artifact — an information-request letter, a clause-cited rejection rationale, or an investigator handoff memo.</div></div></div>
-      </div>
+      <p class="lead">Loading the caseload…</p>
     </div>
   </main>
 </div>
@@ -398,7 +443,13 @@
 <script>
 "use strict";
 
-const state = { claims: [], selected: null, detail: null, reviews: {}, receipts: {}, reviewing: false, error: null };
+const state = {
+  claims: [], selected: null, detail: null, reviews: {}, receipts: {},
+  reviewing: false, error: null,
+  view: "caseload",             // "caseload" (all claims) | "claim" (one file)
+  rowErrors: {},                // claim_id -> message from a board-triggered review
+  batch: { running: false, done: 0, total: 0, current: null, stop: false },
+};
 
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const idsafe = s => String(s).replace(/[^a-zA-Z0-9_-]/g, "-");
@@ -508,20 +559,28 @@ async function loadClaims() {
     const data = await api("/api/claims");
     state.claims = data.claims;
     document.getElementById("rail-label").textContent = `Claims · ${state.claims.length}`;
-    renderClaimList();
+    renderClaimList(); renderMain();
   } catch (e) {
     document.getElementById("claim-list").innerHTML =
       `<div class="err-banner">Could not load claims: ${esc(e.message)}</div>`;
   }
 }
 
-async function selectClaim(id) {
-  if (state.reviewing) return;
+async function selectClaim(id, andReview) {
+  if (state.reviewing || state.batch.running) return;
   state.selected = id; state.detail = null; state.error = null;
+  state.view = "claim";
   renderClaimList(); renderMain();
   try { state.detail = await api(`/api/claims/${encodeURIComponent(id)}`); }
   catch (e) { state.error = e.message; }
   renderMain();
+  if (andReview && !state.reviews[id] && !state.error) runReview(id);
+}
+
+function showCaseload() {
+  if (state.reviewing) return;
+  state.view = "caseload"; state.error = null;
+  renderClaimList(); renderMain();
 }
 
 /* ---------------- Feature 4: determinism receipt ---------------- */
@@ -569,24 +628,62 @@ function buildReceipt(prev, next, seconds) {
   return { changed: true, text: `Review changed — inspect differences:`, diffs };
 }
 
-async function runReview(id) {
-  if (state.reviewing) return;
-  state.reviewing = true; state.error = null;
+/* One review request. Shared by the single-claim button and the caseload
+   batch, so both record results and consistency receipts identically. */
+async function fetchReview(id) {
   const previous = state.reviews[id] || null;
   const started = Date.now();
+  const result = await api(`/api/claims/${encodeURIComponent(id)}/review`, { method: "POST" });
+  state.reviews[id] = result;
+  state.receipts[id] = previous
+    ? buildReceipt(previous, result, ((Date.now() - started) / 1000).toFixed(1))
+    : null;
+  delete state.rowErrors[id];
+  return result;
+}
+
+async function runReview(id) {
+  if (state.reviewing || state.batch.running) return;
+  state.reviewing = true; state.error = null;
   renderMain(); startLoadingTicker();
   try {
-    const result = await api(`/api/claims/${encodeURIComponent(id)}/review`, { method: "POST" });
-    state.reviews[id] = result;
-    state.receipts[id] = previous
-      ? buildReceipt(previous, result, ((Date.now() - started) / 1000).toFixed(1))
-      : null;
+    await fetchReview(id);
   } catch (e) {
     state.error = e.message;
   } finally {
     state.reviewing = false; stopLoadingTicker();
     renderClaimList(); renderMain();
   }
+}
+
+/* Caseload batch: claims are reviewed one at a time (never concurrently), the
+   board updates as each finishes, and Stop takes effect at the next boundary. */
+async function reviewAll() {
+  if (state.reviewing || state.batch.running) return;
+  const pending = state.claims.filter(c => !state.reviews[c.claim_id]);
+  if (!pending.length) return;
+  state.batch = { running: true, done: 0, total: pending.length, current: null, stop: false };
+  renderMain();
+  for (const claim of pending) {
+    if (state.batch.stop) break;
+    state.batch.current = claim.claim_id;
+    renderMain();
+    try {
+      await fetchReview(claim.claim_id);
+    } catch (e) {
+      state.rowErrors[claim.claim_id] = e.message;
+    }
+    state.batch.done++;
+    state.batch.current = null;
+    renderClaimList(); renderMain();
+  }
+  state.batch.running = false;
+  renderClaimList(); renderMain();
+}
+
+function stopReviewAll() {
+  if (state.batch.running) state.batch.stop = true;
+  renderMain();
 }
 
 /* ---------------- loading ticker (truthful process descriptions) ---------------- */
@@ -913,10 +1010,124 @@ function renderMatrix(r) {
   </div>`;
 }
 
+/* ---------------- Phase 12: caseload board ---------------- */
+function reviewStateHtml(claimId) {
+  const review = state.reviews[claimId];
+  if (state.batch.current === claimId) return `<span class="cl-working">Reviewing…</span>`;
+  if (!review) return `<span class="cl-state">Not reviewed</span>`;
+  const meta = DECISION_META[review.decision] || { word: review.decision };
+  return `<span class="cl-state">Reviewed — <span class="st-word st-${esc(review.decision)}">${esc(meta.word)}</span></span>`;
+}
+
+function renderCaseload() {
+  const reviewed = state.claims.filter(c => state.reviews[c.claim_id]).length;
+  const total = state.claims.length;
+  const pending = total - reviewed;
+  const busy = state.batch.running;
+
+  const rows = state.claims.map(c => {
+    const review = state.reviews[c.claim_id];
+    const err = state.rowErrors[c.claim_id];
+    const action = busy
+      ? `<button class="cl-btn" disabled>${state.batch.current === c.claim_id ? "Reviewing…" : "Open"}</button>`
+      : (review
+        ? `<button class="cl-btn" onclick="selectClaim('${esc(c.claim_id)}')">Open review</button>`
+        : `<button class="cl-btn primary" onclick="selectClaim('${esc(c.claim_id)}', true)">Review</button>`);
+    return `<tr class="cl-row ${state.selected === c.claim_id ? "active" : ""}">
+      <td class="cl-name">
+        <button class="cl-open" onclick="selectClaim('${esc(c.claim_id)}')">${esc(labelClaim(c.claim_id))}</button>
+        <div class="cl-title">${esc(c.title)}</div>
+        ${err ? `<div class="cl-err">Review failed: ${esc(err)}</div>` : ""}
+      </td>
+      <td><span class="type-tag">${esc(c.claim_type)}</span></td>
+      <td class="cl-vehicle">${esc(c.vehicle.make_model)}
+        <div class="cl-reg">${esc(c.vehicle.registration_number)}</div></td>
+      <td class="cl-docs">${c.documents.length} document${c.documents.length === 1 ? "" : "s"}</td>
+      <td>${reviewStateHtml(c.claim_id)}</td>
+      <td class="cl-act">${action}</td>
+    </tr>`;
+  }).join("");
+
+  const batchLine = busy
+    ? `<span class="batch-status">Reviewing ${state.batch.done + 1} of ${state.batch.total}${state.batch.stop ? " — stopping after this claim…" : ""}</span>
+       <button class="cl-btn" onclick="stopReviewAll()" ${state.batch.stop ? "disabled" : ""}>Stop</button>`
+    : (pending
+      ? `<button class="cl-btn primary" onclick="reviewAll()">Review all ${pending} remaining</button>
+         <span class="batch-status">Runs each claim through the same review, one at a time.</span>`
+      : `<span class="batch-status">Every claim in this caseload has been reviewed.</span>`);
+
+  return `<div class="board-head">
+      <h2>Investigator caseload</h2>
+      <span class="board-sub">Gemini reads. Python decides.</span>
+    </div>
+    <div class="board-meta">${total} claims in this session · ${reviewed} reviewed, ${pending} not reviewed.
+      Review state is held for this browser session only — nothing is stored server-side.</div>
+    <div class="board-actions">${batchLine}</div>
+    <div class="card" style="padding:14px 8px">
+      <table class="caseload">
+        <thead><tr><th>Claim</th><th>Type</th><th>Vehicle</th><th>File</th><th>Review state</th><th></th></tr></thead>
+        <tbody>${rows}</tbody>
+      </table>
+    </div>
+    <details class="aux" ${reviewed ? "" : "open"}>
+      <summary>How to use this workspace</summary>
+      <div class="card" style="margin-top:8px">
+        <div class="steps">
+          <div class="step"><span class="n">1</span><div><div class="t">Open a claim</div><div class="d">Eight sample claims cover clean, contradictory, incomplete, excluded and out-of-scope cases.</div></div></div>
+          <div class="step"><span class="n">2</span><div><div class="t">Review the evidence</div><div class="d">Every extracted fact carries a verbatim quote from the submitted documents.</div></div></div>
+          <div class="step"><span class="n">3</span><div><div class="t">Follow findings to their sources</div><div class="d">Click a verified quote to see it highlighted in the original document.</div></div></div>
+          <div class="step"><span class="n">4</span><div><div class="t">Inspect the policy reasoning</div><div class="d">Each finding names the policy clause and rule value it was checked against.</div></div></div>
+          <div class="step"><span class="n">5</span><div><div class="t">Confirm the recommended disposition</div><div class="d">Approve, reject, request specific information — or escalate for human review.</div></div></div>
+          <div class="step"><span class="n">6</span><div><div class="t">Take the record with you</div><div class="d">Every decision generates its deterministic artifact — an information-request letter, a clause-cited rejection rationale, or an investigator handoff memo.</div></div></div>
+        </div>
+      </div>
+    </details>`;
+}
+
+/* ---------------- Phase 12: claim timeline (dates stated in the file) ---------------- */
+const MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+function prettyDate(iso) {
+  const m = /^(\d{4})-(\d{2})-(\d{2})$/.exec(String(iso));
+  if (!m) return String(iso);
+  return `${Number(m[3])} ${MONTHS[Number(m[2]) - 1]} ${m[1]}`;
+}
+
+function renderTimeline(r) {
+  const tl = r.timeline;
+  if (!tl || !tl.events || !tl.events.length) return "";
+  const rows = tl.events.map(ev => {
+    const badges = ev.contested
+      ? ev.finding_ids.map(fid =>
+          `<button class="tl-badge" onclick="reveal('${idsafe("finding-" + fid)}')"
+            aria-label="Show ${esc(labelFinding(fid))}">⚠ contested · ${esc(labelFinding(fid))}</button>`).join("")
+      : "";
+    const quote = ev.quote
+      ? `<div style="margin-top:3px">${quoteHtml(ev.doc_type, ev.quote, ev.quote_verified)}</div>`
+      : "";
+    return `<div class="tl-row ${ev.contested ? "contested" : ""}">
+      <div class="tl-date">${esc(prettyDate(ev.date))}</div>
+      <div class="tl-body">
+        <div class="tl-label">${esc(ev.label)}${badges}</div>
+        <div class="tl-src">${esc(ev.source)}</div>
+        ${quote}
+      </div>
+    </div>`;
+  }).join("");
+  return `<div class="card"><h3>Claim timeline</h3>
+    <div class="card-desc">The dates the claim file states, in order, each with the document that states it.</div>
+    ${rows}
+    <div class="tl-note">${esc(tl.note)}</div>
+  </div>`;
+}
+
 /* ---------------- rendering ---------------- */
 function renderClaimList() {
   const el = document.getElementById("claim-list");
-  el.innerHTML = state.claims.map(c => {
+  const boardBtn = `<button class="claim-item ${state.view === "caseload" ? "active" : ""}"
+    onclick="showCaseload()" style="margin-bottom:10px">
+    <div class="cid-row"><span>All claims</span>
+    <span class="review-state">caseload</span></div></button>`;
+  el.innerHTML = boardBtn + state.claims.map(c => {
     const review = state.reviews[c.claim_id];
     const stateHtml = review
       ? `<span class="decision-chip chip-${esc(review.decision)}">${esc(DECISION_META[review.decision]?.chip || review.decision)}</span>`
@@ -932,9 +1143,11 @@ function renderClaimList() {
 function renderMain() {
   quoteRegistry.length = 0;  // rebuilt on every render
   const el = document.getElementById("main");
+  if (state.view === "caseload") { el.innerHTML = renderCaseload(); return; }
   if (!state.selected) return;
   const summary = state.claims.find(c => c.claim_id === state.selected);
-  const parts = [renderOverview(summary, state.detail)];
+  const parts = [`<button class="back-btn" onclick="showCaseload()">← All claims</button>`,
+                 renderOverview(summary, state.detail)];
 
   if (state.error) {
     parts.push(`<div class="err-banner"><strong>Review failed.</strong><br>${esc(state.error)}
@@ -989,6 +1202,22 @@ function renderOverview(summary, detail) {
 }
 
 /* ---------------- Feature 3: provenance strip ---------------- */
+/* Truthful extraction provenance. This describes DOCUMENT EXTRACTION only:
+   grounding (policy retrieval and the narrative) is a separate Gemini step,
+   reported by explanation_source — a cached extraction is not an offline review. */
+const EXTRACTION_NOTE = "Where this claim's document facts came from. Cached facts are re-validated and every quote is re-checked against the document text on load. Policy retrieval and the written explanation are a separate Gemini step.";
+
+function extractionSegment(r) {
+  const x = r.extraction || {};
+  const cached = x.cached_documents || 0, live = x.live_documents || 0;
+  let label;
+  if (x.mode === "cached") label = `<strong>Cached</strong> extraction`;
+  else if (x.mode === "live") label = `<strong>Live</strong> Gemini extraction`;
+  else if (x.mode === "mixed") label = `<strong>${cached} cached · ${live} live</strong> extraction`;
+  else label = `Gemini extraction`;
+  return `<span class="seg" title="${esc(EXTRACTION_NOTE)}">${label}</span>`;
+}
+
 function renderProvenance(r) {
   const docCount = r.extraction.documents_extracted.length;
   const failedCount = Object.keys(r.extraction.failed_documents || {}).length;
@@ -1004,7 +1233,7 @@ function renderProvenance(r) {
   const meta = DECISION_META[r.decision] || { word: r.decision };
   const segs = [];
   segs.push(`<span class="seg"><strong>${docCount}</strong> document${docCount === 1 ? "" : "s"}${failedCount ? ` <span class="v-bad">(${failedCount} failed extraction)</span>` : ""}</span>`);
-  segs.push(`<span class="seg">Gemini extraction</span>`);
+  segs.push(extractionSegment(r));
   if (factKeys.size) {
     const allOk = verifiedKeys.size === factKeys.size;
     segs.push(`<span class="seg ${allOk ? "" : "bad"}"><strong>${factKeys.size}</strong> cited facts · <strong>${verifiedKeys.size}/${factKeys.size}</strong> quotes verified in Python</span>`);
@@ -1190,7 +1419,8 @@ function renderResult(r) {
     ${issues.length ? issues.map(renderFinding).join("") : `<div style="color:var(--faint);font-size:13px;margin-bottom:4px">No issues — every check passed. See "What was checked" below for the full list.</div>`}
   </div>`);
 
-  // 11. evidence matrix + evidence panel
+  // 11. timeline + evidence matrix + evidence panel
+  parts.push(renderTimeline(r));
   parts.push(renderMatrix(r));
   parts.push(renderEvidencePanel(r));
 
@@ -1210,7 +1440,7 @@ function renderResult(r) {
   const t = r.timings || {};
   parts.push(`<button class="rerun-btn" onclick="runReview('${esc(r.claim_id)}')">Re-run review</button>
     <span style="color:var(--faint);font-size:12px;margin-left:10px">Consistency check: re-run the same claim to verify the structured review is unchanged. The AI explanation may be worded differently; the decision logic is deterministic.</span>
-    <div class="meta-foot">reviewed in ${esc(t.total_s ?? "?")}s (extraction ${esc(t.extraction_s ?? "?")}s · checks ${esc(t.engine_s ?? "?")}s · grounding ${esc(t.grounding_s ?? "?")}s)
+    <div class="meta-foot">reviewed in ${esc(t.total_s ?? "?")}s (extraction ${esc(t.extraction_s ?? "?")}s ${esc(r.extraction.mode || "")} · checks ${esc(t.engine_s ?? "?")}s · grounding ${esc(t.grounding_s ?? "?")}s)
     · engine v${esc(r.engine_version)} · ${esc(r.extraction.model)} · ${esc(r.claim_id)}</div>`);
   return parts.join("");
 }
@@ -1420,9 +1650,10 @@ function renderScope(r) {
       <div class="p-title">Outside this review — still the investigator's diligence</div>
       <ul>${OUTSIDE_SCOPE.map(x => `<li>${esc(x)}</li>`).join("")}</ul>
       <p>When the available evidence is insufficient, escalation is the deliberate outcome — the system does not guess.</p>
-      <p>Timing findings are reported strictly against the policy's stated windows. In real-world claim handling,
-      late notification and similar timing issues can be subject to discretionary condonation — that judgement
-      belongs to the claims handler, not to this review.</p>
+      <p>ClaimIQ applies the policy's stated windows and document requirements exactly as written. It does not
+      excuse a late notification, a missing document, or any other procedural defect, and it does not decide that
+      one may be overlooked. Whether such a defect can be condoned is an investigator and policy decision, taken
+      outside this review.</p>
     </div>
   </div>`;
 }

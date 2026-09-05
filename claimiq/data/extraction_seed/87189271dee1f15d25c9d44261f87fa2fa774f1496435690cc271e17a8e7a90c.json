@@ -1,0 +1,88 @@
+{
+  "model": "gemini-3.5-flash-lite",
+  "prompt_version": "1",
+  "claim_id": "CLM-008",
+  "doc_type": "claim_form",
+  "facts": {
+    "claim_type": {
+      "value": "theft",
+      "quote": "[X] Theft",
+      "quote_verified": true
+    },
+    "policyholder_name": {
+      "value": "Tanvi Joshi",
+      "quote": "Name of Insured: Tanvi Joshi",
+      "quote_verified": true
+    },
+    "vehicle_registration": {
+      "value": "GJ01RV8123",
+      "quote": "Vehicle Reg. No: GJ 01 RV 8123",
+      "quote_verified": true
+    },
+    "vehicle_make_model": {
+      "value": "Kia Sonet HTK+",
+      "quote": "Make/Model: Kia Sonet HTK+",
+      "quote_verified": true
+    },
+    "incident_date": {
+      "value": "2026-07-19",
+      "quote": "Date of Incident: 19/07/2026",
+      "quote_verified": true
+    },
+    "incident_time": {
+      "value": "between 6:15 PM and 9:00 PM",
+      "quote": "Time: between 6:15 PM and 9:00 PM",
+      "quote_verified": true
+    },
+    "incident_location": {
+      "value": "open parking near Alpha One Mall, Vastrapur, Ahmedabad",
+      "quote": "Place: open parking near Alpha One Mall, Vastrapur, Ahmedabad",
+      "quote_verified": true
+    },
+    "document_date": {
+      "value": "2026-07-21",
+      "quote": "Date: 21/07/2026",
+      "quote_verified": true
+    },
+    "vehicle_received_at_garage_date": null,
+    "discovered_date": null,
+    "driver_name": null,
+    "driver_is_policyholder": null,
+    "driver_licence_number": null,
+    "claimed_amount": {
+      "value": 124000,
+      "quote": "Claimed amount: Rs. 1,24,000/-",
+      "quote_verified": true
+    },
+    "claimed_amount_note": null,
+    "fir_number": {
+      "value": "445/2026",
+      "quote": "e-complaint No. 445/2026 (Vastrapur PS)",
+      "quote_verified": true
+    },
+    "fir_date": null,
+    "police_station": {
+      "value": "Vastrapur PS",
+      "quote": "e-complaint No. 445/2026 (Vastrapur PS)",
+      "quote_verified": true
+    },
+    "stolen_items": {
+      "value": "My office laptop (Dell Latitude, approx value Rs. 1,10,000) and bag containing documents and accessories (approx Rs. 14,000)",
+      "quote": "My office laptop (Dell Latitude, approx value Rs. 1,10,000) and bag containing documents and accessories (approx Rs. 14,000) were stolen from inside the car while it was parked.",
+      "quote_verified": true
+    },
+    "vehicle_itself_stolen": {
+      "value": false,
+      "quote": "The car itself was not taken and has no damage.",
+      "quote_verified": true
+    },
+    "keys_information": null,
+    "damage_description": {
+      "value": "no damage",
+      "quote": "The car itself was not taken and has no damage.",
+      "quote_verified": true
+    },
+    "incident_summary": "An office laptop and bag containing documents and accessories were stolen from inside the policyholder's parked car while it was parked in an open parking lot near Alpha One Mall. The vehicle itself was not taken and sustained no damage.",
+    "risk_mentions": []
+  }
+}

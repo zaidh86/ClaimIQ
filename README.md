@@ -97,6 +97,7 @@ claimiq/
     policy.json         # the fictional policy (17 clauses)
     claims/             # 8 claim bundles, raw document text inside
     ground_truth.json   # expected facts/decisions, used only by tests
+    extraction_seed/    # committed extractions for the sample claims (facts only)
     schemas.py          # pydantic models shared by loader/engine/tests
     loader.py           # validated loading + dataset integrity checks
   extraction/
@@ -104,7 +105,7 @@ claimiq/
     schemas.py          # wire schema for Gemini + validated evidence models
     prompts.py          # per-document extraction prompt (versioned for cache)
     extractor.py        # extract_claim_evidence(bundle) -> ClaimEvidence
-    cache.py            # local sha256-keyed cache in .cache/ (git-ignored)
+    cache.py            # sha256-keyed cache: .cache/ (local) + the committed seed
   engine/
     checks.py           # the eleven deterministic checks + field consensus views
     engine.py           # review_claim(bundle, evidence) -> decision + findings
@@ -114,12 +115,18 @@ claimiq/
     retriever.py        # query embedding + NumPy cosine top-k
     citations.py        # document/policy citations, built and validated in Python
     grounded.py         # GroundedReview: citations + context + guarded explanation
+  record/
+    correspondence.py   # the decision's artifact: letter, rationale or handoff memo
+    matrix.py           # evidence reconciliation grid across documents
+    timeline.py         # chronology of the dates the file actually states
+    hints.py            # what evidence could resolve a contradiction
   data/policy_index.json  # committed embeddings (gemini-embedding-001)
 scripts/
   extract_claim.py      # dev tool: run live extraction and inspect evidence
   review_claim.py       # dev tool: extraction + engine, full review printout
   grounded_review.py    # dev tool: the full grounded pipeline for a claim
   build_policy_index.py # regenerates the policy index (only after policy edits)
+  seed_extraction_cache.py  # regenerates the committed extraction seed
 tests/
 ```
 

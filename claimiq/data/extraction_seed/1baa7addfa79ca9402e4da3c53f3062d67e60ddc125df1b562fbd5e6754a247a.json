@@ -1,0 +1,72 @@
+{
+  "model": "gemini-3.5-flash-lite",
+  "prompt_version": "1",
+  "claim_id": "CLM-006",
+  "doc_type": "incident_description",
+  "facts": {
+    "claim_type": null,
+    "policyholder_name": {
+      "value": "Farhan Ansari",
+      "quote": "Statement of Farhan Ansari - claim for MH04GT0092",
+      "quote_verified": true
+    },
+    "vehicle_registration": {
+      "value": "MH04GT0092",
+      "quote": "claim for MH04GT0092",
+      "quote_verified": true
+    },
+    "vehicle_make_model": null,
+    "incident_date": {
+      "value": "2026-06-08",
+      "quote": "On 8th June 2026 morning around 7:40 I was going to office",
+      "quote_verified": true
+    },
+    "incident_time": {
+      "value": "07:40",
+      "quote": "around 7:40",
+      "quote_verified": true
+    },
+    "incident_location": {
+      "value": "Western Express Highway towards Andheri, Near Jogeshwari",
+      "quote": "Western Express Highway towards Andheri. It was raining very heavily since night and the road was full of water. Near Jogeshwari",
+      "quote_verified": true
+    },
+    "document_date": {
+      "value": "2026-06-10",
+      "quote": "10/06/2026",
+      "quote_verified": true
+    },
+    "vehicle_received_at_garage_date": null,
+    "discovered_date": null,
+    "driver_name": {
+      "value": "Farhan Ansari",
+      "quote": "Statement of Farhan Ansari",
+      "quote_verified": true
+    },
+    "driver_is_policyholder": {
+      "value": true,
+      "quote": "Statement of Farhan Ansari - claim for MH04GT0092\n\nOn 8th June 2026 morning around 7:40 I was going to office",
+      "quote_verified": true
+    },
+    "driver_licence_number": null,
+    "claimed_amount": {
+      "value": 385600,
+      "quote": "estimate of Rs 3,85,600.",
+      "quote_verified": true
+    },
+    "claimed_amount_note": null,
+    "fir_number": null,
+    "fir_date": null,
+    "police_station": null,
+    "stolen_items": null,
+    "vehicle_itself_stolen": null,
+    "keys_information": null,
+    "damage_description": {
+      "value": "The bonnet and front portion got crushed under the truck body and both airbags opened. Front structure, radiator, AC, airbags, dashboard everything is gone.",
+      "quote": "The bonnet and front portion got crushed under the truck body and both airbags opened. [...] front structure, radiator, AC, airbags, dashboard everything is gone",
+      "quote_verified": false
+    },
+    "incident_summary": "While driving to the office on a heavy rainy morning, the policyholder's car slid on the wet road and collided with the back of a truck that braked suddenly near Jogeshwari. The front portion of the car was crushed under the truck, and the vehicle was subsequently towed to a garage for repairs.",
+    "risk_mentions": []
+  }
+}

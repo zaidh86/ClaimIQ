@@ -9,11 +9,15 @@ import pytest
 from pydantic import ValidationError
 
 from claimiq import extraction
-from claimiq.config import Settings
-from claimiq.data.loader import get_claim
+from claimiq.config import DEFAULT_GEMINI_MODEL, Settings
+from claimiq.data.loader import get_claim, load_claims
 from claimiq.data.schemas import DocType
 from claimiq.extraction import cache, extractor as extractor_module
-from claimiq.extraction.extractor import ExtractionError, extract_claim_evidence
+from claimiq.extraction.extractor import (
+    ExtractionError,
+    extract_claim_evidence,
+    reverify_quotes,
+)
 from claimiq.extraction.gemini_client import (
     GeminiClient,
     GeminiRequestError,
@@ -21,7 +25,7 @@ from claimiq.extraction.gemini_client import (
     GeminiUnavailableError,
     strip_code_fences,
 )
-from claimiq.extraction.prompts import build_document_prompt
+from claimiq.extraction.prompts import PROMPT_VERSION, build_document_prompt
 from claimiq.extraction.schemas import (
     ClaimEvidence,
     DocumentFacts,
@@ -31,18 +35,29 @@ from claimiq.extraction.schemas import (
 )
 
 
+REAL_SEED_DIR = cache.SEED_DIR  # captured before the isolation fixture patches it
+
+
 @pytest.fixture(autouse=True)
 def _isolated_cache(tmp_path, monkeypatch):
-    """Every test gets its own empty cache directory — never the repo's."""
+    """Every test gets its own empty cache directories — never the repo's."""
     monkeypatch.setattr(cache, "CACHE_DIR", tmp_path / "cache")
+    monkeypatch.setattr(cache, "SEED_DIR", tmp_path / "seed")
 
 
-def make_settings(key: str = "test-key") -> Settings:
+@pytest.fixture()
+def real_seed(monkeypatch):
+    """Point the seed lookup back at the committed seed directory."""
+    monkeypatch.setattr(cache, "SEED_DIR", REAL_SEED_DIR)
+    return REAL_SEED_DIR
+
+
+def make_settings(key: str = "test-key", model: str = "test-model") -> Settings:
     return Settings(
         host="127.0.0.1",
         port=8000,
         gemini_api_key=key,
-        gemini_model="test-model",
+        gemini_model=model,
         gemini_embedding_model="test-embed-model",
         gemini_timeout_seconds=5,
         log_level="info",
@@ -55,8 +70,8 @@ class FakeGeminiClient(GeminiClient):
     Exercises the real validation/repair pipeline in generate_validated.
     """
 
-    def __init__(self, responses_by_doc_type: dict[str, object]):
-        super().__init__(make_settings())
+    def __init__(self, responses_by_doc_type: dict[str, object], model: str = "test-model"):
+        super().__init__(make_settings(model=model))
         self.responses = responses_by_doc_type
         self.calls: list[str] = []
 
@@ -316,11 +331,151 @@ def test_corrupt_cache_entry_is_ignored():
 def test_extractor_serves_from_cache_without_calling_gemini():
     bundle = get_claim("CLM-001")
     first = FakeGeminiClient(CANNED_CLM001)
-    extract_claim_evidence(bundle, client=first, use_cache=True)
+    evidence = extract_claim_evidence(bundle, client=first, use_cache=True)
     assert len(first.calls) == 3
+    assert set(evidence.document_sources.values()) == {"live"}
 
     # second run: a client whose network path would explode — cache must serve
     exploding = FakeGeminiClient({d: RuntimeError("no network") for d in CANNED_CLM001})
     evidence = extract_claim_evidence(bundle, client=exploding, use_cache=True)
     assert len(exploding.calls) == 0
     assert evidence.facts_for(DocType.CLAIM_FORM).incident_date.value == date(2026, 1, 10)
+    assert set(evidence.document_sources.values()) == {"runtime_cache"}
+
+
+# --------------------------------------------------------------------------
+# Phase 12: committed seed cache
+# --------------------------------------------------------------------------
+
+
+def _seed_key(doc) -> str:
+    return cache.cache_key(
+        DEFAULT_GEMINI_MODEL, PROMPT_VERSION, doc.doc_type.value, doc.text
+    )
+
+
+def test_shipped_seed_covers_every_sample_document(real_seed):
+    """Each sample document has a seed entry whose quotes actually verify."""
+    claims = load_claims()
+    documents = [(c.claim_id, d) for c in claims.values() for d in c.documents]
+    assert len(documents) == 23
+    for claim_id, doc in documents:
+        path = real_seed / f"{_seed_key(doc)}.json"
+        assert path.is_file(), f"no seed entry for {claim_id}/{doc.doc_type.value}"
+        payload = json.loads(path.read_text(encoding="utf-8"))
+        assert payload["model"] == DEFAULT_GEMINI_MODEL
+        assert payload["prompt_version"] == PROMPT_VERSION
+        facts = DocumentFacts.model_validate(payload["facts"])
+        # every stored quote_verified flag matches a fresh check against the text
+        assert reverify_quotes(facts, doc.text).model_dump() == facts.model_dump()
+
+
+def test_shipped_seed_contains_facts_only(real_seed):
+    """No decisions, expectations, scenario labels, secrets or local paths."""
+    files = sorted(real_seed.glob("*.json"))
+    assert files
+    forbidden = ("expected_decision", "ground_truth", '"scenario"', '"decision"',
+                 "api_key", "c:\\\\users", "/home/", "violated_clauses")
+    for path in files:
+        assert len(path.stem) == 64, f"{path.name} is not a sha256-named entry"
+        raw = path.read_text(encoding="utf-8").lower()
+        for token in forbidden:
+            assert token not in raw, f"{path.name} contains {token!r}"
+        payload = json.loads(path.read_text(encoding="utf-8"))
+        assert set(payload) == {"model", "prompt_version", "claim_id", "doc_type", "facts"}
+
+
+def test_seed_serves_extraction_without_any_gemini_call(real_seed):
+    """A fresh clone (empty runtime cache) reviews from the seed alone."""
+    bundle = get_claim("CLM-002")
+    exploding = FakeGeminiClient(
+        {d.doc_type.value: RuntimeError("no network") for d in bundle.documents},
+        model=DEFAULT_GEMINI_MODEL,  # the model the shipped seed was built with
+    )
+    # the isolation fixture already left CACHE_DIR empty and nonexistent
+    evidence = extract_claim_evidence(bundle, client=exploding, use_cache=True)
+    assert len(exploding.calls) == 0
+    assert set(evidence.document_sources.values()) == {"seed_cache"}
+    assert evidence.facts_for(DocType.CLAIM_FORM).incident_date.value == date(2026, 2, 18)
+    assert evidence.facts_for(DocType.INCIDENT_DESCRIPTION).incident_date.value == date(2026, 2, 14)
+
+
+def test_runtime_cache_takes_precedence_over_seed(real_seed):
+    key = cache.cache_key("m", "1", "claim_form", "text")
+    seed_key = _seed_key(get_claim("CLM-001").documents[0])
+    assert cache.lookup(seed_key).source == "seed_cache"
+    cache.put(seed_key, {"model": "m", "facts": {}})
+    assert cache.lookup(seed_key).source == "runtime_cache"
+    assert cache.lookup(key) is None
+
+
+def test_stale_seed_is_a_miss_and_falls_back_to_live(real_seed):
+    """A changed document, prompt or model never serves a stale extraction."""
+    doc = get_claim("CLM-001").documents[0]
+    assert cache.lookup(_seed_key(doc)) is not None
+    edited = cache.cache_key(
+        DEFAULT_GEMINI_MODEL, PROMPT_VERSION, doc.doc_type.value, doc.text + " (amended)"
+    )
+    assert cache.lookup(edited) is None
+    other_prompt = cache.cache_key(
+        DEFAULT_GEMINI_MODEL, PROMPT_VERSION + "9", doc.doc_type.value, doc.text
+    )
+    assert cache.lookup(other_prompt) is None
+    other_model = cache.cache_key(
+        "some-other-model", PROMPT_VERSION, doc.doc_type.value, doc.text
+    )
+    assert cache.lookup(other_model) is None
+
+
+def test_malformed_seed_entry_falls_back_to_live_extraction():
+    """A corrupt or hostile seed file must not break or poison a review."""
+    bundle = get_claim("CLM-001")
+    doc = bundle.documents[0]
+    key = cache.cache_key("test-model", PROMPT_VERSION, doc.doc_type.value, doc.text)
+    cache.SEED_DIR.mkdir(parents=True, exist_ok=True)
+    (cache.SEED_DIR / f"{key}.json").write_text("{ not json", encoding="utf-8")
+    assert cache.lookup(key) is None
+
+    # structurally valid JSON but the wrong shape: also a miss, then live
+    (cache.SEED_DIR / f"{key}.json").write_text('{"facts": "nonsense"}', encoding="utf-8")
+    client = FakeGeminiClient(CANNED_CLM001)
+    evidence = extract_claim_evidence(bundle, client=client, use_cache=True)
+    assert evidence.document_sources[doc.doc_type.value] == "live"
+    assert evidence.facts_for(DocType.CLAIM_FORM).incident_date.value == date(2026, 1, 10)
+
+
+def test_cached_quote_verification_can_only_be_downgraded():
+    """A tampered cache claiming a quote is verified is corrected on load."""
+    bundle = get_claim("CLM-001")
+    doc = bundle.documents[0]
+    key = cache.cache_key("test-model", PROMPT_VERSION, doc.doc_type.value, doc.text)
+    cache.put(key, {"model": "test-model", "facts": {
+        "incident_date": {
+            "value": "2026-01-10",
+            "quote": "this sentence appears nowhere in the document",
+            "quote_verified": True,          # the lie
+        },
+        "policyholder_name": {
+            "value": "ROHAN MALHOTRA",
+            "quote": "Name of Insured: ROHAN MALHOTRA",
+            "quote_verified": False,         # understated, but honest
+        },
+    }})
+    facts, source = extractor_module._extract_document(
+        FakeGeminiClient(CANNED_CLM001), "CLM-001", doc, use_cache=True
+    )
+    assert source == "runtime_cache"
+    assert facts.incident_date.quote_verified is False   # downgraded
+    assert facts.policyholder_name.quote_verified is True  # re-checked honestly
+
+
+def test_reverify_quotes_handles_risk_mentions():
+    facts = DocumentFacts.model_validate({
+        "risk_mentions": [
+            {"risk_type": "alcohol_or_drugs", "quote": "I had two drinks", "quote_verified": True},
+            {"risk_type": "commercial_use", "quote": "not in the text", "quote_verified": True},
+        ]
+    })
+    checked = reverify_quotes(facts, "Statement: I had   two drinks before riding.")
+    assert checked.risk_mentions[0].quote_verified is True   # whitespace-insensitive
+    assert checked.risk_mentions[1].quote_verified is False

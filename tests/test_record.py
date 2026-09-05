@@ -14,6 +14,7 @@ properties proven:
 from __future__ import annotations
 
 import re
+from datetime import date
 
 import pytest
 
@@ -31,6 +32,7 @@ from claimiq.rag.citations import build_document_citations, build_policy_citatio
 from claimiq.record.correspondence import build_correspondence
 from claimiq.record.hints import RESOLUTION_HINTS, hints_for_review, resolution_hints
 from claimiq.record.matrix import build_evidence_matrix
+from claimiq.record.timeline import EVENT_FIELDS as TIMELINE_FIELDS, build_timeline
 
 from tests.evidence_fixtures import evidence_for
 
@@ -416,6 +418,95 @@ def test_matrix_preserves_quote_verification_status():
     assert driver_cell.quote_verified is False  # fixture's unverified quote
     form_cell = rows["driver_name"].cells["claim_form"]
     assert form_cell.quote_verified is True
+
+
+# --------------------------------------------------------------------------
+# Phase 12: claim timeline
+# --------------------------------------------------------------------------
+
+
+def timeline_for(claim_id):
+    bundle, evidence, review, _, _, _ = record_for(claim_id)
+    return build_timeline(bundle, evidence, review)
+
+
+def test_timeline_events_are_all_evidence_backed_clm002():
+    bundle, evidence, _, _, _, _ = record_for("CLM-002")
+    tl = timeline_for("CLM-002")
+    stated = {
+        (o.doc_type.value, f, o.value.isoformat())
+        for f, _ in TIMELINE_FIELDS
+        for o in evidence.observations(f)
+        if isinstance(o.value, date)
+    }
+    for ev in tl.events:
+        if ev.field == "reported_date":
+            assert ev.date == bundle.submitted_at.isoformat()
+            assert ev.source == "Insurer record" and ev.doc_type == ""
+            assert ev.quote is None  # insurer record, not a document quote
+            continue
+        assert (ev.doc_type, ev.field, ev.date) in stated
+        assert ev.quote  # every document-sourced event carries its quote
+    # nothing invented: exactly the stated dates plus the one insurer record
+    assert len(tl.events) == len(stated) + 1
+
+
+def test_timeline_is_chronological_and_keeps_both_contested_dates_clm002():
+    tl = timeline_for("CLM-002")
+    dates = [e.date for e in tl.events]
+    assert dates == sorted(dates)
+    incident = [e for e in tl.events if e.field == "incident_date"]
+    assert {e.date for e in incident} == {"2026-02-18", "2026-02-14"}
+    assert all(e.contested for e in incident)
+    assert all(e.finding_ids for e in incident)
+    assert {e.source for e in incident} == {"Claim Form", "Incident Description"}
+    assert "incident_date" in tl.contested_fields
+    assert "does not decide which is correct" in tl.note
+
+
+def test_timeline_contested_flags_come_from_findings():
+    _, _, review, _, _, _ = record_for("CLM-002")
+    tl = timeline_for("CLM-002")
+    contradiction_ids = {f.finding_id for f in review.findings
+                         if f.category == FindingCategory.CONTRADICTION}
+    for ev in tl.events:
+        assert set(ev.finding_ids) <= contradiction_ids
+        assert bool(ev.finding_ids) == ev.contested
+
+
+def test_timeline_has_no_conflicts_on_a_clean_claim():
+    tl = timeline_for("CLM-001")
+    assert tl.events
+    assert not tl.contested_fields
+    assert not any(e.contested for e in tl.events)
+    assert "not assumed" in tl.note
+
+
+def test_timeline_omits_dates_no_document_states():
+    """CLM-003 has no FIR and no garage date — no events may appear for them."""
+    tl = timeline_for("CLM-003")
+    fields = {e.field for e in tl.events}
+    assert "fir_date" not in fields
+    assert "vehicle_received_at_garage_date" not in fields
+    assert "incident_date" in fields and "reported_date" in fields
+
+
+def test_timeline_theft_claim_orders_discovery_and_fir():
+    tl = timeline_for("CLM-007")
+    fields = [e.field for e in tl.events]
+    assert "discovered_date" in fields and "fir_date" in fields
+    discovered = next(e for e in tl.events if e.field == "discovered_date")
+    reported = next(e for e in tl.events if e.field == "reported_date")
+    assert discovered.date <= reported.date
+
+
+def test_timeline_is_deterministic_and_pure():
+    bundle, evidence, review, _, _, _ = record_for("CLM-002")
+    before = review.model_dump()
+    first = build_timeline(bundle, evidence, review)
+    second = build_timeline(bundle, evidence, review)
+    assert first.model_dump() == second.model_dump()
+    assert review.model_dump() == before
 
 
 def test_matrix_is_deterministic_and_pure():
