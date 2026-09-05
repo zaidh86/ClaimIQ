@@ -13,13 +13,14 @@
     --border: #26303c;
     --border-soft: #202a35;
     --text: #e7edf3;
-    --muted: #8b98a6;
-    --faint: #5d6b7a;
+    --muted: #93a0ae;
+    --faint: #64748b;
     --accent: #4cc38a;
     --approve: #4cc38a;
     --reject: #e5534b;
     --info-amber: #e0a63c;
     --escalate: #b18bf4;
+    --focus: #6cb1f0;
     --mono: ui-monospace, "Cascadia Mono", "Segoe UI Mono", Consolas, monospace;
   }
   * { box-sizing: border-box; margin: 0; }
@@ -29,117 +30,150 @@
     font: 14.5px/1.55 -apple-system, "Segoe UI", system-ui, sans-serif;
     min-height: 100vh;
   }
+  button { font: inherit; }
+  :focus-visible { outline: 2px solid var(--focus); outline-offset: 2px; border-radius: 4px; }
+
   header {
     display: flex; align-items: center; gap: 14px;
-    padding: 14px 22px; border-bottom: 1px solid var(--border);
+    padding: 13px 22px; border-bottom: 1px solid var(--border);
     background: var(--rail); position: sticky; top: 0; z-index: 20;
   }
   .brand { font-size: 19px; font-weight: 700; letter-spacing: -0.01em; }
   .brand .iq { color: var(--accent); }
   .brand-sub { color: var(--muted); font-size: 12.5px; border-left: 1px solid var(--border); padding-left: 14px; }
   #health { margin-left: auto; font-size: 12px; color: var(--muted); display: flex; gap: 8px; align-items: center; }
-  .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; }
+  .dot { width: 8px; height: 8px; border-radius: 50%; display: inline-block; flex: none; }
   .dot.ok { background: var(--accent); } .dot.warn { background: var(--info-amber); } .dot.err { background: var(--reject); }
 
-  .layout { display: grid; grid-template-columns: 320px 1fr; min-height: calc(100vh - 60px); }
-  @media (max-width: 960px) { .layout { grid-template-columns: 1fr; } aside { border-right: none !important; border-bottom: 1px solid var(--border); } }
+  .layout { display: grid; grid-template-columns: 312px 1fr; min-height: calc(100vh - 58px); }
+  @media (max-width: 980px) { .layout { grid-template-columns: 1fr; } aside { border-right: none !important; border-bottom: 1px solid var(--border); } }
 
-  aside {
-    background: var(--rail); border-right: 1px solid var(--border); padding: 16px 12px;
-  }
-  .rail-label { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--faint); padding: 0 8px 10px; }
+  aside { background: var(--rail); border-right: 1px solid var(--border); padding: 14px 10px; }
+  .rail-label { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--faint); padding: 0 10px 10px; }
   .claim-item {
     width: 100%; text-align: left; background: transparent; color: var(--text);
-    border: 1px solid transparent; border-radius: 8px; padding: 10px 12px; cursor: pointer;
-    display: block; margin-bottom: 4px; font: inherit;
+    border: 1px solid transparent; border-radius: 8px; padding: 9px 12px; cursor: pointer;
+    display: block; margin-bottom: 3px;
   }
   .claim-item:hover { background: var(--panel); }
   .claim-item.active { background: var(--panel-2); border-color: var(--border); }
-  .claim-item .cid { font-family: var(--mono); font-size: 12px; color: var(--muted); display: flex; justify-content: space-between; align-items: center; }
-  .claim-item .ctitle { font-size: 13px; margin-top: 2px; color: var(--text); }
-  .type-tag { font-size: 10.5px; padding: 1px 7px; border-radius: 99px; border: 1px solid var(--border); color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
-  .decision-chip { font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 4px; letter-spacing: 0.04em; }
-
-  main { padding: 24px 28px 60px; max-width: 1040px; }
-  .empty-state { color: var(--muted); padding: 80px 0; text-align: center; }
-  .empty-state h2 { font-weight: 600; color: var(--text); margin-bottom: 8px; }
-
-  .card { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 18px 20px; margin-bottom: 16px; }
-  .card h3 { font-size: 12px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); font-weight: 600; margin-bottom: 12px; }
-
-  .claim-head { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; margin-bottom: 4px; }
-  .claim-head h1 { font-size: 21px; letter-spacing: -0.01em; }
-  .claim-head .cid { font-family: var(--mono); color: var(--muted); font-size: 13px; }
-  .schedule-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 10px 18px; margin-top: 10px; }
-  .schedule-grid .k { color: var(--faint); font-size: 11.5px; text-transform: uppercase; letter-spacing: 0.06em; }
-  .schedule-grid .v { font-size: 14px; margin-top: 1px; }
-  .doc-chips { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
-  .doc-chip { font-size: 12px; padding: 3px 10px; border-radius: 99px; background: var(--panel-2); border: 1px solid var(--border); color: var(--muted); }
-
-  details.doc-viewer { border: 1px solid var(--border-soft); border-radius: 8px; margin-top: 8px; background: var(--panel-2); }
-  details.doc-viewer summary { cursor: pointer; padding: 9px 14px; font-size: 13px; color: var(--muted); }
-  details.doc-viewer[open] summary { border-bottom: 1px solid var(--border-soft); color: var(--text); }
-  details.doc-viewer pre { padding: 12px 16px; white-space: pre-wrap; font-family: var(--mono); font-size: 12px; color: var(--muted); overflow-x: auto; max-height: 340px; overflow-y: auto; }
-
-  .review-btn {
-    background: var(--accent); color: #08110c; font-weight: 700; font-size: 14.5px;
-    border: none; border-radius: 8px; padding: 11px 22px; cursor: pointer; font-family: inherit;
-  }
-  .review-btn:hover { filter: brightness(1.08); }
-  .review-btn:disabled { opacity: 0.45; cursor: not-allowed; }
-  .rerun-btn { background: transparent; color: var(--muted); border: 1px solid var(--border); border-radius: 7px; padding: 6px 14px; cursor: pointer; font: inherit; font-size: 12.5px; }
-  .rerun-btn:hover { color: var(--text); }
-
-  .loading-box { display: flex; gap: 16px; align-items: center; padding: 22px; }
-  .spinner { width: 22px; height: 22px; border: 3px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.9s linear infinite; flex: none; }
-  @keyframes spin { to { transform: rotate(360deg); } }
-  .loading-line { color: var(--text); font-size: 14.5px; }
-  .loading-sub { color: var(--faint); font-size: 12.5px; margin-top: 3px; }
-
-  .decision-banner { border-radius: 10px; padding: 20px 22px; margin-bottom: 16px; border: 1px solid; }
-  .decision-banner .dword { font-size: 24px; font-weight: 800; letter-spacing: 0.02em; }
-  .decision-banner .dsub { margin-top: 4px; font-size: 14px; opacity: 0.92; }
-  .decision-banner .daction { margin-top: 12px; font-size: 13.5px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.14); }
-  .d-APPROVE { background: rgba(76,195,138,0.10); border-color: rgba(76,195,138,0.45); color: #b6e8d0; }
-  .d-APPROVE .dword { color: var(--approve); }
-  .d-REJECT { background: rgba(229,83,75,0.10); border-color: rgba(229,83,75,0.45); color: #f2c1be; }
-  .d-REJECT .dword { color: var(--reject); }
-  .d-REQUEST_INFORMATION { background: rgba(224,166,60,0.10); border-color: rgba(224,166,60,0.45); color: #f0d9ae; }
-  .d-REQUEST_INFORMATION .dword { color: var(--info-amber); }
-  .d-ESCALATE { background: rgba(177,139,244,0.10); border-color: rgba(177,139,244,0.45); color: #dccdf7; }
-  .d-ESCALATE .dword { color: var(--escalate); }
-
+  .claim-item .cid-row { font-family: var(--mono); font-size: 12px; color: var(--muted); display: flex; gap: 7px; align-items: center; }
+  .claim-item .ctitle { font-size: 12.8px; margin-top: 2px; color: var(--muted); }
+  .claim-item.active .ctitle { color: var(--text); }
+  .type-tag { font-size: 10px; padding: 1px 7px; border-radius: 99px; border: 1px solid var(--border); color: var(--faint); text-transform: uppercase; letter-spacing: 0.06em; }
+  .review-state { margin-left: auto; font-size: 10px; color: var(--faint); }
+  .decision-chip { margin-left: auto; font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 4px; letter-spacing: 0.03em; }
   .chip-APPROVE { background: rgba(76,195,138,0.16); color: var(--approve); }
   .chip-REJECT { background: rgba(229,83,75,0.16); color: var(--reject); }
   .chip-REQUEST_INFORMATION { background: rgba(224,166,60,0.16); color: var(--info-amber); }
   .chip-ESCALATE { background: rgba(177,139,244,0.16); color: var(--escalate); }
 
-  .warn-strip { background: rgba(224,166,60,0.08); border: 1px solid rgba(224,166,60,0.3); color: #e8cf9d; border-radius: 8px; padding: 10px 14px; font-size: 13px; margin-bottom: 16px; }
-  .warn-strip ul { margin: 6px 0 0 18px; }
-  .err-banner { background: rgba(229,83,75,0.1); border: 1px solid rgba(229,83,75,0.4); color: #f2c1be; border-radius: 10px; padding: 16px 18px; margin-bottom: 16px; }
+  main { padding: 22px 28px 70px; max-width: 1060px; }
 
-  .explain-label { display: flex; align-items: center; gap: 8px; }
-  .source-tag { font-size: 10.5px; padding: 2px 8px; border-radius: 99px; border: 1px solid var(--border); color: var(--faint); text-transform: none; letter-spacing: 0; }
-  .explain-summary { font-size: 15px; line-height: 1.6; }
-  .explain-points { margin: 10px 0 0 18px; color: var(--text); }
+  /* ---------- welcome ---------- */
+  .welcome { max-width: 560px; margin: 60px auto; }
+  .welcome h2 { font-size: 22px; margin-bottom: 8px; letter-spacing: -0.01em; }
+  .welcome p.lead { color: var(--muted); margin-bottom: 26px; }
+  .steps { display: grid; gap: 12px; }
+  .step { display: flex; gap: 14px; align-items: baseline; }
+  .step .n { font-family: var(--mono); color: var(--accent); font-size: 13px; flex: none; width: 18px; }
+  .step .t { color: var(--text); }
+  .step .d { color: var(--faint); font-size: 13px; }
+
+  .card { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 18px 20px; margin-bottom: 14px; }
+  .card h3 { font-size: 11.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); font-weight: 600; margin-bottom: 12px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+
+  .claim-head { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; margin-bottom: 4px; }
+  .claim-head h1 { font-size: 20px; letter-spacing: -0.01em; }
+  .claim-head .cid { font-family: var(--mono); color: var(--muted); font-size: 13px; }
+  .schedule-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px 18px; margin-top: 10px; }
+  .schedule-grid .k { color: var(--faint); font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; }
+  .schedule-grid .v { font-size: 14px; margin-top: 1px; }
+  .doc-chips { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+  .doc-chip { font-size: 12px; padding: 3px 10px; border-radius: 99px; background: var(--panel-2); border: 1px solid var(--border); color: var(--muted); }
+
+  details.doc-viewer { border: 1px solid var(--border-soft); border-radius: 8px; margin-top: 8px; background: var(--panel-2); }
+  details.doc-viewer summary { cursor: pointer; padding: 8px 14px; font-size: 13px; color: var(--muted); }
+  details.doc-viewer summary:hover { color: var(--text); }
+  details.doc-viewer[open] summary { border-bottom: 1px solid var(--border-soft); color: var(--text); }
+  details.doc-viewer pre { padding: 12px 16px; white-space: pre-wrap; font-family: var(--mono); font-size: 12px; color: var(--muted); overflow: auto; max-height: 340px; }
+
+  .review-btn {
+    background: var(--accent); color: #08110c; font-weight: 700; font-size: 14.5px;
+    border: none; border-radius: 8px; padding: 11px 22px; cursor: pointer;
+  }
+  .review-btn:hover { filter: brightness(1.08); }
+  .review-btn:disabled { opacity: 0.45; cursor: not-allowed; }
+  .rerun-btn, .chip-btn {
+    background: transparent; color: var(--muted); border: 1px solid var(--border);
+    border-radius: 7px; padding: 5px 12px; cursor: pointer; font-size: 12.5px;
+  }
+  .rerun-btn:hover, .chip-btn:hover { color: var(--text); border-color: var(--faint); }
+
+  .loading-box { display: flex; gap: 16px; align-items: center; padding: 22px; }
+  .spinner { width: 22px; height: 22px; border: 3px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.9s linear infinite; flex: none; }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .loading-line { font-size: 14.5px; }
+  .loading-sub { color: var(--faint); font-size: 12.5px; margin-top: 3px; }
+
+  /* ---------- decision header ---------- */
+  .decision-banner { border-radius: 10px; padding: 18px 22px; margin-bottom: 14px; border: 1px solid; }
+  .decision-banner .d-claim { font-family: var(--mono); font-size: 12.5px; opacity: 0.75; margin-bottom: 2px; }
+  .decision-banner .dword { font-size: 26px; font-weight: 800; letter-spacing: 0.01em; }
+  .decision-banner .dsub { margin-top: 3px; font-size: 14px; opacity: 0.92; }
+  .decision-banner .daction { margin-top: 12px; font-size: 13.5px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.13); line-height: 1.6; }
+  .daction .reason-link { background: none; border: none; color: inherit; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; padding: 0; font-size: inherit; }
+  .d-APPROVE { background: rgba(76,195,138,0.09); border-color: rgba(76,195,138,0.45); color: #b6e8d0; }
+  .d-APPROVE .dword { color: var(--approve); }
+  .d-REJECT { background: rgba(229,83,75,0.09); border-color: rgba(229,83,75,0.45); color: #f2c1be; }
+  .d-REJECT .dword { color: var(--reject); }
+  .d-REQUEST_INFORMATION { background: rgba(224,166,60,0.09); border-color: rgba(224,166,60,0.45); color: #f0d9ae; }
+  .d-REQUEST_INFORMATION .dword { color: var(--info-amber); }
+  .d-ESCALATE { background: rgba(177,139,244,0.09); border-color: rgba(177,139,244,0.45); color: #dccdf7; }
+  .d-ESCALATE .dword { color: var(--escalate); }
+
+  .warn-strip { background: rgba(224,166,60,0.08); border: 1px solid rgba(224,166,60,0.3); color: #e8cf9d; border-radius: 8px; padding: 10px 14px; font-size: 13px; margin-bottom: 14px; }
+  .warn-strip strong { color: #f0d9ae; }
+  .warn-strip ul { margin: 6px 0 0 18px; }
+  .err-banner { background: rgba(229,83,75,0.1); border: 1px solid rgba(229,83,75,0.4); color: #f2c1be; border-radius: 10px; padding: 16px 18px; margin-bottom: 14px; }
+
+  .source-tag { font-size: 10.5px; padding: 2px 8px; border-radius: 99px; border: 1px solid var(--border); color: var(--faint); font-weight: 400; letter-spacing: 0; text-transform: none; }
+  .explain-summary { font-size: 15px; line-height: 1.62; }
+  .explain-points { margin: 10px 0 0 18px; }
   .explain-points li { margin-bottom: 6px; }
   .inv-note { margin-top: 12px; padding: 10px 14px; background: var(--panel-2); border-left: 3px solid var(--escalate); border-radius: 0 6px 6px 0; font-size: 13.5px; }
 
+  /* ---------- request info checklist ---------- */
   .missing-box { border-left: 3px solid var(--info-amber); }
-  .missing-box li { margin: 6px 0 6px 4px; list-style: none; }
-  .missing-box li::before { content: "→ "; color: var(--info-amber); }
+  .check-item { display: flex; gap: 12px; padding: 10px 0; border-top: 1px solid var(--border-soft); }
+  .check-item:first-of-type { border-top: none; }
+  .check-item .box { font-family: var(--mono); color: var(--info-amber); flex: none; font-size: 15px; }
+  .check-item .ct { font-weight: 600; font-size: 14px; }
+  .check-item .cd { color: var(--muted); font-size: 13px; margin-top: 2px; }
 
+  /* ---------- escalation sheet ---------- */
+  .esc-box { border-left: 3px solid var(--escalate); }
+  .esc-item { padding: 11px 0; border-top: 1px solid var(--border-soft); display: flex; gap: 12px; }
+  .esc-item:first-of-type { border-top: none; }
+  .esc-item .n { font-family: var(--mono); color: var(--escalate); font-size: 13px; flex: none; width: 20px; padding-top: 1px; }
+  .esc-item .et { font-weight: 600; font-size: 14px; }
+  .esc-item .ed { color: var(--muted); font-size: 13px; margin-top: 2px; }
+  .esc-item .chips { margin-top: 7px; display: flex; gap: 6px; flex-wrap: wrap; }
+
+  /* ---------- contradictions ---------- */
   .contradiction { border: 1px solid rgba(229,83,75,0.35); border-radius: 8px; margin-bottom: 12px; overflow: hidden; }
-  .contradiction .c-head { background: rgba(229,83,75,0.08); padding: 9px 14px; font-size: 13px; font-weight: 600; color: #f2c1be; display: flex; justify-content: space-between; align-items: center; }
-  .c-status { font-size: 11px; color: var(--reject); font-weight: 700; letter-spacing: 0.05em; }
-  .c-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(220px, 1fr)); }
-  .c-cell { padding: 12px 14px; border-top: 1px solid var(--border-soft); }
-  .c-cell + .c-cell { border-left: 1px solid var(--border-soft); }
-  .c-doc { font-size: 11px; text-transform: uppercase; letter-spacing: 0.07em; color: var(--faint); }
-  .c-val { font-size: 16px; font-weight: 700; margin: 3px 0 6px; }
-  .c-quote { font-family: var(--mono); font-size: 11.5px; color: var(--muted); }
+  .contradiction .c-head { background: rgba(229,83,75,0.08); padding: 9px 14px; font-size: 13.5px; font-weight: 600; color: #f2c1be; display: flex; justify-content: space-between; align-items: center; gap: 10px; }
+  .c-status { font-size: 10.5px; color: var(--reject); font-weight: 700; letter-spacing: 0.06em; flex: none; }
+  .c-compare { display: flex; align-items: stretch; flex-wrap: wrap; }
+  .c-cell { flex: 1 1 220px; padding: 12px 16px; border-top: 1px solid var(--border-soft); min-width: 200px; }
+  .c-vs { flex: 0 0 auto; display: flex; align-items: center; padding: 0 4px; color: var(--reject); font-weight: 800; font-size: 11px; border-top: 1px solid var(--border-soft); }
+  .c-doc { font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.07em; color: var(--faint); }
+  .c-val { font-size: 16.5px; font-weight: 700; margin: 4px 0 6px; }
+  .c-quote { font-family: var(--mono); font-size: 11.5px; color: var(--muted); line-height: 1.5; }
+  .c-expl { padding: 9px 14px; border-top: 1px solid var(--border-soft); font-size: 12.5px; color: var(--muted); }
 
-  .finding { border: 1px solid var(--border-soft); border-left-width: 3px; border-radius: 8px; padding: 12px 16px; margin-bottom: 10px; background: var(--panel-2); }
+  /* ---------- findings ---------- */
+  .finding { border: 1px solid var(--border-soft); border-left-width: 3px; border-radius: 8px; padding: 11px 16px; margin-bottom: 9px; background: var(--panel-2); }
   .f-CRITICAL { border-left-color: var(--reject); }
   .f-MATERIAL { border-left-color: var(--info-amber); }
   .f-MINOR { border-left-color: var(--faint); }
@@ -150,49 +184,93 @@
   .sev-MATERIAL { background: rgba(224,166,60,0.16); color: var(--info-amber); }
   .sev-MINOR { background: rgba(139,152,166,0.16); color: var(--muted); }
   .sev-INFO { background: rgba(76,195,138,0.14); color: var(--approve); }
-  .f-cat { font-size: 11.5px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
+  .effect-tag { font-size: 10px; padding: 2px 7px; border-radius: 4px; border: 1px dashed var(--border); color: var(--faint); letter-spacing: 0.04em; }
+  .f-cat { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
   .f-id { font-family: var(--mono); font-size: 11px; color: var(--faint); margin-left: auto; }
   .finding .f-title { font-weight: 600; font-size: 14.5px; }
   .finding .f-expl { color: var(--muted); font-size: 13.5px; margin-top: 3px; }
-  .clause-chip { font-family: var(--mono); font-size: 11px; background: var(--panel); border: 1px solid var(--border); border-radius: 5px; padding: 1px 7px; color: var(--escalate); cursor: pointer; text-decoration: none; }
-  .f-evidence { margin-top: 9px; border-top: 1px dashed var(--border-soft); padding-top: 8px; }
-  .ev-row { font-size: 12.5px; margin-bottom: 5px; }
-  .ev-doc { color: var(--faint); text-transform: uppercase; font-size: 10.5px; letter-spacing: 0.06em; }
-  .ev-quote { font-family: var(--mono); font-size: 12px; color: var(--muted); }
-  .v-ok { color: var(--approve); font-size: 11.5px; }
-  .v-bad { color: var(--info-amber); font-size: 11.5px; }
+  .clause-chip {
+    font-family: var(--mono); font-size: 11px; background: var(--panel); border: 1px solid var(--border);
+    border-radius: 5px; padding: 2px 8px; color: var(--escalate); cursor: pointer;
+  }
+  .clause-chip:hover { border-color: var(--escalate); }
+  .ev-chip {
+    font-size: 11px; background: var(--panel); border: 1px solid var(--border);
+    border-radius: 5px; padding: 2px 8px; color: var(--muted); cursor: pointer;
+  }
+  .ev-chip:hover { border-color: var(--faint); color: var(--text); }
+  .f-evidence { margin-top: 9px; border-top: 1px dashed var(--border-soft); padding-top: 8px; display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+  .f-evidence .lbl { font-size: 11px; color: var(--faint); text-transform: uppercase; letter-spacing: 0.06em; }
 
-  .clause { border: 1px solid var(--border-soft); border-radius: 8px; padding: 12px 16px; margin-bottom: 10px; background: var(--panel-2); }
+  /* ---------- evidence panel ---------- */
+  .ev-group { margin-bottom: 14px; }
+  .ev-group .g-title { font-size: 12px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted); padding-bottom: 6px; border-bottom: 1px solid var(--border-soft); margin-bottom: 8px; }
+  .ev-card { border: 1px solid var(--border-soft); border-radius: 7px; padding: 9px 13px; margin-bottom: 7px; background: var(--panel-2); font-size: 13px; }
+  .ev-card.unverified { border-color: rgba(224,166,60,0.45); }
+  .ev-card.invalid { border-color: rgba(229,83,75,0.5); }
+  .ev-card .e-field { color: var(--faint); font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; }
+  .ev-card .e-val { font-weight: 600; margin: 2px 0 4px; }
+  .ev-card .e-quote { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+  .ev-card .e-meta { margin-top: 5px; font-size: 11.5px; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
+  .v-ok { color: var(--approve); }
+  .v-bad { color: var(--info-amber); }
+  .v-invalid { color: var(--reject); }
+  .e-findings { color: var(--faint); font-family: var(--mono); font-size: 10.5px; }
+
+  /* ---------- policy ---------- */
+  .clause { border: 1px solid var(--border-soft); border-radius: 8px; padding: 12px 16px; margin-bottom: 9px; background: var(--panel-2); }
   .clause .cl-head { display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; }
   .clause .cl-id { font-family: var(--mono); font-size: 12.5px; color: var(--escalate); font-weight: 600; }
   .clause .cl-title { font-weight: 600; }
-  .clause .cl-meta { margin-left: auto; font-size: 11px; color: var(--faint); }
-  .clause .cl-text { color: var(--muted); font-size: 13px; margin-top: 6px; }
-  .context-note { font-size: 12.5px; color: var(--faint); margin: 14px 0 10px; padding-top: 12px; border-top: 1px dashed var(--border-soft); }
+  .clause .cl-meta { margin-left: auto; font-size: 10.5px; color: var(--faint); text-align: right; }
+  .clause .cl-text { color: var(--muted); font-size: 13px; margin-top: 6px; line-height: 1.55; }
+  .cited-badge { font-size: 9.5px; font-weight: 700; letter-spacing: 0.07em; padding: 2px 7px; border-radius: 4px; background: rgba(177,139,244,0.16); color: var(--escalate); }
+  .context-badge { font-size: 9.5px; font-weight: 700; letter-spacing: 0.07em; padding: 2px 7px; border-radius: 4px; background: rgba(100,116,139,0.18); color: var(--faint); }
+  .clause.context { opacity: 0.85; background: transparent; }
+  .context-note { font-size: 12.5px; color: var(--faint); margin: 16px 0 10px; padding-top: 12px; border-top: 1px dashed var(--border-soft); }
 
-  details.aux { margin-bottom: 16px; }
+  /* ---------- passed checks ---------- */
+  .passed-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 6px 18px; }
+  .passed-item { display: flex; gap: 9px; font-size: 13px; color: var(--muted); align-items: baseline; }
+  .passed-item .tick { color: var(--approve); font-weight: 700; flex: none; }
+
+  details.aux { margin-bottom: 14px; }
   details.aux summary { cursor: pointer; color: var(--muted); font-size: 13px; padding: 6px 2px; }
-  .meta-foot { color: var(--faint); font-size: 12px; margin-top: 24px; font-family: var(--mono); }
-  .section-gap { height: 8px; }
+  details.aux summary:hover { color: var(--text); }
+  .meta-foot { color: var(--faint); font-size: 12px; margin-top: 22px; font-family: var(--mono); }
+
+  @keyframes flashPulse {
+    0% { outline: 2px solid var(--focus); outline-offset: 3px; }
+    100% { outline: 2px solid transparent; outline-offset: 3px; }
+  }
+  .flash { animation: flashPulse 1.6s ease-out 1; }
+  .section-gap { height: 6px; }
 </style>
 </head>
 <body>
 <header>
   <div class="brand">Claim<span class="iq">IQ</span></div>
   <div class="brand-sub">Motor claims evidence review — NexusTiQ 24 · PS02</div>
-  <div id="health"><span class="dot warn"></span>connecting…</div>
+  <div id="health" role="status"><span class="dot warn"></span>connecting…</div>
 </header>
 
 <div class="layout">
-  <aside>
+  <aside aria-label="Claim list">
     <div class="rail-label">Claims</div>
-    <div id="claim-list"><div class="empty-state" style="padding:30px 0">Loading claims…</div></div>
+    <div id="claim-list"><div style="color:var(--faint);padding:20px 10px">Loading claims…</div></div>
   </aside>
   <main id="main">
-    <div class="empty-state">
-      <h2>Select a claim to begin</h2>
-      <p>ClaimIQ reads the submitted documents, checks them against the policy,<br>
-      and shows what the evidence supports — with citations for every finding.</p>
+    <div class="welcome">
+      <h2>Review motor insurance claims against evidence and policy wording.</h2>
+      <p class="lead">ClaimIQ reads each submitted document, extracts the facts with source quotes,
+      runs deterministic policy checks, and shows exactly what the evidence supports —
+      including where documents contradict each other.</p>
+      <div class="steps">
+        <div class="step"><span class="n">1</span><div><div class="t">Select a claim</div><div class="d">Eight synthetic sample claims cover clean, contradictory, incomplete, excluded and out-of-scope cases.</div></div></div>
+        <div class="step"><span class="n">2</span><div><div class="t">Review the evidence</div><div class="d">Every extracted fact carries a verbatim quote, verified against the source document.</div></div></div>
+        <div class="step"><span class="n">3</span><div><div class="t">Inspect grounded findings</div><div class="d">Each finding cites its documents and the exact policy clause it rests on.</div></div></div>
+        <div class="step"><span class="n">4</span><div><div class="t">Take investigator action</div><div class="d">Approve, reject, request specific information — or escalate when the evidence can't support certainty.</div></div></div>
+      </div>
     </div>
   </main>
 </div>
@@ -203,6 +281,7 @@
 const state = { claims: [], selected: null, detail: null, reviews: {}, reviewing: false, error: null };
 
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const idsafe = s => String(s).replace(/[^a-zA-Z0-9_-]/g, "-");
 const money = n => "₹" + Number(n).toLocaleString("en-IN");
 const fieldLabel = f => esc(String(f).replaceAll("_", " ").replace(/^./, c => c.toUpperCase()));
 
@@ -217,17 +296,22 @@ const CAT_LABELS = {
   DRIVER_ELIGIBILITY: "Driver & licence", THEFT_REQUIREMENT: "Theft requirements",
   OUT_OF_SCOPE: "Out of scope", UNCERTAINTY: "Uncertainty",
 };
+const EFFECT_LABELS = {
+  BLOCK_REJECT: "grounds for rejection",
+  NEEDS_INFORMATION: "needs information",
+  NEEDS_ESCALATION: "needs investigation",
+};
+const SEV_ORDER = { CRITICAL: 0, MATERIAL: 1, MINOR: 2, INFO: 3 };
 const DECISION_META = {
-  APPROVE: { word: "APPROVE", sub: "The reviewed evidence supports this claim.",
-    action: "Proceed on the basis of the reviewed evidence. All deterministic checks passed." },
-  REJECT: { word: "REJECT", sub: "An established policy violation was identified in the submitted evidence.",
-    action: "Record the violation with the cited evidence and policy clause below." },
-  REQUEST_INFORMATION: { word: "REQUEST INFORMATION", sub: "The claim cannot be assessed until specific missing evidence is provided.",
-    action: "Request the missing items listed below from the claimant." },
-  ESCALATE: { word: "ESCALATE", sub: "The evidence contains contradictions, uncertainty, or a case the policy does not clearly resolve.",
-    action: "Human investigation required — review the flagged items below." },
+  APPROVE: { word: "APPROVE", sub: "The reviewed evidence supports this claim." },
+  REJECT: { word: "REJECT", sub: "An established policy violation was identified in the submitted evidence." },
+  REQUEST_INFORMATION: { word: "REQUEST INFORMATION", sub: "The claim cannot be assessed until specific missing evidence is provided." },
+  ESCALATE: { word: "ESCALATE", sub: "The evidence contains contradictions, uncertainty, or a case the policy does not clearly resolve." },
 };
 const docLabel = d => DOC_LABELS[d] || fieldLabel(d);
+// Display-only: swap raw doc-type tokens in backend text for their labels.
+const prettyText = s => Object.entries(DOC_LABELS).reduce(
+  (acc, [token, label]) => acc.replaceAll(token, label), String(s ?? ""));
 
 // ---------------- API ----------------
 async function api(path, opts) {
@@ -269,11 +353,8 @@ async function selectClaim(id) {
   if (state.reviewing) return;
   state.selected = id; state.detail = null; state.error = null;
   renderClaimList(); renderMain();
-  try {
-    state.detail = await api(`/api/claims/${encodeURIComponent(id)}`);
-  } catch (e) {
-    state.error = e.message;
-  }
+  try { state.detail = await api(`/api/claims/${encodeURIComponent(id)}`); }
+  catch (e) { state.error = e.message; }
   renderMain();
 }
 
@@ -282,8 +363,7 @@ async function runReview(id) {
   state.reviewing = true; state.error = null;
   renderMain(); startLoadingTicker();
   try {
-    const result = await api(`/api/claims/${encodeURIComponent(id)}/review`, { method: "POST" });
-    state.reviews[id] = result;
+    state.reviews[id] = await api(`/api/claims/${encodeURIComponent(id)}/review`, { method: "POST" });
   } catch (e) {
     state.error = e.message;
   } finally {
@@ -302,8 +382,8 @@ const LOADING_LINES = [
 ];
 let tickerTimer = null, elapsedTimer = null, tickerStart = 0, tickerIdx = 0;
 function updateElapsed() {
-  const elapsed = document.getElementById("loading-elapsed");
-  if (elapsed) elapsed.textContent = `${Math.round((Date.now() - tickerStart) / 1000)}s elapsed — a first review can take up to ~30 seconds; repeat reviews are faster.`;
+  const el = document.getElementById("loading-elapsed");
+  if (el) el.textContent = `${Math.round((Date.now() - tickerStart) / 1000)}s elapsed — a first review can take up to ~30 seconds; repeat reviews are faster.`;
 }
 function startLoadingTicker() {
   stopLoadingTicker();
@@ -320,14 +400,29 @@ function stopLoadingTicker() {
   if (elapsedTimer) { clearInterval(elapsedTimer); elapsedTimer = null; }
 }
 
+// ---------------- navigation helpers ----------------
+function reveal(elId) {
+  const el = document.getElementById(elId);
+  if (!el) return;
+  const wrap = el.closest("details");
+  if (wrap) wrap.open = true;
+  el.scrollIntoView({ behavior: "smooth", block: "center" });
+  el.classList.remove("flash");
+  void el.offsetWidth; // restart animation
+  el.classList.add("flash");
+}
+
 // ---------------- rendering ----------------
 function renderClaimList() {
   const el = document.getElementById("claim-list");
   el.innerHTML = state.claims.map(c => {
     const review = state.reviews[c.claim_id];
-    const chip = review ? `<span class="decision-chip chip-${esc(review.decision)}">${esc(review.decision.replace("_", " "))}</span>` : "";
-    return `<button class="claim-item ${state.selected === c.claim_id ? "active" : ""}" onclick="selectClaim('${esc(c.claim_id)}')">
-      <div class="cid"><span>${esc(c.claim_id)} · <span class="type-tag">${esc(c.claim_type)}</span></span>${chip}</div>
+    const stateHtml = review
+      ? `<span class="decision-chip chip-${esc(review.decision)}">${esc(review.decision.replaceAll("_", " "))}</span>`
+      : `<span class="review-state">Not reviewed</span>`;
+    return `<button class="claim-item ${state.selected === c.claim_id ? "active" : ""}"
+      onclick="selectClaim('${esc(c.claim_id)}')" aria-label="${esc(c.claim_id)}: ${esc(c.title)}">
+      <div class="cid-row"><span>${esc(c.claim_id)}</span><span class="type-tag">${esc(c.claim_type)}</span>${stateHtml}</div>
       <div class="ctitle">${esc(c.title)}</div>
     </button>`;
   }).join("");
@@ -335,11 +430,9 @@ function renderClaimList() {
 
 function renderMain() {
   const el = document.getElementById("main");
-  if (!state.selected) return; // keep welcome state
+  if (!state.selected) return;
   const summary = state.claims.find(c => c.claim_id === state.selected);
-  const parts = [];
-
-  parts.push(renderOverview(summary, state.detail));
+  const parts = [renderOverview(summary, state.detail)];
 
   if (state.error) {
     parts.push(`<div class="err-banner"><strong>Review failed.</strong><br>${esc(state.error)}
@@ -347,8 +440,8 @@ function renderMain() {
   }
 
   if (state.reviewing) {
-    parts.push(`<div class="card loading-box">
-      <div class="spinner"></div>
+    parts.push(`<div class="card loading-box" role="status">
+      <div class="spinner" aria-hidden="true"></div>
       <div>
         <div class="loading-line" id="loading-line">${LOADING_LINES[0]}</div>
         <div class="loading-sub" id="loading-elapsed">0s elapsed — a first review can take up to ~30 seconds; repeat reviews are faster.</div>
@@ -356,7 +449,7 @@ function renderMain() {
   } else {
     const review = state.reviews[state.selected];
     if (review) parts.push(renderResult(review));
-    else if (!state.error) parts.push(`<div style="margin:20px 0 30px">
+    else if (!state.error) parts.push(`<div style="margin:18px 0 30px">
       <button class="review-btn" onclick="runReview('${esc(state.selected)}')">Review claim</button>
       <div style="color:var(--faint);font-size:12.5px;margin-top:8px">Extracts evidence, runs the deterministic policy checks, and builds a cited review.</div>
     </div>`);
@@ -376,8 +469,9 @@ function renderOverview(summary, detail) {
       <div><div class="k">Claim submitted</div><div class="v">${esc(summary.submitted_at)}</div></div>
     </div>` : `<div style="color:var(--faint)">Loading claim details…</div>`;
   const docsHtml = detail ? detail.documents_full.map(d => `
-    <details class="doc-viewer"><summary>${esc(docLabel(d.doc_type))} — ${esc(d.title)}</summary><pre>${esc(d.text)}</pre></details>
-  `).join("") : "";
+    <details class="doc-viewer" id="doc-${esc(d.doc_type)}">
+      <summary>${esc(docLabel(d.doc_type))} — ${esc(d.title)}</summary><pre>${esc(d.text)}</pre>
+    </details>`).join("") : "";
   return `<div class="card">
     <div class="claim-head"><h1>${esc(summary.title)}</h1><span class="cid">${esc(summary.claim_id)}</span>
       <span class="type-tag">${esc(summary.claim_type)} claim</span></div>
@@ -387,26 +481,48 @@ function renderOverview(summary, detail) {
   </div>`;
 }
 
+function nextAction(r) {
+  const titlesFor = effects => r.findings
+    .filter(f => effects.includes(f.effect))
+    .sort((a, b) => SEV_ORDER[a.severity] - SEV_ORDER[b.severity])
+    .map(f => `<button class="reason-link" onclick="reveal('${idsafe("finding-" + f.finding_id)}')">${esc(prettyText(f.title))}</button>`);
+  if (r.decision === "APPROVE")
+    return "Proceed on the basis of the reviewed evidence — all deterministic checks passed.";
+  if (r.decision === "REJECT") {
+    const t = titlesFor(["BLOCK_REJECT"]);
+    return `Record the violation with its cited evidence: ${t.join(" · ") || "see findings below."}`;
+  }
+  if (r.decision === "REQUEST_INFORMATION") {
+    const t = titlesFor(["NEEDS_INFORMATION"]);
+    return `Request from the claimant: ${t.join(" · ") || "see the checklist below."}`;
+  }
+  const t = titlesFor(["NEEDS_ESCALATION", "NEEDS_INFORMATION"]);
+  return `Resolve before this claim can move: ${t.join(" · ") || "see the review sheet below."}`;
+}
+
 function renderResult(r) {
   const parts = [];
-  const meta = DECISION_META[r.decision] || { word: r.decision, sub: "", action: "" };
+  const meta = DECISION_META[r.decision] || { word: r.decision, sub: "" };
 
-  // 1. decision
+  // 1. decision header
   parts.push(`<div class="decision-banner d-${esc(r.decision)}">
+    <div class="d-claim">${esc(r.claim_id)} · ${esc(r.claim_type)} claim</div>
     <div class="dword">${esc(meta.word)}</div>
     <div class="dsub">${esc(meta.sub)}</div>
-    <div class="daction"><strong>Investigator action:</strong> ${esc(meta.action)}</div>
+    <div class="daction"><strong>Next action:</strong> ${nextAction(r)}</div>
   </div>`);
 
   // 2. degraded-grounding notice
   if (r.explanation_source !== "gemini") {
-    parts.push(`<div class="warn-strip">AI explanation unavailable — showing the deterministic review rationale. The decision itself is unaffected.</div>`);
+    parts.push(`<div class="warn-strip"><strong>AI explanation unavailable.</strong>
+      The claim decision and evidence review below are unaffected — they come from the
+      deterministic review engine. Showing the deterministic rationale instead.</div>`);
   }
 
   // 3. grounded explanation / fallback
   if (r.explanation) {
     parts.push(`<div class="card">
-      <h3 class="explain-label">Grounded investigator summary <span class="source-tag">written by Gemini from validated evidence only — the decision is deterministic</span></h3>
+      <h3>Grounded investigator summary <span class="source-tag">written by Gemini from validated evidence only — the decision itself is deterministic</span></h3>
       <div class="explain-summary">${esc(r.explanation.summary)}</div>
       <ul class="explain-points">${r.explanation.key_points.map(p => `<li>${esc(p)}</li>`).join("")}</ul>
       ${r.explanation.investigator_note ? `<div class="inv-note"><strong>Investigator note:</strong> ${esc(r.explanation.investigator_note)}</div>` : ""}
@@ -416,85 +532,175 @@ function renderResult(r) {
       <div class="explain-summary">${esc(r.decision_rationale)}</div></div>`);
   }
 
-  // 4. missing information
+  // 4. request-information checklist
   const missing = r.findings.filter(f => f.effect === "NEEDS_INFORMATION");
   if (missing.length) {
-    parts.push(`<div class="card missing-box"><h3>Information to request</h3><ul>
-      ${missing.map(f => `<li><strong>${esc(f.title)}</strong><br><span style="color:var(--muted);font-size:13px">${esc(f.explanation)}</span></li>`).join("")}
-    </ul></div>`);
+    parts.push(`<div class="card missing-box"><h3>Before this claim can be resolved, request:</h3>
+      ${missing.map(f => `<div class="check-item">
+        <span class="box" aria-hidden="true">☐</span>
+        <div><div class="ct">${esc(prettyText(f.title))}</div><div class="cd">${esc(prettyText(f.explanation))}</div>
+        ${f.clause_ids.length ? `<div style="margin-top:6px">${f.clause_ids.map(clauseChip).join(" ")}</div>` : ""}</div>
+      </div>`).join("")}
+    </div>`);
   }
 
-  // 5. contradictions
+  // 5. escalation review sheet
+  if (r.decision === "ESCALATE") {
+    const escalations = r.findings
+      .filter(f => f.effect === "NEEDS_ESCALATION")
+      .sort((a, b) => SEV_ORDER[a.severity] - SEV_ORDER[b.severity]);
+    if (escalations.length) {
+      parts.push(`<div class="card esc-box"><h3>Investigator review sheet <span class="source-tag">built from deterministic findings</span></h3>
+        ${escalations.map((f, i) => `<div class="esc-item">
+          <span class="n">${i + 1}.</span>
+          <div>
+            <div class="et">${esc(prettyText(f.title))}</div>
+            <div class="ed">${esc(prettyText(f.explanation))}</div>
+            <div class="chips">
+              ${evidenceChips(f)}
+              ${f.clause_ids.map(clauseChip).join(" ")}
+            </div>
+          </div>
+        </div>`).join("")}
+      </div>`);
+    }
+  }
+
+  // 6. contradictions
   const contradictions = r.findings.filter(f => f.category === "CONTRADICTION");
   if (contradictions.length) {
     parts.push(`<div class="card"><h3>Contradictions in the evidence</h3>
       ${contradictions.map(renderContradiction).join("")}</div>`);
   }
 
-  // 6. findings — issues first, passed checks collapsed
-  const issues = r.findings.filter(f => f.severity !== "INFO");
+  // 7. findings — sorted by severity, passed checks separated
+  const issues = r.findings.filter(f => f.severity !== "INFO")
+    .sort((a, b) => SEV_ORDER[a.severity] - SEV_ORDER[b.severity]);
   const passed = r.findings.filter(f => f.severity === "INFO");
   parts.push(`<div class="card"><h3>Findings</h3>
-    ${issues.length ? issues.map(renderFinding).join("") : `<div style="color:var(--faint);font-size:13px;margin-bottom:8px">No issues found — all checks passed.</div>`}
-    ${passed.length ? `<details class="aux"><summary>${passed.length} passed check${passed.length > 1 ? "s" : ""}</summary>
-      <div class="section-gap"></div>${passed.map(renderFinding).join("")}</details>` : ""}
+    ${issues.length ? issues.map(renderFinding).join("") : `<div style="color:var(--faint);font-size:13px;margin-bottom:4px">No issues — every deterministic check passed.</div>`}
   </div>`);
 
-  // 7. policy clauses
+  // 8. evidence panel
+  parts.push(renderEvidencePanel(r));
+
+  // 9. policy clauses
   parts.push(renderPolicy(r));
 
-  // 8. grounding warnings
+  // 10. passed checks (collapsed, reassurance)
+  if (passed.length) {
+    parts.push(`<details class="aux"><summary>✓ ${passed.length} check${passed.length > 1 ? "s" : ""} passed</summary>
+      <div class="card" style="margin-top:8px"><div class="passed-list">
+      ${passed.map(f => `<div class="passed-item"><span class="tick" aria-hidden="true">✓</span>
+        <span><strong style="color:var(--text);font-weight:600">${esc(prettyText(f.title))}</strong>
+        ${f.clause_ids.length ? " · " + f.clause_ids.map(clauseChip).join(" ") : ""}</span></div>`).join("")}
+      </div></div></details>`);
+  }
+
+  // 11. grounding warnings
   if (r.warnings && r.warnings.length) {
-    parts.push(`<details class="aux"><summary>${r.warnings.length} grounding warning${r.warnings.length > 1 ? "s" : ""}</summary>
+    parts.push(`<details class="aux"><summary>⚠ ${r.warnings.length} grounding warning${r.warnings.length > 1 ? "s" : ""} — the decision is unaffected</summary>
       <div class="warn-strip" style="margin-top:8px"><ul>${r.warnings.map(w => `<li>${esc(w)}</li>`).join("")}</ul></div></details>`);
   }
 
-  // 9. rerun + meta
+  // 12. rerun + meta
+  const t = r.timings || {};
   parts.push(`<button class="rerun-btn" onclick="runReview('${esc(r.claim_id)}')">Re-run review</button>
-    <div class="meta-foot">engine v${esc(r.engine_version)} · extraction ${esc(r.extraction.model)} ·
-    ${r.timings ? `extraction ${esc(r.timings.extraction_s)}s · checks ${esc(r.timings.engine_s)}s · grounding ${esc(r.timings.grounding_s)}s · total ${esc(r.timings.total_s)}s` : ""}</div>`);
+    <div class="meta-foot">reviewed in ${esc(t.total_s ?? "?")}s (extraction ${esc(t.extraction_s ?? "?")}s · checks ${esc(t.engine_s ?? "?")}s · grounding ${esc(t.grounding_s ?? "?")}s)
+    · engine v${esc(r.engine_version)} · ${esc(r.extraction.model)}</div>`);
   return parts.join("");
 }
 
+function clauseChip(clauseId) {
+  return `<button class="clause-chip" onclick="reveal('${idsafe("clause-" + clauseId)}')"
+    aria-label="Show policy clause ${esc(clauseId)}">${esc(clauseId)}</button>`;
+}
+
+function evidenceChips(f) {
+  const docs = [...new Set(f.evidence.filter(e => e.source === "document").map(e => e.doc_type))];
+  return docs.map(d => `<button class="ev-chip" onclick="reveal('${idsafe("evgroup-" + d)}')"
+    aria-label="Show evidence from ${esc(docLabel(d))}">${esc(docLabel(d))}</button>`).join(" ");
+}
+
 function renderContradiction(f) {
-  const docRefs = f.evidence.filter(e => e.source === "document");
-  return `<div class="contradiction">
-    <div class="c-head"><span>${esc(f.title)}</span><span class="c-status">⚠ CONFLICTED</span></div>
-    <div class="c-grid">${docRefs.map(e => `
-      <div class="c-cell">
-        <div class="c-doc">${esc(docLabel(e.doc_type))} · ${fieldLabel(e.field)}</div>
-        <div class="c-val">${esc(e.value)}</div>
-        ${e.quote ? `<div class="c-quote">"${esc(e.quote)}" ${verifiedMark(e)}</div>` : ""}
-      </div>`).join("")}
-    </div>
-    <div style="padding:9px 14px;border-top:1px solid var(--border-soft);font-size:12.5px;color:var(--muted)">${esc(f.explanation)}</div>
+  const seen = new Set();
+  const docRefs = f.evidence.filter(e => {
+    if (e.source !== "document") return false;
+    const key = `${e.doc_type}|${e.field}|${e.value}`;
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+  const cells = docRefs.map(e => `
+    <div class="c-cell">
+      <div class="c-doc">${esc(docLabel(e.doc_type))} · ${fieldLabel(e.field)}</div>
+      <div class="c-val">${esc(e.value)}</div>
+      ${e.quote ? `<div class="c-quote">"${esc(e.quote)}" ${verifiedMark(e)}</div>` : ""}
+    </div>`);
+  const compare = cells.length === 2 ? cells.join(`<div class="c-vs" aria-hidden="true">VS</div>`) : cells.join("");
+  return `<div class="contradiction" id="${idsafe("finding-" + f.finding_id)}">
+    <div class="c-head"><span>${esc(prettyText(f.title))}</span><span class="c-status">⚠ CONFLICTED</span></div>
+    <div class="c-compare">${compare}</div>
+    <div class="c-expl">${esc(prettyText(f.explanation))}</div>
   </div>`;
 }
 
 function verifiedMark(e) {
   if (e.quote_verified === true) return `<span class="v-ok">✓ quote verified</span>`;
-  if (e.quote_verified === false) return `<span class="v-bad">⚠ quote not verified against source</span>`;
+  if (e.quote_verified === false) return `<span class="v-bad">⚠ source quote unverified</span>`;
   return "";
 }
 
 function renderFinding(f) {
-  const evidenceHtml = f.evidence.length ? `<div class="f-evidence">${f.evidence.map(e => `
-    <div class="ev-row">
-      <span class="ev-doc">${esc(e.source === "document" ? docLabel(e.doc_type) : e.source.replaceAll("_", " "))}</span>
-      · ${fieldLabel(e.field)}: <strong>${esc(e.value)}</strong>
-      ${e.quote ? `<br><span class="ev-quote">"${esc(e.quote)}"</span> ${verifiedMark(e)}` : ""}
-    </div>`).join("")}</div>` : "";
-  return `<div class="finding f-${esc(f.severity)}">
+  const effectTag = EFFECT_LABELS[f.effect]
+    ? `<span class="effect-tag">${esc(EFFECT_LABELS[f.effect])}</span>` : "";
+  const evChips = evidenceChips(f);
+  return `<div class="finding f-${esc(f.severity)}" id="${idsafe("finding-" + f.finding_id)}">
     <div class="f-head">
       <span class="sev sev-${esc(f.severity)}">${esc(f.severity)}</span>
       <span class="f-cat">${esc(CAT_LABELS[f.category] || f.category)}</span>
-      ${f.clause_ids.map(c => `<a class="clause-chip" href="#clause-${esc(c)}">${esc(c)}</a>`).join(" ")}
+      ${effectTag}
       <span class="f-id">${esc(f.finding_id)}</span>
     </div>
-    <div class="f-title">${esc(f.title)}</div>
-    <div class="f-expl">${esc(f.explanation)}</div>
-    ${evidenceHtml}
+    <div class="f-title">${esc(prettyText(f.title))}</div>
+    <div class="f-expl">${esc(prettyText(f.explanation))}</div>
+    ${(evChips || f.clause_ids.length) ? `<div class="f-evidence">
+      ${evChips ? `<span class="lbl">Evidence:</span> ${evChips}` : ""}
+      ${f.clause_ids.length ? `<span class="lbl" style="margin-left:8px">Policy:</span> ${f.clause_ids.map(clauseChip).join(" ")}` : ""}
+    </div>` : ""}
   </div>`;
+}
+
+function renderEvidencePanel(r) {
+  const groups = new Map();
+  for (const c of r.document_citations) {
+    const key = `${c.doc_type}|${c.field}|${c.value}|${c.quote ?? ""}`;
+    if (!groups.has(c.doc_type)) groups.set(c.doc_type, new Map());
+    const g = groups.get(c.doc_type);
+    if (!g.has(key)) g.set(key, { ...c, findings: [] });
+    g.get(key).findings.push(c.finding_id);
+  }
+  if (!groups.size) return "";
+  const blocks = [...groups.entries()].map(([doc, rows]) => `
+    <div class="ev-group" id="${idsafe("evgroup-" + doc)}">
+      <div class="g-title">${esc(docLabel(doc))}</div>
+      ${[...rows.values()].map(c => {
+        const cls = !c.valid ? "invalid" : (c.quote_verified === false ? "unverified" : "");
+        const status = !c.valid
+          ? `<span class="v-invalid">✗ citation invalid: ${esc((c.issues || []).join("; "))}</span>`
+          : (c.quote_verified === false
+            ? `<span class="v-bad">⚠ source quote unverified</span>`
+            : `<span class="v-ok">✓ source quote verified</span>`);
+        return `<div class="ev-card ${cls}">
+          <div class="e-field">${fieldLabel(c.field)}</div>
+          <div class="e-val">${esc(c.value)}</div>
+          ${c.quote ? `<div class="e-quote">"${esc(c.quote)}"</div>` : ""}
+          <div class="e-meta">${status}
+            <span class="e-findings">used by ${[...new Set(c.findings)].map(esc).join(", ")}</span></div>
+        </div>`;
+      }).join("")}
+    </div>`).join("");
+  return `<div class="card"><h3>Extracted evidence <span class="source-tag">every value carries its verbatim source quote, re-checked in Python</span></h3>${blocks}</div>`;
 }
 
 function renderPolicy(r) {
@@ -507,17 +713,18 @@ function renderPolicy(r) {
   const related = (r.retrieved_context || []).filter(c => !c.already_cited);
   if (!cited.size && !related.length) return "";
   const citedHtml = [...cited.values()].map(c => `
-    <div class="clause" id="clause-${esc(c.clause_id)}">
+    <div class="clause" id="${idsafe("clause-" + c.clause_id)}">
       <div class="cl-head"><span class="cl-id">${esc(c.clause_id)}</span><span class="cl-title">${esc(c.title)}</span>
-        <span class="cl-meta">cited by ${c.findings.map(esc).join(", ")}</span></div>
+        <span class="cl-meta"><span class="cited-badge">DIRECTLY CITED</span><br>by ${[...new Set(c.findings)].map(esc).join(", ")}</span></div>
       <div class="cl-text">${esc(c.text)}</div>
     </div>`).join("");
   const relatedHtml = related.length ? `
-    <div class="context-note">Related policy context — retrieved by semantic similarity for background reading.
-    These clauses are <strong>not</strong> part of the decision basis.</div>
-    ${related.map(c => `<div class="clause">
+    <div class="context-note"><strong>Related policy context</strong> — retrieved by semantic similarity for
+    background reading only. These clauses are <strong>not part of the decision basis</strong>.</div>
+    ${related.map(c => `<div class="clause context">
       <div class="cl-head"><span class="cl-id">${esc(c.clause_id)}</span><span class="cl-title">${esc(c.title)}</span>
-        <span class="cl-meta">similarity ${esc(c.score)} · ${esc(c.reason)}</span></div>
+        <span class="cl-meta"><span class="context-badge">CONTEXT ONLY</span><br>similarity ${esc(c.score)}</span></div>
+      <div class="cl-text" style="font-size:12px">${esc(c.reason)}</div>
     </div>`).join("")}` : "";
   return `<div class="card"><h3>Policy clauses</h3>${citedHtml}${relatedHtml}</div>`;
 }
