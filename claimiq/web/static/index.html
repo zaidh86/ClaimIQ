@@ -25,6 +25,11 @@
   }
   * { box-sizing: border-box; margin: 0; }
   html { scroll-behavior: smooth; }
+  @media (prefers-reduced-motion: reduce) {
+    html { scroll-behavior: auto; }
+    .spinner { animation: none !important; }
+    .flash, mark.quote-mark { animation: none !important; }
+  }
   body {
     background: var(--bg); color: var(--text);
     font: 14.5px/1.55 -apple-system, "Segoe UI", system-ui, sans-serif;
@@ -46,22 +51,25 @@
   .dot.ok { background: var(--accent); } .dot.warn { background: var(--info-amber); } .dot.err { background: var(--reject); }
 
   .layout { display: grid; grid-template-columns: 312px 1fr; min-height: calc(100vh - 58px); }
-  @media (max-width: 980px) { .layout { grid-template-columns: 1fr; } aside { border-right: none !important; border-bottom: 1px solid var(--border); } }
+  @media (max-width: 980px) { .layout { grid-template-columns: 1fr; } aside { border-right: none !important; border-bottom: 1px solid var(--border); position: static !important; height: auto !important; } }
 
-  aside { background: var(--rail); border-right: 1px solid var(--border); padding: 14px 10px; }
+  aside {
+    background: var(--rail); border-right: 1px solid var(--border); padding: 14px 10px;
+    position: sticky; top: 58px; height: calc(100vh - 58px); overflow-y: auto;
+  }
   .rail-label { font-size: 11px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--faint); padding: 0 10px 10px; }
   .claim-item {
     width: 100%; text-align: left; background: transparent; color: var(--text);
     border: 1px solid transparent; border-radius: 8px; padding: 9px 12px; cursor: pointer;
-    display: block; margin-bottom: 3px;
+    display: block; margin-bottom: 5px;
+    transition: background .12s, border-color .12s;
   }
   .claim-item:hover { background: var(--panel); }
-  .claim-item.active { background: var(--panel-2); border-color: var(--border); }
-  .claim-item .cid-row { font-family: var(--mono); font-size: 12px; color: var(--muted); display: flex; gap: 7px; align-items: center; }
-  .claim-item .ctitle { font-size: 12.8px; margin-top: 2px; color: var(--muted); }
-  .claim-item.active .ctitle { color: var(--text); }
-  .type-tag { font-size: 10px; padding: 1px 7px; border-radius: 99px; border: 1px solid var(--border); color: var(--faint); text-transform: uppercase; letter-spacing: 0.06em; }
-  .review-state { margin-left: auto; font-size: 10px; color: var(--faint); }
+  .claim-item.active { background: var(--panel-2); border-color: var(--border); box-shadow: inset 2px 0 0 var(--accent); }
+  .claim-item .cid-row { font-size: 12.5px; color: var(--text); display: flex; gap: 7px; align-items: center; font-weight: 600; }
+  .claim-item .ctitle { font-size: 12.5px; margin-top: 2px; color: var(--muted); font-weight: 400; }
+  .type-tag { font-size: 10px; padding: 1px 7px; border-radius: 99px; border: 1px solid var(--border); color: var(--faint); text-transform: uppercase; letter-spacing: 0.06em; font-weight: 400; }
+  .review-state { margin-left: auto; font-size: 10px; color: var(--faint); font-weight: 400; }
   .decision-chip { margin-left: auto; font-size: 10px; font-weight: 700; padding: 2px 7px; border-radius: 4px; letter-spacing: 0.03em; }
   .chip-APPROVE { background: rgba(76,195,138,0.16); color: var(--approve); }
   .chip-REJECT { background: rgba(229,83,75,0.16); color: var(--reject); }
@@ -70,7 +78,6 @@
 
   main { padding: 22px 28px 70px; max-width: 1060px; }
 
-  /* ---------- welcome ---------- */
   .welcome { max-width: 560px; margin: 60px auto; }
   .welcome h2 { font-size: 22px; margin-bottom: 8px; letter-spacing: -0.01em; }
   .welcome p.lead { color: var(--muted); margin-bottom: 26px; }
@@ -82,21 +89,30 @@
 
   .card { background: var(--panel); border: 1px solid var(--border); border-radius: 10px; padding: 18px 20px; margin-bottom: 14px; }
   .card h3 { font-size: 11.5px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--muted); font-weight: 600; margin-bottom: 12px; display: flex; align-items: center; gap: 10px; flex-wrap: wrap; }
+  .card-desc { color: var(--faint); font-size: 12.5px; line-height: 1.5; margin: -8px 0 12px; max-width: 640px; }
+  .subhead { font-size: 11px; letter-spacing: 0.09em; text-transform: uppercase; color: var(--muted); font-weight: 600; margin: 16px 0 2px; }
 
   .claim-head { display: flex; align-items: baseline; gap: 12px; flex-wrap: wrap; margin-bottom: 4px; }
   .claim-head h1 { font-size: 20px; letter-spacing: -0.01em; }
-  .claim-head .cid { font-family: var(--mono); color: var(--muted); font-size: 13px; }
-  .schedule-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px 18px; margin-top: 10px; }
+  .id-secondary { font-family: var(--mono); color: var(--faint); font-size: 11px; }
+  .schedule-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(170px, 1fr)); gap: 10px 18px; margin-top: 10px; min-height: 54px; }
   .schedule-grid .k { color: var(--faint); font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; }
   .schedule-grid .v { font-size: 14px; margin-top: 1px; }
-  .doc-chips { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
-  .doc-chip { font-size: 12px; padding: 3px 10px; border-radius: 99px; background: var(--panel-2); border: 1px solid var(--border); color: var(--muted); }
 
   details.doc-viewer { border: 1px solid var(--border-soft); border-radius: 8px; margin-top: 8px; background: var(--panel-2); }
   details.doc-viewer summary { cursor: pointer; padding: 8px 14px; font-size: 13px; color: var(--muted); }
   details.doc-viewer summary:hover { color: var(--text); }
   details.doc-viewer[open] summary { border-bottom: 1px solid var(--border-soft); color: var(--text); }
   details.doc-viewer pre { padding: 12px 16px; white-space: pre-wrap; font-family: var(--mono); font-size: 12px; color: var(--muted); overflow: auto; max-height: 340px; }
+  mark.quote-mark {
+    background: rgba(108,177,240,0.22); color: var(--text); border-radius: 3px;
+    outline: 1px solid rgba(108,177,240,0.55); padding: 0 1px;
+    animation: markPulse 1.8s ease-out 1;
+  }
+  @keyframes markPulse {
+    0% { background: rgba(108,177,240,0.5); }
+    100% { background: rgba(108,177,240,0.22); }
+  }
 
   .review-btn {
     background: var(--accent); color: #08110c; font-weight: 700; font-size: 14.5px;
@@ -104,11 +120,12 @@
   }
   .review-btn:hover { filter: brightness(1.08); }
   .review-btn:disabled { opacity: 0.45; cursor: not-allowed; }
-  .rerun-btn, .chip-btn {
+  .rerun-btn {
     background: transparent; color: var(--muted); border: 1px solid var(--border);
     border-radius: 7px; padding: 5px 12px; cursor: pointer; font-size: 12.5px;
+    transition: color .12s, border-color .12s;
   }
-  .rerun-btn:hover, .chip-btn:hover { color: var(--text); border-color: var(--faint); }
+  .rerun-btn:hover { color: var(--text); border-color: var(--faint); }
 
   .loading-box { display: flex; gap: 16px; align-items: center; padding: 22px; }
   .spinner { width: 22px; height: 22px; border: 3px solid var(--border); border-top-color: var(--accent); border-radius: 50%; animation: spin 0.9s linear infinite; flex: none; }
@@ -116,13 +133,29 @@
   .loading-line { font-size: 14.5px; }
   .loading-sub { color: var(--faint); font-size: 12.5px; margin-top: 3px; }
 
-  /* ---------- decision header ---------- */
+  /* ---------- provenance strip ---------- */
+  .prov-strip {
+    display: flex; flex-wrap: wrap; align-items: center; gap: 6px 10px;
+    background: var(--panel); border: 1px solid var(--border); border-radius: 8px;
+    padding: 9px 14px; margin-bottom: 12px; font-size: 12.5px; color: var(--muted);
+  }
+  .prov-strip .seg { display: inline-flex; gap: 5px; align-items: baseline; }
+  .prov-strip .seg strong { color: var(--text); font-weight: 600; }
+  .prov-strip .arrow { color: var(--faint); }
+  .prov-strip .seg.bad strong { color: var(--info-amber); }
+
+  /* ---------- decision banner ---------- */
   .decision-banner { border-radius: 10px; padding: 18px 22px; margin-bottom: 14px; border: 1px solid; }
-  .decision-banner .d-claim { font-family: var(--mono); font-size: 12.5px; opacity: 0.75; margin-bottom: 2px; }
-  .decision-banner .dword { font-size: 26px; font-weight: 800; letter-spacing: 0.01em; }
+  .decision-banner .d-claim { font-size: 12.5px; opacity: 0.8; margin-bottom: 2px; }
+  .decision-banner .dword { font-size: 25px; font-weight: 800; letter-spacing: 0.01em; }
   .decision-banner .dsub { margin-top: 3px; font-size: 14px; opacity: 0.92; }
-  .decision-banner .daction { margin-top: 12px; font-size: 13.5px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.13); line-height: 1.6; }
-  .daction .reason-link { background: none; border: none; color: inherit; text-decoration: underline; text-underline-offset: 3px; cursor: pointer; padding: 0; font-size: inherit; }
+  .decision-banner .daction { margin-top: 12px; font-size: 13.5px; padding-top: 10px; border-top: 1px solid rgba(255,255,255,0.13); line-height: 1.7; }
+  .reason-link {
+    background: none; border: 1px solid rgba(255,255,255,0.25); border-radius: 6px;
+    color: inherit; cursor: pointer; padding: 1px 9px; font-size: 12.5px;
+    display: inline-block; margin: 1px 2px; text-align: left;
+  }
+  .reason-link:hover { border-color: currentColor; }
   .d-APPROVE { background: rgba(76,195,138,0.09); border-color: rgba(76,195,138,0.45); color: #b6e8d0; }
   .d-APPROVE .dword { color: var(--approve); }
   .d-REJECT { background: rgba(229,83,75,0.09); border-color: rgba(229,83,75,0.45); color: #f2c1be; }
@@ -131,6 +164,29 @@
   .d-REQUEST_INFORMATION .dword { color: var(--info-amber); }
   .d-ESCALATE { background: rgba(177,139,244,0.09); border-color: rgba(177,139,244,0.45); color: #dccdf7; }
   .d-ESCALATE .dword { color: var(--escalate); }
+
+  /* ---------- determinism receipt ---------- */
+  .receipt {
+    border: 1px solid rgba(76,195,138,0.4); background: rgba(76,195,138,0.07);
+    color: #b6e8d0; border-radius: 8px; padding: 10px 14px; margin-bottom: 12px; font-size: 13px;
+  }
+  .receipt.changed { border-color: rgba(224,166,60,0.45); background: rgba(224,166,60,0.07); color: #f0d9ae; }
+  .receipt ul { margin: 6px 0 0 18px; }
+
+  /* ---------- decision trace ---------- */
+  .trace-tier { display: flex; gap: 12px; padding: 8px 0; border-top: 1px solid var(--border-soft); align-items: baseline; }
+  .trace-tier:first-of-type { border-top: none; }
+  .trace-tier .t-n { font-family: var(--mono); font-size: 11px; color: var(--faint); flex: none; width: 16px; }
+  .trace-tier .t-name { font-size: 13.5px; color: var(--muted); flex: 1 1 220px; }
+  .trace-tier .t-status { font-size: 12px; color: var(--faint); flex: 2 1 260px; }
+  .trace-tier.won { border-left: 3px solid; margin-left: -16px; padding-left: 13px; border-radius: 2px; }
+  .trace-tier.won .t-name { color: var(--text); font-weight: 700; }
+  .trace-tier.won .t-status { color: var(--text); }
+  .trace-tier.won.w-APPROVE { border-left-color: var(--approve); }
+  .trace-tier.won.w-REJECT { border-left-color: var(--reject); }
+  .trace-tier.won.w-REQUEST_INFORMATION { border-left-color: var(--info-amber); }
+  .trace-tier.won.w-ESCALATE { border-left-color: var(--escalate); }
+  .trace-note { margin-top: 10px; padding-top: 10px; border-top: 1px dashed var(--border-soft); font-size: 12.5px; color: var(--muted); }
 
   .warn-strip { background: rgba(224,166,60,0.08); border: 1px solid rgba(224,166,60,0.3); color: #e8cf9d; border-radius: 8px; padding: 10px 14px; font-size: 13px; margin-bottom: 14px; }
   .warn-strip strong { color: #f0d9ae; }
@@ -141,9 +197,13 @@
   .explain-summary { font-size: 15px; line-height: 1.62; }
   .explain-points { margin: 10px 0 0 18px; }
   .explain-points li { margin-bottom: 6px; }
-  .inv-note { margin-top: 12px; padding: 10px 14px; background: var(--panel-2); border-left: 3px solid var(--escalate); border-radius: 0 6px 6px 0; font-size: 13.5px; }
+  .inv-note { margin-top: 12px; padding: 10px 14px; background: var(--panel-2); border-left: 3px solid var(--focus); border-radius: 0 6px 6px 0; font-size: 13.5px; }
+  .linkid {
+    background: none; border: none; padding: 0; cursor: pointer;
+    color: var(--focus); text-decoration: underline; text-underline-offset: 3px; font-size: inherit;
+  }
+  .linkid:hover { color: var(--text); }
 
-  /* ---------- request info checklist ---------- */
   .missing-box { border-left: 3px solid var(--info-amber); }
   .check-item { display: flex; gap: 12px; padding: 10px 0; border-top: 1px solid var(--border-soft); }
   .check-item:first-of-type { border-top: none; }
@@ -151,7 +211,6 @@
   .check-item .ct { font-weight: 600; font-size: 14px; }
   .check-item .cd { color: var(--muted); font-size: 13px; margin-top: 2px; }
 
-  /* ---------- escalation sheet ---------- */
   .esc-box { border-left: 3px solid var(--escalate); }
   .esc-item { padding: 11px 0; border-top: 1px solid var(--border-soft); display: flex; gap: 12px; }
   .esc-item:first-of-type { border-top: none; }
@@ -160,7 +219,6 @@
   .esc-item .ed { color: var(--muted); font-size: 13px; margin-top: 2px; }
   .esc-item .chips { margin-top: 7px; display: flex; gap: 6px; flex-wrap: wrap; }
 
-  /* ---------- contradictions ---------- */
   .contradiction { border: 1px solid rgba(229,83,75,0.35); border-radius: 8px; margin-bottom: 12px; overflow: hidden; }
   .contradiction .c-head { background: rgba(229,83,75,0.08); padding: 9px 14px; font-size: 13.5px; font-weight: 600; color: #f2c1be; display: flex; justify-content: space-between; align-items: center; gap: 10px; }
   .c-status { font-size: 10.5px; color: var(--reject); font-weight: 700; letter-spacing: 0.06em; flex: none; }
@@ -168,11 +226,10 @@
   .c-cell { flex: 1 1 220px; padding: 12px 16px; border-top: 1px solid var(--border-soft); min-width: 200px; }
   .c-vs { flex: 0 0 auto; display: flex; align-items: center; padding: 0 4px; color: var(--reject); font-weight: 800; font-size: 11px; border-top: 1px solid var(--border-soft); }
   .c-doc { font-size: 10.5px; text-transform: uppercase; letter-spacing: 0.07em; color: var(--faint); }
-  .c-val { font-size: 16.5px; font-weight: 700; margin: 4px 0 6px; }
+  .c-val { font-size: 16px; font-weight: 700; margin: 4px 0 6px; }
   .c-quote { font-family: var(--mono); font-size: 11.5px; color: var(--muted); line-height: 1.5; }
   .c-expl { padding: 9px 14px; border-top: 1px solid var(--border-soft); font-size: 12.5px; color: var(--muted); }
 
-  /* ---------- findings ---------- */
   .finding { border: 1px solid var(--border-soft); border-left-width: 3px; border-radius: 8px; padding: 11px 16px; margin-bottom: 9px; background: var(--panel-2); }
   .f-CRITICAL { border-left-color: var(--reject); }
   .f-MATERIAL { border-left-color: var(--info-amber); }
@@ -186,23 +243,24 @@
   .sev-INFO { background: rgba(76,195,138,0.14); color: var(--approve); }
   .effect-tag { font-size: 10px; padding: 2px 7px; border-radius: 4px; border: 1px dashed var(--border); color: var(--faint); letter-spacing: 0.04em; }
   .f-cat { font-size: 11px; color: var(--muted); text-transform: uppercase; letter-spacing: 0.06em; }
-  .f-id { font-family: var(--mono); font-size: 11px; color: var(--faint); margin-left: auto; }
+  .f-id { font-size: 11px; color: var(--faint); margin-left: auto; }
   .finding .f-title { font-weight: 600; font-size: 14.5px; }
   .finding .f-expl { color: var(--muted); font-size: 13.5px; margin-top: 3px; }
   .clause-chip {
-    font-family: var(--mono); font-size: 11px; background: var(--panel); border: 1px solid var(--border);
-    border-radius: 5px; padding: 2px 8px; color: var(--escalate); cursor: pointer;
+    font-size: 11px; background: var(--panel); border: 1px solid var(--border);
+    border-radius: 5px; padding: 2px 8px; color: var(--focus); cursor: pointer;
+    transition: border-color .12s;
   }
-  .clause-chip:hover { border-color: var(--escalate); }
+  .clause-chip:hover { border-color: var(--focus); }
   .ev-chip {
     font-size: 11px; background: var(--panel); border: 1px solid var(--border);
     border-radius: 5px; padding: 2px 8px; color: var(--muted); cursor: pointer;
+    transition: border-color .12s, color .12s;
   }
   .ev-chip:hover { border-color: var(--faint); color: var(--text); }
   .f-evidence { margin-top: 9px; border-top: 1px dashed var(--border-soft); padding-top: 8px; display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
   .f-evidence .lbl { font-size: 11px; color: var(--faint); text-transform: uppercase; letter-spacing: 0.06em; }
 
-  /* ---------- evidence panel ---------- */
   .ev-group { margin-bottom: 14px; }
   .ev-group .g-title { font-size: 12px; font-weight: 700; letter-spacing: 0.07em; text-transform: uppercase; color: var(--muted); padding-bottom: 6px; border-bottom: 1px solid var(--border-soft); margin-bottom: 8px; }
   .ev-card { border: 1px solid var(--border-soft); border-radius: 7px; padding: 9px 13px; margin-bottom: 7px; background: var(--panel-2); font-size: 13px; }
@@ -210,29 +268,48 @@
   .ev-card.invalid { border-color: rgba(229,83,75,0.5); }
   .ev-card .e-field { color: var(--faint); font-size: 11px; text-transform: uppercase; letter-spacing: 0.06em; }
   .ev-card .e-val { font-weight: 600; margin: 2px 0 4px; }
-  .ev-card .e-quote { font-family: var(--mono); font-size: 12px; color: var(--muted); }
+  .quote-jump {
+    display: block; width: 100%; text-align: left; background: none; border: none; padding: 0;
+    font-family: var(--mono); font-size: 12px; color: var(--muted); cursor: pointer; line-height: 1.5;
+  }
+  .quote-jump:hover { color: var(--text); }
+  .quote-jump .hint { color: var(--focus); font-family: inherit; font-size: 11px; }
+  .quote-plain { font-family: var(--mono); font-size: 12px; color: var(--muted); }
   .ev-card .e-meta { margin-top: 5px; font-size: 11.5px; display: flex; gap: 10px; flex-wrap: wrap; align-items: center; }
-  .v-ok { color: var(--approve); }
+  .v-ok { color: var(--faint); }
   .v-bad { color: var(--info-amber); }
   .v-invalid { color: var(--reject); }
-  .e-findings { color: var(--faint); font-family: var(--mono); font-size: 10.5px; }
+  .e-findings { color: var(--faint); font-size: 11px; }
 
-  /* ---------- policy ---------- */
   .clause { border: 1px solid var(--border-soft); border-radius: 8px; padding: 12px 16px; margin-bottom: 9px; background: var(--panel-2); }
   .clause .cl-head { display: flex; gap: 10px; align-items: baseline; flex-wrap: wrap; }
-  .clause .cl-id { font-family: var(--mono); font-size: 12.5px; color: var(--escalate); font-weight: 600; }
+  .clause .cl-name { font-size: 13px; color: var(--focus); font-weight: 700; }
   .clause .cl-title { font-weight: 600; }
   .clause .cl-meta { margin-left: auto; font-size: 10.5px; color: var(--faint); text-align: right; }
   .clause .cl-text { color: var(--muted); font-size: 13px; margin-top: 6px; line-height: 1.55; }
-  .cited-badge { font-size: 9.5px; font-weight: 700; letter-spacing: 0.07em; padding: 2px 7px; border-radius: 4px; background: rgba(177,139,244,0.16); color: var(--escalate); }
+  .cl-params { margin-top: 9px; border-top: 1px dashed var(--border-soft); padding-top: 8px; }
+  .cl-params .p-title { font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--faint); margin-bottom: 5px; }
+  .cl-params .p-row { font-size: 12.5px; color: var(--muted); padding: 1px 0; }
+  .cl-params .p-row strong { color: var(--text); font-weight: 600; }
+  .cited-badge { font-size: 9.5px; font-weight: 700; letter-spacing: 0.07em; padding: 2px 7px; border-radius: 4px; background: rgba(108,177,240,0.15); color: var(--focus); }
   .context-badge { font-size: 9.5px; font-weight: 700; letter-spacing: 0.07em; padding: 2px 7px; border-radius: 4px; background: rgba(100,116,139,0.18); color: var(--faint); }
-  .clause.context { opacity: 0.85; background: transparent; }
+  .clause.context { opacity: 0.62; background: transparent; border-style: dashed; }
   .context-note { font-size: 12.5px; color: var(--faint); margin: 16px 0 10px; padding-top: 12px; border-top: 1px dashed var(--border-soft); }
 
-  /* ---------- passed checks ---------- */
-  .passed-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(280px, 1fr)); gap: 6px 18px; }
-  .passed-item { display: flex; gap: 9px; font-size: 13px; color: var(--muted); align-items: baseline; }
-  .passed-item .tick { color: var(--approve); font-weight: 700; flex: none; }
+  /* ---------- review scope ---------- */
+  .scope-row { display: flex; gap: 10px; padding: 7px 0; border-top: 1px solid var(--border-soft); align-items: baseline; font-size: 13px; }
+  .scope-row:first-of-type { border-top: none; }
+  .scope-row .s-icon { flex: none; width: 18px; font-weight: 700; }
+  .scope-row .s-icon.ok { color: var(--approve); }
+  .scope-row .s-icon.flag { color: var(--info-amber); }
+  .scope-row .s-icon.na { color: var(--faint); }
+  .scope-row .s-icon.fail { color: var(--reject); }
+  .scope-row .s-name { flex: 1 1 200px; color: var(--text); }
+  .scope-row .s-status { flex: 2 1 260px; color: var(--muted); font-size: 12.5px; }
+  .scope-outside { margin-top: 14px; padding-top: 12px; border-top: 1px dashed var(--border-soft); }
+  .scope-outside .p-title { font-size: 10.5px; letter-spacing: 0.08em; text-transform: uppercase; color: var(--faint); margin-bottom: 6px; }
+  .scope-outside li { color: var(--muted); font-size: 12.5px; margin: 3px 0 3px 16px; }
+  .scope-outside p { color: var(--faint); font-size: 12px; margin-top: 8px; }
 
   details.aux { margin-bottom: 14px; }
   details.aux summary { cursor: pointer; color: var(--muted); font-size: 13px; padding: 6px 2px; }
@@ -244,7 +321,6 @@
     100% { outline: 2px solid transparent; outline-offset: 3px; }
   }
   .flash { animation: flashPulse 1.6s ease-out 1; }
-  .section-gap { height: 6px; }
 </style>
 </head>
 <body>
@@ -256,20 +332,22 @@
 
 <div class="layout">
   <aside aria-label="Claim list">
-    <div class="rail-label">Claims</div>
+    <div class="rail-label" id="rail-label">Claims</div>
     <div id="claim-list"><div style="color:var(--faint);padding:20px 10px">Loading claims…</div></div>
   </aside>
   <main id="main">
     <div class="welcome">
-      <h2>Review motor insurance claims against evidence and policy wording.</h2>
-      <p class="lead">ClaimIQ reads each submitted document, extracts the facts with source quotes,
-      runs deterministic policy checks, and shows exactly what the evidence supports —
-      including where documents contradict each other.</p>
-      <div class="steps">
-        <div class="step"><span class="n">1</span><div><div class="t">Select a claim</div><div class="d">Eight synthetic sample claims cover clean, contradictory, incomplete, excluded and out-of-scope cases.</div></div></div>
-        <div class="step"><span class="n">2</span><div><div class="t">Review the evidence</div><div class="d">Every extracted fact carries a verbatim quote, verified against the source document.</div></div></div>
-        <div class="step"><span class="n">3</span><div><div class="t">Inspect grounded findings</div><div class="d">Each finding cites its documents and the exact policy clause it rests on.</div></div></div>
-        <div class="step"><span class="n">4</span><div><div class="t">Take investigator action</div><div class="d">Approve, reject, request specific information — or escalate when the evidence can't support certainty.</div></div></div>
+      <h2>ClaimIQ — Investigator Workbench</h2>
+      <p style="color:var(--accent);font-weight:600;margin:2px 0 10px">Gemini reads. Python decides.</p>
+      <p class="lead">Review claim evidence against the policy, trace every finding to its source,
+      and escalate the cases the system cannot safely resolve.</p>
+      <div class="subhead" style="margin-top:0">How to use this workspace</div>
+      <div class="steps" style="margin-top:10px">
+        <div class="step"><span class="n">1</span><div><div class="t">Select a claim</div><div class="d">Eight sample claims cover clean, contradictory, incomplete, excluded and out-of-scope cases.</div></div></div>
+        <div class="step"><span class="n">2</span><div><div class="t">Review the evidence</div><div class="d">Every extracted fact carries a verbatim quote from the submitted documents.</div></div></div>
+        <div class="step"><span class="n">3</span><div><div class="t">Follow findings to their sources</div><div class="d">Click a verified quote to see it highlighted in the original document.</div></div></div>
+        <div class="step"><span class="n">4</span><div><div class="t">Inspect the policy reasoning</div><div class="d">Each finding names the policy clause and rule value it was checked against.</div></div></div>
+        <div class="step"><span class="n">5</span><div><div class="t">Confirm the recommended disposition</div><div class="d">Approve, reject, request specific information — or escalate for human review.</div></div></div>
       </div>
     </div>
   </main>
@@ -278,12 +356,19 @@
 <script>
 "use strict";
 
-const state = { claims: [], selected: null, detail: null, reviews: {}, reviewing: false, error: null };
+const state = { claims: [], selected: null, detail: null, reviews: {}, receipts: {}, reviewing: false, error: null };
 
 const esc = s => String(s ?? "").replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
 const idsafe = s => String(s).replace(/[^a-zA-Z0-9_-]/g, "-");
 const money = n => "₹" + Number(n).toLocaleString("en-IN");
 const fieldLabel = f => esc(String(f).replaceAll("_", " ").replace(/^./, c => c.toUpperCase()));
+
+/* ---------------- Feature 0: human-readable labels (presentation only) ---------------- */
+const pad2 = n => String(n).padStart(2, "0");
+const labelClaim = id => /^CLM-\d+$/.test(id) ? "Claim " + pad2(parseInt(id.slice(4), 10)) : id;
+const labelFinding = id => /^FIND-\d+$/.test(id) ? "Finding " + pad2(parseInt(id.slice(5), 10)) : id;
+const labelClause = id => /^POL-\d+$/.test(id) ? "Policy Clause " + pad2(parseInt(id.slice(4), 10)) : id;
+const labelClauseShort = id => /^POL-\d+$/.test(id) ? "Clause " + pad2(parseInt(id.slice(4), 10)) : id;
 
 const DOC_LABELS = {
   claim_form: "Claim Form", repair_estimate: "Repair Estimate",
@@ -291,29 +376,66 @@ const DOC_LABELS = {
 };
 const CAT_LABELS = {
   DOCUMENT_COMPLETENESS: "Document completeness", MISSING_INFORMATION: "Missing information",
-  CONTRADICTION: "Contradiction", POLICY_COVERAGE: "Coverage", POLICY_EXCLUSION: "Exclusion",
+  CONTRADICTION: "Contradiction", POLICY_COVERAGE: "Coverage", POLICY_EXCLUSION: "Policy exclusion",
   CLAIM_WINDOW: "Notification window", INSURED_VALUE: "Insured value", POLICY_PERIOD: "Policy period",
   DRIVER_ELIGIBILITY: "Driver & licence", THEFT_REQUIREMENT: "Theft requirements",
-  OUT_OF_SCOPE: "Out of scope", UNCERTAINTY: "Uncertainty",
+  OUT_OF_SCOPE: "Outside policy scope", UNCERTAINTY: "Uncertainty",
 };
 const EFFECT_LABELS = {
-  BLOCK_REJECT: "grounds for rejection",
-  NEEDS_INFORMATION: "needs information",
-  NEEDS_ESCALATION: "needs investigation",
+  BLOCK_REJECT: "Grounds for rejection",
+  NEEDS_INFORMATION: "Information needed",
+  NEEDS_ESCALATION: "Investigator review needed",
 };
+const SEV_LABELS = { CRITICAL: "Critical", MATERIAL: "Material", MINOR: "Minor", INFO: "No issue" };
 const SEV_ORDER = { CRITICAL: 0, MATERIAL: 1, MINOR: 2, INFO: 3 };
 const DECISION_META = {
-  APPROVE: { word: "APPROVE", sub: "The reviewed evidence supports this claim." },
-  REJECT: { word: "REJECT", sub: "An established policy violation was identified in the submitted evidence." },
-  REQUEST_INFORMATION: { word: "REQUEST INFORMATION", sub: "The claim cannot be assessed until specific missing evidence is provided." },
-  ESCALATE: { word: "ESCALATE", sub: "The evidence contains contradictions, uncertainty, or a case the policy does not clearly resolve." },
+  APPROVE: { word: "Approve", chip: "Approve", sub: "The reviewed evidence supports this claim." },
+  REJECT: { word: "Reject", chip: "Reject", sub: "An established policy violation was identified in the submitted evidence." },
+  REQUEST_INFORMATION: { word: "Request Information", chip: "Needs Info", sub: "The claim cannot be assessed until specific missing evidence is provided." },
+  ESCALATE: { word: "Escalate for Review", chip: "Escalate", sub: "The evidence contains contradictions, uncertainty, or a case the policy does not clearly resolve." },
 };
 const docLabel = d => DOC_LABELS[d] || fieldLabel(d);
 // Display-only: swap raw doc-type tokens in backend text for their labels.
 const prettyText = s => Object.entries(DOC_LABELS).reduce(
   (acc, [token, label]) => acc.replaceAll(token, label), String(s ?? ""));
 
-// ---------------- API ----------------
+// The 11 deterministic checks: display names + which finding rules belong to each.
+const CHECKS = {
+  check_document_completeness: { name: "Required documents", rules: ["document_completeness_check"] },
+  check_core_facts: { name: "Core facts established", rules: ["core_facts_check"] },
+  check_contradictions: { name: "Cross-document consistency", rules: ["cross_document_contradiction_check", "registration_consistency_check"] },
+  check_temporal_consistency: { name: "Timeline consistency", rules: ["temporal_consistency_check"] },
+  check_policy_period: { name: "Policy period", rules: ["policy_period_check"] },
+  check_claim_window: { name: "Notification window", rules: ["claim_window_check"] },
+  check_coverage: { name: "Coverage", rules: ["coverage_check"] },
+  check_exclusions: { name: "Policy exclusions", rules: ["exclusion_check"] },
+  check_driver: { name: "Driver & licence", rules: ["driver_consistency_check", "driver_licence_check"] },
+  check_theft_requirements: { name: "Theft requirements", rules: ["theft_fir_timing_check", "theft_keys_check"] },
+  check_amounts: { name: "Amounts & insured value", rules: ["claimed_amount_check", "insured_value_check"] },
+};
+const ruleLabel = rule => {
+  for (const meta of Object.values(CHECKS)) {
+    if (meta.rules.includes(rule)) return meta.name + " check";
+  }
+  return rule === "decision_fallback" ? "Decision safety fallback" : fieldLabel(rule);
+};
+
+// Human labels for machine-readable policy parameters (values always from policy.json).
+const PARAM_RENDERERS = {
+  max_report_days: v => `Maximum reporting window: <strong>${esc(v)} days</strong>`,
+  counted_from: v => `Counted from: <strong>${fieldLabel(v)}</strong>`,
+  required_documents: v => `Required documents: <strong>${(v || []).map(d => esc(docLabel(d))).join(", ")}</strong>`,
+  fir_max_hours_after_discovery: v => `FIR required within: <strong>${esc(v)} hours of discovery</strong>`,
+  keys_confirmation_required: v => v ? `Keys confirmation: <strong>required</strong>` : "",
+  licence_required: v => v ? `Valid driving licence: <strong>required</strong>` : "",
+  claim_type: v => `Applies to: <strong>${esc(v)} claims</strong>`,
+  applies_to: v => `Applies to: <strong>${(v || []).map(esc).join(", ")} claims</strong>`,
+  limit_basis: v => `Limit basis: <strong>${fieldLabel(v)}</strong>`,
+  vehicle_types: v => `Eligible vehicles: <strong>${(v || []).map(x => fieldLabel(x)).join(", ")}</strong>`,
+  risk_type: () => "",  // internal matching key — not investigator-facing
+};
+
+/* ---------------- API ---------------- */
 async function api(path, opts) {
   const res = await fetch(path, opts);
   let body = null;
@@ -342,6 +464,7 @@ async function loadClaims() {
   try {
     const data = await api("/api/claims");
     state.claims = data.claims;
+    document.getElementById("rail-label").textContent = `Claims · ${state.claims.length}`;
     renderClaimList();
   } catch (e) {
     document.getElementById("claim-list").innerHTML =
@@ -358,12 +481,63 @@ async function selectClaim(id) {
   renderMain();
 }
 
+/* ---------------- Feature 4: determinism receipt ---------------- */
+function structuralSignature(r) {
+  // Structured review only — narrative, timestamps and timings excluded.
+  return JSON.stringify({
+    decision: r.decision,
+    reasons: r.decision_reasons,
+    findings: r.findings.map(f => ({
+      id: f.finding_id, cat: f.category, sev: f.severity, eff: f.effect,
+      clauses: [...f.clause_ids].sort(),
+      evidence: f.evidence.map(e => [e.source, e.doc_type, e.field, String(e.value), e.quote ?? ""]),
+    })),
+  });
+}
+
+function buildReceipt(prev, next, seconds) {
+  if (structuralSignature(prev) === structuralSignature(next)) {
+    return {
+      changed: false,
+      text: `Re-ran in ${seconds}s — decision and findings unchanged. ` +
+        `${next.findings.length} finding${next.findings.length === 1 ? "" : "s"} stable. ` +
+        `The AI narrative may re-word itself; the structured review did not change.`,
+    };
+  }
+  const diffs = [];
+  if (prev.decision !== next.decision)
+    diffs.push(`Decision changed: ${DECISION_META[prev.decision]?.word || prev.decision} → ${DECISION_META[next.decision]?.word || next.decision}`);
+  const prevIds = new Set(prev.findings.map(f => f.finding_id));
+  const nextIds = new Set(next.findings.map(f => f.finding_id));
+  for (const f of next.findings) if (!prevIds.has(f.finding_id)) diffs.push(`New: ${labelFinding(f.finding_id)} — ${f.title}`);
+  for (const f of prev.findings) if (!nextIds.has(f.finding_id)) diffs.push(`Removed: ${labelFinding(f.finding_id)} — ${f.title}`);
+  for (const f of next.findings) {
+    const p = prev.findings.find(x => x.finding_id === f.finding_id);
+    if (!p) continue;
+    const changed = [];
+    if (p.category !== f.category) changed.push("category");
+    if (p.severity !== f.severity) changed.push("severity");
+    if (p.effect !== f.effect) changed.push("effect");
+    if (JSON.stringify([...p.clause_ids].sort()) !== JSON.stringify([...f.clause_ids].sort())) changed.push("policy clauses");
+    if (JSON.stringify(p.evidence.map(e => [e.source, e.doc_type, e.field, String(e.value)])) !==
+        JSON.stringify(f.evidence.map(e => [e.source, e.doc_type, e.field, String(e.value)]))) changed.push("evidence");
+    if (changed.length) diffs.push(`${labelFinding(f.finding_id)} changed: ${changed.join(", ")}`);
+  }
+  return { changed: true, text: `Review changed — inspect differences:`, diffs };
+}
+
 async function runReview(id) {
   if (state.reviewing) return;
   state.reviewing = true; state.error = null;
+  const previous = state.reviews[id] || null;
+  const started = Date.now();
   renderMain(); startLoadingTicker();
   try {
-    state.reviews[id] = await api(`/api/claims/${encodeURIComponent(id)}/review`, { method: "POST" });
+    const result = await api(`/api/claims/${encodeURIComponent(id)}/review`, { method: "POST" });
+    state.reviews[id] = result;
+    state.receipts[id] = previous
+      ? buildReceipt(previous, result, ((Date.now() - started) / 1000).toFixed(1))
+      : null;
   } catch (e) {
     state.error = e.message;
   } finally {
@@ -372,7 +546,7 @@ async function runReview(id) {
   }
 }
 
-// ---------------- loading ticker (truthful process descriptions) ----------------
+/* ---------------- loading ticker (truthful process descriptions) ---------------- */
 const LOADING_LINES = [
   "Analyzing claim documents with Gemini…",
   "Extracting evidence with source quotes…",
@@ -400,7 +574,7 @@ function stopLoadingTicker() {
   if (elapsedTimer) { clearInterval(elapsedTimer); elapsedTimer = null; }
 }
 
-// ---------------- navigation helpers ----------------
+/* ---------------- navigation ---------------- */
 function reveal(elId) {
   const el = document.getElementById(elId);
   if (!el) return;
@@ -408,27 +582,134 @@ function reveal(elId) {
   if (wrap) wrap.open = true;
   el.scrollIntoView({ behavior: "smooth", block: "center" });
   el.classList.remove("flash");
-  void el.offsetWidth; // restart animation
+  void el.offsetWidth;
   el.classList.add("flash");
 }
 
-// ---------------- rendering ----------------
+/* ---------------- Feature 1: click-to-source quote highlighting ----------------
+   Mirrors the backend verifier's semantics (whitespace-collapsed, case-insensitive
+   matching — quote_verified does NOT mean a literal substring), with an offset map
+   from the normalized text back to raw offsets. Raw text is escaped segment-by-
+   segment around the mark; quote content itself is never inserted as HTML. */
+const quoteRegistry = [];
+
+function registerQuote(docType, quote) {
+  quoteRegistry.push({ docType, quote });
+  return quoteRegistry.length - 1;
+}
+
+function normalizeWithMap(raw) {
+  const map = [];
+  let norm = "";
+  let pendingSpace = false;
+  for (let i = 0; i < raw.length; i++) {
+    const ch = raw[i];
+    if (/\s/.test(ch)) {
+      if (norm.length > 0) pendingSpace = true;  // collapse + strip leading
+    } else {
+      if (pendingSpace) { norm += " "; map.push(i); pendingSpace = false; }
+      norm += ch.toLowerCase();
+      map.push(i);
+    }
+  }
+  return { norm, map };  // trailing whitespace never emitted
+}
+
+const normalizeQuote = q => String(q).replace(/\s+/g, " ").toLowerCase().trim();
+
+function findQuoteRange(raw, quote) {
+  const target = normalizeQuote(quote);
+  if (!target) return null;
+  const { norm, map } = normalizeWithMap(raw);
+  const idx = norm.indexOf(target);
+  if (idx < 0) return null;
+  const start = map[idx];
+  const end = map[idx + target.length - 1] + 1;  // exclusive raw offset
+  return [start, end];
+}
+
+function highlightQuote(qi) {
+  const entry = quoteRegistry[qi];
+  if (!entry || !state.detail) return;
+  const doc = state.detail.documents_full.find(d => d.doc_type === entry.docType);
+  const details = document.getElementById(`doc-${idsafe(entry.docType)}`);
+  if (!doc || !details) return;
+  const pre = details.querySelector("pre");
+  // reset any previous highlights in all document viewers
+  for (const d of state.detail.documents_full) {
+    const other = document.getElementById(`doc-${idsafe(d.doc_type)}`);
+    if (other) other.querySelector("pre").innerHTML = esc(d.text);
+  }
+  const range = findQuoteRange(doc.text, entry.quote);
+  details.open = true;
+  if (!range) {
+    // never manufacture a highlight — open the document and say so
+    pre.insertAdjacentHTML("afterbegin",
+      `<div style="color:var(--info-amber);font-family:inherit;margin-bottom:8px">⚠ This quote could not be located in the document text.</div>`);
+    details.scrollIntoView({ behavior: "smooth", block: "start" });
+    return;
+  }
+  const [start, end] = range;
+  pre.innerHTML = esc(doc.text.slice(0, start))
+    + `<mark class="quote-mark">` + esc(doc.text.slice(start, end)) + `</mark>`
+    + esc(doc.text.slice(end));
+  const mark = pre.querySelector("mark.quote-mark");
+  requestAnimationFrame(() => mark.scrollIntoView({ behavior: "smooth", block: "center" }));
+}
+
+document.addEventListener("click", ev => {
+  const btn = ev.target.closest("[data-qi]");
+  if (btn) highlightQuote(Number(btn.dataset.qi));
+});
+
+function quoteHtml(docType, quote, verified) {
+  if (!quote) return "";
+  if (verified === true) {
+    const qi = registerQuote(docType, quote);
+    return `<button class="quote-jump" data-qi="${qi}"
+      aria-label="Show this quote highlighted in the ${esc(docLabel(docType))}">
+      "${esc(quote)}" <span class="hint">→ view in document</span></button>`;
+  }
+  return `<span class="quote-plain">"${esc(quote)}"</span>`;
+}
+
+/* ---------------- narrative linkification (labels + navigation only) ----------------
+   Replaces backend IDs in already-escaped narrative text with human labels wired to
+   reveal(). Only IDs actually present in this review are linked — nothing new is
+   ever created from the narrative. */
+function linkifyNarrative(text, r) {
+  const findingIds = new Set(r.findings.map(f => f.finding_id));
+  const clauseIds = new Set(r.policy_citations.map(c => c.clause_id));
+  let html = esc(prettyText(text));
+  html = html.replace(/FIND-\d{3}/g, id => findingIds.has(id)
+    ? `<button class="linkid" onclick="reveal('${idsafe("finding-" + id)}')">${esc(labelFinding(id))}</button>`
+    : esc(labelFinding(id)));
+  html = html.replace(/POL-\d{2}/g, id => clauseIds.has(id)
+    ? `<button class="linkid" onclick="reveal('${idsafe("clause-" + id)}')">${esc(labelClauseShort(id))}</button>`
+    : esc(labelClauseShort(id)));
+  html = html.replace(/CLM-\d{3}/g, id => esc(labelClaim(id)));
+  html = html.replace(/REQUEST_INFORMATION/g, "Request Information");
+  return html;
+}
+
+/* ---------------- rendering ---------------- */
 function renderClaimList() {
   const el = document.getElementById("claim-list");
   el.innerHTML = state.claims.map(c => {
     const review = state.reviews[c.claim_id];
     const stateHtml = review
-      ? `<span class="decision-chip chip-${esc(review.decision)}">${esc(review.decision.replaceAll("_", " "))}</span>`
+      ? `<span class="decision-chip chip-${esc(review.decision)}">${esc(DECISION_META[review.decision]?.chip || review.decision)}</span>`
       : `<span class="review-state">Not reviewed</span>`;
     return `<button class="claim-item ${state.selected === c.claim_id ? "active" : ""}"
-      onclick="selectClaim('${esc(c.claim_id)}')" aria-label="${esc(c.claim_id)}: ${esc(c.title)}">
-      <div class="cid-row"><span>${esc(c.claim_id)}</span><span class="type-tag">${esc(c.claim_type)}</span>${stateHtml}</div>
+      onclick="selectClaim('${esc(c.claim_id)}')" aria-label="${esc(labelClaim(c.claim_id))}: ${esc(c.title)}">
+      <div class="cid-row"><span>${esc(labelClaim(c.claim_id))}</span><span class="type-tag">${esc(c.claim_type)}</span>${stateHtml}</div>
       <div class="ctitle">${esc(c.title)}</div>
     </button>`;
   }).join("");
 }
 
 function renderMain() {
+  quoteRegistry.length = 0;  // rebuilt on every render
   const el = document.getElementById("main");
   if (!state.selected) return;
   const summary = state.claims.find(c => c.claim_id === state.selected);
@@ -467,17 +748,103 @@ function renderOverview(summary, detail) {
       <div><div class="k">Declared value</div><div class="v">${money(s.declared_vehicle_value)}</div></div>
       <div><div class="k">Policy period</div><div class="v">${esc(s.policy_start)} → ${esc(s.policy_end)}</div></div>
       <div><div class="k">Claim submitted</div><div class="v">${esc(summary.submitted_at)}</div></div>
-    </div>` : `<div style="color:var(--faint)">Loading claim details…</div>`;
+    </div>` : `<div class="schedule-grid" style="color:var(--faint)">Loading claim details…</div>`;
   const docsHtml = detail ? detail.documents_full.map(d => `
-    <details class="doc-viewer" id="doc-${esc(d.doc_type)}">
+    <details class="doc-viewer" id="doc-${idsafe(d.doc_type)}">
       <summary>${esc(docLabel(d.doc_type))} — ${esc(d.title)}</summary><pre>${esc(d.text)}</pre>
     </details>`).join("") : "";
   return `<div class="card">
-    <div class="claim-head"><h1>${esc(summary.title)}</h1><span class="cid">${esc(summary.claim_id)}</span>
-      <span class="type-tag">${esc(summary.claim_type)} claim</span></div>
+    <h3>Claim overview</h3>
+    <div class="card-desc">A quick summary of the incident, coverage position, and the material available for this review.</div>
+    <div class="claim-head"><h1>${esc(summary.title)}</h1>
+      <span style="color:var(--muted);font-size:13px">${esc(labelClaim(summary.claim_id))}</span>
+      <span class="type-tag">${esc(summary.claim_type)} claim</span>
+      <span class="id-secondary">${esc(summary.claim_id)}</span></div>
     ${scheduleHtml}
-    <div class="doc-chips">${summary.documents.map(d => `<span class="doc-chip">${esc(docLabel(d))}</span>`).join("")}</div>
+    ${detail ? `<div class="subhead">Source documents</div>
+    <div class="card-desc" style="margin:2px 0 4px">The original claim material used to establish the facts below. Verified quotes elsewhere on this page open directly into these documents.</div>` : ""}
     ${docsHtml}
+  </div>`;
+}
+
+/* ---------------- Feature 3: provenance strip ---------------- */
+function renderProvenance(r) {
+  const docCount = r.extraction.documents_extracted.length;
+  const failedCount = Object.keys(r.extraction.failed_documents || {}).length;
+  const factKeys = new Set(), verifiedKeys = new Set();
+  for (const c of r.document_citations) {
+    const key = `${c.doc_type}|${c.field}|${c.value}|${c.quote ?? ""}`;
+    factKeys.add(key);
+    if (c.quote_verified) verifiedKeys.add(key);
+  }
+  const checksCount = (r.checks_run || []).length;
+  const findingsCount = r.findings.length;
+  const decisive = r.decision_reasons.length;
+  const meta = DECISION_META[r.decision] || { word: r.decision };
+  const segs = [];
+  segs.push(`<span class="seg"><strong>${docCount}</strong> document${docCount === 1 ? "" : "s"}${failedCount ? ` <span class="v-bad">(${failedCount} failed extraction)</span>` : ""}</span>`);
+  segs.push(`<span class="seg">Gemini extraction</span>`);
+  if (factKeys.size) {
+    const allOk = verifiedKeys.size === factKeys.size;
+    segs.push(`<span class="seg ${allOk ? "" : "bad"}"><strong>${factKeys.size}</strong> cited facts · <strong>${verifiedKeys.size}/${factKeys.size}</strong> quotes verified in Python</span>`);
+  }
+  if (checksCount) segs.push(`<span class="seg"><strong>${checksCount}</strong> deterministic checks</span>`);
+  segs.push(`<span class="seg"><strong>${findingsCount}</strong> findings · <strong>${decisive}</strong> decision-driving</span>`);
+  segs.push(`<span class="seg"><strong>${esc(meta.word)}</strong></span>`);
+  return `<div class="prov-strip" aria-label="Review provenance summary">${segs.join(`<span class="arrow" aria-hidden="true">→</span>`)}</div>`;
+}
+
+/* ---------------- Feature 2: decision trace ---------------- */
+const TRACE_TIERS = [
+  { key: "critical", name: "Critical escalation", outcome: "ESCALATE" },
+  { key: "reject", name: "Established policy violation", outcome: "REJECT" },
+  { key: "material", name: "Escalation required", outcome: "ESCALATE" },
+  { key: "info", name: "Missing information", outcome: "REQUEST_INFORMATION" },
+  { key: "approve", name: "Positive establishment", outcome: "APPROVE" },
+  { key: "fallback", name: "Safe fallback", outcome: "ESCALATE" },
+];
+
+function winningTier(r) {
+  // Labels the backend's decision — never recomputes it. Mirrors the fixed
+  // precedence documented in the engine; reasons come from decision_reasons.
+  const reasons = r.decision_reasons.map(id => r.findings.find(f => f.finding_id === id)).filter(Boolean);
+  if (r.decision === "REJECT") return "reject";
+  if (r.decision === "REQUEST_INFORMATION") return "info";
+  if (r.decision === "APPROVE") return "approve";
+  if (reasons.some(f => f.rule === "decision_fallback")) return "fallback";
+  if (reasons.some(f => f.severity === "CRITICAL" && f.effect === "NEEDS_ESCALATION")) return "critical";
+  return "material";
+}
+
+function renderTrace(r) {
+  const winner = winningTier(r);
+  const winnerIdx = TRACE_TIERS.findIndex(t => t.key === winner);
+  const reasons = r.decision_reasons.map(id => r.findings.find(f => f.finding_id === id)).filter(Boolean);
+  const rows = TRACE_TIERS.map((tier, i) => {
+    const outcomeWord = DECISION_META[tier.outcome]?.word || tier.outcome;
+    let status, cls = "";
+    if (i === winnerIdx) {
+      cls = `won w-${r.decision}`;
+      const chips = reasons.map(f =>
+        `<button class="reason-link" style="border-color:var(--border);color:var(--text)"
+          onclick="reveal('${idsafe("finding-" + f.finding_id)}')">${esc(labelFinding(f.finding_id))} — ${esc(prettyText(f.title))}</button>`).join(" ");
+      status = `→ <strong>${esc(outcomeWord)}</strong>${chips ? `<div style="margin-top:5px">${chips}</div>` : ""}`;
+    } else if (i < winnerIdx) {
+      status = "No qualifying findings";
+    } else {
+      status = "Not consulted — decided at a higher rule";
+    }
+    return `<div class="trace-tier ${cls}">
+      <span class="t-n">${i + 1}</span>
+      <span class="t-name">${esc(tier.name)}</span>
+      <span class="t-status">${status}</span>
+    </div>`;
+  }).join("");
+  return `<div class="card"><h3>How this decision was reached</h3>
+    <div class="card-desc">The review applies the policy checks in a fixed order. The highlighted step is the rule that determined the outcome.</div>
+    ${rows}
+    <div class="trace-note">The decision is deterministic — it comes from these rules over the findings.
+    Gemini's explanation cannot change it, and approval is never the fallback.</div>
   </div>`;
 }
 
@@ -490,49 +857,64 @@ function nextAction(r) {
     return "Proceed on the basis of the reviewed evidence — all deterministic checks passed.";
   if (r.decision === "REJECT") {
     const t = titlesFor(["BLOCK_REJECT"]);
-    return `Record the violation with its cited evidence: ${t.join(" · ") || "see findings below."}`;
+    return `Record the violation with its cited evidence: ${t.join(" ") || "see findings below."}`;
   }
   if (r.decision === "REQUEST_INFORMATION") {
     const t = titlesFor(["NEEDS_INFORMATION"]);
-    return `Request from the claimant: ${t.join(" · ") || "see the checklist below."}`;
+    return `Request from the claimant: ${t.join(" ") || "see the checklist below."}`;
   }
   const t = titlesFor(["NEEDS_ESCALATION", "NEEDS_INFORMATION"]);
-  return `Resolve before this claim can move: ${t.join(" · ") || "see the review sheet below."}`;
+  return `Resolve before this claim can move: ${t.join(" ") || "see the review sheet below."}`;
 }
 
 function renderResult(r) {
   const parts = [];
   const meta = DECISION_META[r.decision] || { word: r.decision, sub: "" };
 
-  // 1. decision header
+  // 1. provenance
+  parts.push(renderProvenance(r));
+
+  // 2. decision banner
   parts.push(`<div class="decision-banner d-${esc(r.decision)}">
-    <div class="d-claim">${esc(r.claim_id)} · ${esc(r.claim_type)} claim</div>
+    <div class="d-claim">${esc(labelClaim(r.claim_id))} · ${esc(r.claim_type)} claim <span class="id-secondary" style="opacity:.7">${esc(r.claim_id)}</span></div>
     <div class="dword">${esc(meta.word)}</div>
     <div class="dsub">${esc(meta.sub)}</div>
     <div class="daction"><strong>Next action:</strong> ${nextAction(r)}</div>
   </div>`);
 
-  // 2. degraded-grounding notice
+  // 3. determinism receipt (only after a re-run)
+  const receipt = state.receipts[r.claim_id];
+  if (receipt) {
+    parts.push(`<div class="receipt ${receipt.changed ? "changed" : ""}" role="status">
+      <strong>Consistency check:</strong> ${receipt.changed ? "⚠ " : "✓ "}${esc(receipt.text)}
+      ${receipt.diffs ? `<ul>${receipt.diffs.map(d => `<li>${esc(d)}</li>`).join("")}</ul>` : ""}
+    </div>`);
+  }
+
+  // 4. decision trace
+  parts.push(renderTrace(r));
+
+  // 5. degraded-grounding notice
   if (r.explanation_source !== "gemini") {
     parts.push(`<div class="warn-strip"><strong>AI explanation unavailable.</strong>
       The claim decision and evidence review below are unaffected — they come from the
       deterministic review engine. Showing the deterministic rationale instead.</div>`);
   }
 
-  // 3. grounded explanation / fallback
+  // 6. grounded explanation / fallback
   if (r.explanation) {
     parts.push(`<div class="card">
       <h3>Grounded investigator summary <span class="source-tag">written by Gemini from validated evidence only — the decision itself is deterministic</span></h3>
-      <div class="explain-summary">${esc(r.explanation.summary)}</div>
-      <ul class="explain-points">${r.explanation.key_points.map(p => `<li>${esc(p)}</li>`).join("")}</ul>
-      ${r.explanation.investigator_note ? `<div class="inv-note"><strong>Investigator note:</strong> ${esc(r.explanation.investigator_note)}</div>` : ""}
+      <div class="explain-summary">${linkifyNarrative(r.explanation.summary, r)}</div>
+      <ul class="explain-points">${r.explanation.key_points.map(p => `<li>${linkifyNarrative(p, r)}</li>`).join("")}</ul>
+      ${r.explanation.investigator_note ? `<div class="inv-note"><strong>Investigator note:</strong> ${linkifyNarrative(r.explanation.investigator_note, r)}</div>` : ""}
     </div>`);
   } else {
     parts.push(`<div class="card"><h3>Review rationale (deterministic)</h3>
-      <div class="explain-summary">${esc(r.decision_rationale)}</div></div>`);
+      <div class="explain-summary">${linkifyNarrative(r.decision_rationale, r)}</div></div>`);
   }
 
-  // 4. request-information checklist
+  // 7. request-information checklist
   const missing = r.findings.filter(f => f.effect === "NEEDS_INFORMATION");
   if (missing.length) {
     parts.push(`<div class="card missing-box"><h3>Before this claim can be resolved, request:</h3>
@@ -544,7 +926,7 @@ function renderResult(r) {
     </div>`);
   }
 
-  // 5. escalation review sheet
+  // 8. escalation review sheet
   if (r.decision === "ESCALATE") {
     const escalations = r.findings
       .filter(f => f.effect === "NEEDS_ESCALATION")
@@ -566,54 +948,48 @@ function renderResult(r) {
     }
   }
 
-  // 6. contradictions
+  // 9. contradictions
   const contradictions = r.findings.filter(f => f.category === "CONTRADICTION");
   if (contradictions.length) {
     parts.push(`<div class="card"><h3>Contradictions in the evidence</h3>
       ${contradictions.map(renderContradiction).join("")}</div>`);
   }
 
-  // 7. findings — sorted by severity, passed checks separated
+  // 10. findings — issues sorted by severity
   const issues = r.findings.filter(f => f.severity !== "INFO")
     .sort((a, b) => SEV_ORDER[a.severity] - SEV_ORDER[b.severity]);
-  const passed = r.findings.filter(f => f.severity === "INFO");
   parts.push(`<div class="card"><h3>Findings</h3>
-    ${issues.length ? issues.map(renderFinding).join("") : `<div style="color:var(--faint);font-size:13px;margin-bottom:4px">No issues — every deterministic check passed.</div>`}
+    <div class="card-desc">Issues identified during the review, with each finding linked to the evidence and policy clause that supports it.</div>
+    ${issues.length ? issues.map(renderFinding).join("") : `<div style="color:var(--faint);font-size:13px;margin-bottom:4px">No issues — every check passed. See "What was checked" below for the full list.</div>`}
   </div>`);
 
-  // 8. evidence panel
+  // 11. evidence panel
   parts.push(renderEvidencePanel(r));
 
-  // 9. policy clauses
+  // 12. policy clauses
   parts.push(renderPolicy(r));
 
-  // 10. passed checks (collapsed, reassurance)
-  if (passed.length) {
-    parts.push(`<details class="aux"><summary>✓ ${passed.length} check${passed.length > 1 ? "s" : ""} passed</summary>
-      <div class="card" style="margin-top:8px"><div class="passed-list">
-      ${passed.map(f => `<div class="passed-item"><span class="tick" aria-hidden="true">✓</span>
-        <span><strong style="color:var(--text);font-weight:600">${esc(prettyText(f.title))}</strong>
-        ${f.clause_ids.length ? " · " + f.clause_ids.map(clauseChip).join(" ") : ""}</span></div>`).join("")}
-      </div></div></details>`);
-  }
+  // 13. review scope / audit program
+  parts.push(renderScope(r));
 
-  // 11. grounding warnings
+  // 14. grounding warnings
   if (r.warnings && r.warnings.length) {
     parts.push(`<details class="aux"><summary>⚠ ${r.warnings.length} grounding warning${r.warnings.length > 1 ? "s" : ""} — the decision is unaffected</summary>
-      <div class="warn-strip" style="margin-top:8px"><ul>${r.warnings.map(w => `<li>${esc(w)}</li>`).join("")}</ul></div></details>`);
+      <div class="warn-strip" style="margin-top:8px"><ul>${r.warnings.map(w => `<li>${esc(prettyText(w))}</li>`).join("")}</ul></div></details>`);
   }
 
-  // 12. rerun + meta
+  // 15. rerun + meta
   const t = r.timings || {};
   parts.push(`<button class="rerun-btn" onclick="runReview('${esc(r.claim_id)}')">Re-run review</button>
+    <span style="color:var(--faint);font-size:12px;margin-left:10px">Consistency check: re-run the same claim to verify the structured review is unchanged. The AI explanation may be worded differently; the decision logic is deterministic.</span>
     <div class="meta-foot">reviewed in ${esc(t.total_s ?? "?")}s (extraction ${esc(t.extraction_s ?? "?")}s · checks ${esc(t.engine_s ?? "?")}s · grounding ${esc(t.grounding_s ?? "?")}s)
-    · engine v${esc(r.engine_version)} · ${esc(r.extraction.model)}</div>`);
+    · engine v${esc(r.engine_version)} · ${esc(r.extraction.model)} · ${esc(r.claim_id)}</div>`);
   return parts.join("");
 }
 
 function clauseChip(clauseId) {
   return `<button class="clause-chip" onclick="reveal('${idsafe("clause-" + clauseId)}')"
-    aria-label="Show policy clause ${esc(clauseId)}">${esc(clauseId)}</button>`;
+    aria-label="Show ${esc(labelClause(clauseId))}">${esc(labelClauseShort(clauseId))}</button>`;
 }
 
 function evidenceChips(f) {
@@ -635,7 +1011,7 @@ function renderContradiction(f) {
     <div class="c-cell">
       <div class="c-doc">${esc(docLabel(e.doc_type))} · ${fieldLabel(e.field)}</div>
       <div class="c-val">${esc(e.value)}</div>
-      ${e.quote ? `<div class="c-quote">"${esc(e.quote)}" ${verifiedMark(e)}</div>` : ""}
+      ${e.quote ? `<div class="c-quote">${quoteHtml(e.doc_type, e.quote, e.quote_verified)} ${verifiedMark(e)}</div>` : ""}
     </div>`);
   const compare = cells.length === 2 ? cells.join(`<div class="c-vs" aria-hidden="true">VS</div>`) : cells.join("");
   return `<div class="contradiction" id="${idsafe("finding-" + f.finding_id)}">
@@ -657,10 +1033,10 @@ function renderFinding(f) {
   const evChips = evidenceChips(f);
   return `<div class="finding f-${esc(f.severity)}" id="${idsafe("finding-" + f.finding_id)}">
     <div class="f-head">
-      <span class="sev sev-${esc(f.severity)}">${esc(f.severity)}</span>
+      <span class="sev sev-${esc(f.severity)}">${esc(SEV_LABELS[f.severity] || f.severity)}</span>
       <span class="f-cat">${esc(CAT_LABELS[f.category] || f.category)}</span>
       ${effectTag}
-      <span class="f-id">${esc(f.finding_id)}</span>
+      <span class="f-id" title="${esc(f.finding_id)}">${esc(labelFinding(f.finding_id))}</span>
     </div>
     <div class="f-title">${esc(prettyText(f.title))}</div>
     <div class="f-expl">${esc(prettyText(f.explanation))}</div>
@@ -691,16 +1067,38 @@ function renderEvidencePanel(r) {
           : (c.quote_verified === false
             ? `<span class="v-bad">⚠ source quote unverified</span>`
             : `<span class="v-ok">✓ source quote verified</span>`);
+        const usedBy = [...new Set(c.findings)].map(labelFinding).join(", ");
         return `<div class="ev-card ${cls}">
           <div class="e-field">${fieldLabel(c.field)}</div>
           <div class="e-val">${esc(c.value)}</div>
-          ${c.quote ? `<div class="e-quote">"${esc(c.quote)}"</div>` : ""}
+          ${c.quote ? quoteHtml(c.doc_type, c.quote, c.valid ? c.quote_verified : false) : ""}
           <div class="e-meta">${status}
-            <span class="e-findings">used by ${[...new Set(c.findings)].map(esc).join(", ")}</span></div>
+            <span class="e-findings">used by ${esc(usedBy)}</span></div>
         </div>`;
       }).join("")}
     </div>`).join("");
-  return `<div class="card"><h3>Extracted evidence <span class="source-tag">every value carries its verbatim source quote, re-checked in Python</span></h3>${blocks}</div>`;
+  return `<div class="card"><h3>Extracted evidence</h3>
+    <div class="card-desc">Facts established from the documents, each with its verbatim source quote. Click a verified quote to see it highlighted in the original document.</div>
+    ${blocks}</div>`;
+}
+
+/* ---------------- Feature 6: executable policy inspector ---------------- */
+function renderClauseParams(citation, usedByRules) {
+  const params = citation.parameters || {};
+  const rows = [];
+  for (const [key, value] of Object.entries(params)) {
+    const renderer = PARAM_RENDERERS[key];
+    const html = renderer ? renderer(value) : `${fieldLabel(key)}: <strong>${esc(JSON.stringify(value))}</strong>`;
+    if (html) rows.push(`<div class="p-row">${html}</div>`);
+  }
+  if (!rows.length) return "";
+  const usedBy = usedByRules.size
+    ? `<div class="p-row" style="margin-top:4px;color:var(--faint)">Used by: ${[...usedByRules].map(x => esc(ruleLabel(x))).join(", ")}</div>`
+    : "";
+  return `<div class="cl-params">
+    <div class="p-title">Rule used by the review — from policy.json, not generated</div>
+    ${rows.join("")}${usedBy}
+  </div>`;
 }
 
 function renderPolicy(r) {
@@ -712,24 +1110,90 @@ function renderPolicy(r) {
   }
   const related = (r.retrieved_context || []).filter(c => !c.already_cited);
   if (!cited.size && !related.length) return "";
-  const citedHtml = [...cited.values()].map(c => `
+  const citedHtml = [...cited.values()].map(c => {
+    const usedByRules = new Set(
+      r.findings.filter(f => f.clause_ids.includes(c.clause_id)).map(f => f.rule));
+    const usedByFindings = [...new Set(c.findings)].map(labelFinding).join(", ");
+    return `
     <div class="clause" id="${idsafe("clause-" + c.clause_id)}">
-      <div class="cl-head"><span class="cl-id">${esc(c.clause_id)}</span><span class="cl-title">${esc(c.title)}</span>
-        <span class="cl-meta"><span class="cited-badge">DIRECTLY CITED</span><br>by ${[...new Set(c.findings)].map(esc).join(", ")}</span></div>
+      <div class="cl-head"><span class="cl-name">${esc(labelClause(c.clause_id))}</span><span class="cl-title">${esc(c.title)}</span>
+        <span class="cl-meta"><span class="cited-badge">CITED BY THE REVIEW</span><br>${esc(usedByFindings)} · <span class="id-secondary">${esc(c.clause_id)}</span></span></div>
       <div class="cl-text">${esc(c.text)}</div>
-    </div>`).join("");
+      ${renderClauseParams(c, usedByRules)}
+    </div>`;
+  }).join("");
   const relatedHtml = related.length ? `
     <div class="context-note"><strong>Related policy context</strong> — retrieved by semantic similarity for
     background reading only. These clauses are <strong>not part of the decision basis</strong>.</div>
     ${related.map(c => `<div class="clause context">
-      <div class="cl-head"><span class="cl-id">${esc(c.clause_id)}</span><span class="cl-title">${esc(c.title)}</span>
-        <span class="cl-meta"><span class="context-badge">CONTEXT ONLY</span><br>similarity ${esc(c.score)}</span></div>
-      <div class="cl-text" style="font-size:12px">${esc(c.reason)}</div>
+      <div class="cl-head"><span class="cl-name">${esc(labelClause(c.clause_id))}</span><span class="cl-title">${esc(c.title)}</span>
+        <span class="cl-meta"><span class="context-badge">CONTEXT ONLY</span><br>similarity ${esc(c.score)} · <span class="id-secondary">${esc(c.clause_id)}</span></span></div>
     </div>`).join("")}` : "";
-  return `<div class="card"><h3>Policy clauses</h3>${citedHtml}${relatedHtml}</div>`;
+  return `<div class="card"><h3>Policy clauses used</h3>
+    <div class="card-desc">The policy provisions referenced by this review. Rule values shown here come directly from the authoritative policy.</div>
+    ${citedHtml}${relatedHtml}</div>`;
 }
 
-// ---------------- init ----------------
+/* ---------------- Feature 5: review scope / audit program ---------------- */
+const OUTSIDE_SCOPE = [
+  "Document authenticity (forged or altered documents are not detectable from text alone)",
+  "Driving-licence validity against any external transport registry",
+  "Discretionary insurer decisions, such as condoning a late notification",
+  "Facts not contained in the supplied documents or policy schedule",
+  "Market-value or salvage assessment of the vehicle",
+];
+
+function renderScope(r) {
+  const findingsByRule = new Map();
+  for (const f of r.findings) {
+    if (!findingsByRule.has(f.rule)) findingsByRule.set(f.rule, []);
+    findingsByRule.get(f.rule).push(f);
+  }
+  const rows = (r.checks_run || []).map(name => {
+    const failed = name.endsWith(" (failed)");
+    const base = failed ? name.replace(" (failed)", "") : name;
+    const meta = CHECKS[base];
+    const label = meta ? meta.name : fieldLabel(base.replace(/^check_/, ""));
+    if (failed) {
+      return { icon: "✗", cls: "fail", label, status: "Check failed safely — the claim was escalated rather than decided without it" };
+    }
+    const findings = (meta ? meta.rules : []).flatMap(rule => findingsByRule.get(rule) || []);
+    if (!findings.length) {
+      return { icon: "—", cls: "na", label, status: "Nothing to record for this claim (not applicable)" };
+    }
+    const issues = findings.filter(f => f.severity !== "INFO");
+    if (issues.length) {
+      const links = issues.map(f =>
+        `<button class="linkid" onclick="reveal('${idsafe("finding-" + f.finding_id)}')">${esc(labelFinding(f.finding_id))}</button>`).join(", ");
+      return { icon: "⚠", cls: "flag", label, status: `Flagged — ${issues.length} issue${issues.length > 1 ? "s" : ""}: ${links}` };
+    }
+    const links = findings.map(f =>
+      `<button class="linkid" onclick="reveal('${idsafe("finding-" + f.finding_id)}')">${esc(labelFinding(f.finding_id))}</button>`).join(", ");
+    return { icon: "✓", cls: "ok", label, status: `Checked — no issue found (${links})` };
+  });
+  // INFO findings live here so scope links have a target even on clean claims
+  const passed = r.findings.filter(f => f.severity === "INFO");
+  const passedHtml = passed.length
+    ? `<details class="aux" style="margin:10px 0 0"><summary>Details of the ${passed.length} satisfied check finding${passed.length > 1 ? "s" : ""}</summary>
+       <div style="margin-top:8px">${passed.map(renderFinding).join("")}</div></details>`
+    : "";
+  return `<div class="card"><h3>What was checked</h3>
+    <div class="card-desc">The checks performed during this review — the same fixed set runs for every claim — and the areas that still require human or external verification.</div>
+    ${rows.map(row => `<div class="scope-row">
+      <span class="s-icon ${row.cls}" aria-hidden="true">${row.icon}</span>
+      <span class="s-name">${esc(row.label)}</span>
+      <span class="s-status">${row.status}</span>
+    </div>`).join("")}
+    ${passedHtml}
+    <div class="scope-outside">
+      <div class="p-title">Outside this review — still the investigator's diligence</div>
+      <ul>${OUTSIDE_SCOPE.map(x => `<li>${esc(x)}</li>`).join("")}</ul>
+      <p>When the available evidence is insufficient, escalation is the deliberate outcome — the system does not guess.</p>
+    </div>
+  </div>`;
+}
+
+/* ---------------- init ---------------- */
 loadHealth();
 loadClaims();
 </script>

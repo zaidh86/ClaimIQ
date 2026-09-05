@@ -36,6 +36,7 @@ class PolicyCitation(BaseModel):
     title: str = ""
     rule_type: str = ""
     text: str = ""
+    parameters: dict = {}  # machine-readable rule values, verbatim from policy.json
     valid: bool = True
     issues: list[str] = []
 
@@ -115,6 +116,7 @@ def build_policy_citations(review: ClaimReview, policy: Policy) -> list[PolicyCi
                     title=clause.title,
                     rule_type=clause.rule_type.value,
                     text=clause.text,  # verbatim from the authoritative policy
+                    parameters=clause.parameters,
                 )
             )
     return citations

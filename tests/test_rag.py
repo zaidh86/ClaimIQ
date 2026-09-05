@@ -197,6 +197,7 @@ def test_policy_citation_text_matches_authoritative_policy(policy):
         clause = policy.clause_by_id(citation.clause_id)
         assert citation.text == clause.text
         assert citation.title == clause.title
+        assert citation.parameters == clause.parameters  # verbatim, never invented
 
 
 def test_invalid_document_references_are_marked_not_dropped():
